@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
+require('dotenv').config();
 
 //The index of our API
 app.get('/', (req, res) => res.send('index route!'));
@@ -13,7 +14,8 @@ const port = process.env.PORT || 8082;
 
 
 //Connect to database through URI
-const uri = "mongodb+srv://milliganec:7LY0yFC8F3gfEBCo@climatedata.fh5ht06.mongodb.net/?retryWrites=true&w=majority";
+const password = process.env.MONGODB_PASSWORD;
+const uri = `mongodb+srv://milliganec:${password}@climatedata.fh5ht06.mongodb.net/?retryWrites=true&w=majority`;
 
 const connectDB = async () => {
   try {
