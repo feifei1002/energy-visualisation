@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-//Test schema
+//Test schema for database
 const TestSchema = new mongoose.Schema({
   title: {
     type: String,

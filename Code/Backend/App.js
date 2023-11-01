@@ -1,4 +1,4 @@
-//Define librairies we are using
+//Define librairies we are using in the backend
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -12,7 +12,7 @@ app.get('/', (req, res) => res.send('index route!'));
 const port = process.env.PORT || 8082;
 
 
-//Connect to database
+//Connect to database through URI
 const uri = "mongodb+srv://milliganec:7LY0yFC8F3gfEBCo@climatedata.fh5ht06.mongodb.net/?retryWrites=true&w=majority";
 
 const connectDB = async () => {
@@ -34,15 +34,15 @@ const connectDB = async () => {
 //Connect to our MongoDB database
 connectDB();
 
-//Use cors and express to run server
+//Configure cors and express
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ extended: false }));
 
 //Test an api route using the test router file
-const testRouter = require('./routes/api/test');
+const apiRouter = require('./routes/api/Api');
 
 //Tell the app to use the test router from route /api/test
-app.use('/api/test', testRouter);
+app.use('/api', apiRouter);
 
 //Alert the user the server has started
 app.listen(port, () => console.log(`Server running on port ${port}`));
