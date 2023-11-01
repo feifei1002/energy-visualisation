@@ -5,46 +5,53 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
-//The index of our API
+// Define the root route for API
 app.get('/', (req, res) => res.send('index route!'));
-
 
 //Define port
 const port = process.env.PORT || 8082;
 
 
-//Connect to database through URI
+//Get MongoDB password from environment variables
 const password = process.env.MONGODB_PASSWORD;
-const uri = `mongodb+srv://milliganec:${password}@climatedata.fh5ht06.mongodb.net/?retryWrites=true&w=majority`;
 
+// Construct the MongoDB URI
+const uri = `mongodb+srv://milliganec:${password}@climatedata.fh5ht06.mongodb.net/?retryWrites=true&w=majority/ClimateData`;
+
+// Function to connect to the MongoDB database
 const connectDB = async () => {
   try {
     mongoose.set('strictQuery', true);
+
+     // Use the new URL parser
     await mongoose.connect(uri, {
       useNewUrlParser: true,
     });
 
-    //Tell the user if success
-    console.log('MongoDB is Connected...');
+     // Log a success message
+     console.log('MongoDB is connected');
   } catch (err) {
-    //Else show the error in the console
-    console.error(err.message);
+     //Log an error message and exit with an error code
+    console.error('MongoDB connection error:', err);
     process.exit(1);
   }
 };
 
-//Connect to our MongoDB database
+//Connect to the MongoDB database
 connectDB();
 
-//Configure cors and express
+//
+const Schema = mongoose.Schema;
+
+console.log(Schema)
+
+//Configure CORS and JSON parsing
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ extended: false }));
 
-//Test an api route using the test router file
+//Import and configure the API routes
 const apiRouter = require('./routes/api/Api');
-
-//Tell the app to use the test router from route /api/test
 app.use('/api', apiRouter);
 
-//Alert the user the server has started
+//Start the server
 app.listen(port, () => console.log(`Server running on port ${port}`));
