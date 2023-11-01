@@ -40,15 +40,18 @@ const connectDB = async () => {
 //Connect to the MongoDB database
 connectDB();
 
+//
+const Schema = mongoose.Schema;
+
+console.log(Schema)
+
 //Configure CORS and JSON parsing
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ extended: false }));
 
 //Import and configure the API routes
 const apiRouter = require('./routes/api/Api');
-const dataRouter = require('./routes/data/Data');
 app.use('/api', apiRouter);
-app.use('/data', dataRouter);
 
 //Start the server
 app.listen(port, () => console.log(`Server running on port ${port}`));
