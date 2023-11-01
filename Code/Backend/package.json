@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@auth/core": "^0.18.0",
     "@nivo/core": "^0.83.0",
     "body-parser": "^1.20.2",
     "confi": "^10.0.1",
