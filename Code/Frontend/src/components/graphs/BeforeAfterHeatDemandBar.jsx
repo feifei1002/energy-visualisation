@@ -6,17 +6,18 @@ export default function BeforeAfterHeatDemandBar() {
   const [jsonData, setJsonData] = useState(null);  // Holds the fetched data
   const [loading, setLoading] = useState(true);     // Indicates if data is being loaded
   const [error, setError] = useState(null);         // Stores any loading errors
-  const [searchLocalAuthority, setSearchLocalAuthority] = useState(''); // User-inputted Local Authority to search for
-  const [searchedData, setSearchedData] = useState([]); // Holds filtered data or empty array
-  const [localAuthorities, setLocalAuthorities] = useState(null); // Holds calculated data or null
+  const [selectedLocalAuthority, setSelectedLocalAuthority] = useState(''); // Selected Local Authority from drop-down
+  const [localAuthorities, setLocalAuthorities] = useState([]); // Holds calculated data or empty array
 
   // API endpoint for data retrieval
   const apiUrl = 'http://localhost:8082/data/annualheat';
 
   // Effect to fetch and load data from the API
   useEffect(() => {
+    // Memoize the API URL to prevent unnecessary re-renders
     const memoizedApiUrl = apiUrl;
 
+    // Fetch data from the API and handle responses
     fetch(memoizedApiUrl)
       .then((response) => {
         if (!response.ok) {
@@ -34,53 +35,61 @@ export default function BeforeAfterHeatDemandBar() {
       });
   }, [apiUrl]);
 
-  // Effect to filter data based on user input and populate 'searchedData'
-  useEffect(() => {
-    if (searchLocalAuthority && jsonData) {
-      const results = jsonData.filter((entry) => entry["Local Authority (2019)"] === searchLocalAuthority);
-      setSearchedData(results); // Update 'searchedData' with filtered results
-    } else {
-      setSearchedData([]); // Clear 'searchedData' if no searchLocalAuthority or data is found
-    }
-  }, [searchLocalAuthority, jsonData]);
-
   // Function to calculate total heat demand before and after energy efficiency measures
   const calculateTotalHeatDemand = (data) => {
+    // Calculate total heat demand before and after energy efficiency measures
     const totalBeforeEfficiency = data.reduce((total, entry) => total + entry["Total heat demand before energy efficiency measures 2018 (kWh)"], 0);
     const totalAfterEfficiency = data.reduce((total, entry) => total + entry["Total heat demand after energy efficiency measures 2018 (kWh)"], 0);
+    
+    // Convert the values to GWh and format them to two decimal places
+    const totalBeforeEfficiencyGWH = (totalBeforeEfficiency / 1000).toFixed(2);
+    const totalAfterEfficiencyGWH = (totalAfterEfficiency / 1000).toFixed(2);
+    
     return {
       "Local Authority (2019)": data[0]["Local Authority (2019)"],
-      "Total heat demand before energy efficiency measures": totalBeforeEfficiency,
-      "Total heat demand after energy efficiency measures": totalAfterEfficiency
+      "Total heat demand before energy efficiency measures": totalBeforeEfficiencyGWH,
+      "Total heat demand after energy efficiency measures": totalAfterEfficiencyGWH
     };
   };
 
-  // Effect to calculate and set 'localAuthorities' based on 'searchedData'
+  // Effect to calculate and set 'localAuthorities' based on 'selectedLocalAuthority'
   useEffect(() => {
-    if (searchedData.length > 0) {
-      const localAuthorityData = calculateTotalHeatDemand(searchedData);
-      setLocalAuthorities([localAuthorityData]); // Set 'localAuthorities' with calculated data
+    if (selectedLocalAuthority && jsonData) {
+      const results = jsonData.filter((entry) => entry["Local Authority (2019)"] === selectedLocalAuthority);
+      if (results.length > 0) {
+        const localAuthorityData = calculateTotalHeatDemand(results);
+        setLocalAuthorities([localAuthorityData]); // Set 'localAuthorities' with calculated data
+      } else {
+        setLocalAuthorities([]); // Set 'localAuthorities' to an empty array when no data is found
+      }
     } else {
-      setLocalAuthorities(null); // Set 'localAuthorities' to null when no data is found
+      setLocalAuthorities([]); // Set 'localAuthorities' to an empty array when no selection is made
     }
-  }, [searchedData]);
+  }, [selectedLocalAuthority, jsonData]);
+
+  // Get a list of unique local authorities from the JSON data
+  const uniqueLocalAuthorities = jsonData ? [...new Set(jsonData.map(entry => entry["Local Authority (2019)"]))] : [];
 
   return (
     <div>
       {/* Main content rendering */}
-      <p>Heat efficiency before and after energy efficiency measures for a Local Authority in kWh</p>
+      <h5>Heat efficiency before and after energy efficiency measures for a Local Authority in GWh</h5>
       <div>
         <label>
-          Please enter a Local Authority:
-          <input
-            type="text"
-            value={searchLocalAuthority}
-            onChange={(e) => setSearchLocalAuthority(e.target.value)}
-          />
+          Select a Local Authority:
+          <select
+            value={selectedLocalAuthority}
+            onChange={(e) => setSelectedLocalAuthority(e.target.value)}
+          >
+            <option value="">Select an Authority</option>
+            {uniqueLocalAuthorities.map(authority => (
+              <option key={authority} value={authority}>{authority}</option>
+            ))}
+          </select>
         </label>
-        {searchLocalAuthority && searchedData.length > 0 && (
+        {selectedLocalAuthority && localAuthorities.length > 0 && (
           <div>
-            <strong>Local Authority (2019): {searchLocalAuthority}</strong>
+            <strong>Local Authority (2019): {selectedLocalAuthority}</strong>
           </div>
         )}
       </div>
@@ -88,7 +97,7 @@ export default function BeforeAfterHeatDemandBar() {
         <p>Loading data...</p>
       ) : error ? (
         <p>Error: {error.message}</p>
-      ) : localAuthorities !== null ? (
+      ) : localAuthorities.length > 0 ? (
         <div>
           <div>
             {/* Nivo ResponsiveBar component for displaying data visually */}
@@ -97,12 +106,13 @@ export default function BeforeAfterHeatDemandBar() {
                 data={localAuthorities}
                 keys={["Total heat demand before energy efficiency measures", "Total heat demand after energy efficiency measures"]}
                 indexBy="Local Authority (2019)"
+                valueFormat={(value) => `${value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} GWh`}
               />
             </div>
           </div>
         </div>
       ) : (
-        <p>No data found for the specified Local Authority.</p>
+        <p>No data found for the selected Local Authority.</p>
       )}
     </div>
   );
