@@ -10,10 +10,9 @@ function App() {
 
             <Router>
                 <Routes>
-                    <Route path="/visualisation" element={VisualisationPage} />
+                    <Route path="/visualisation" element={<VisualisationPage />} />
             </Routes>
             </Router>
-            <VisualisationPage></VisualisationPage>
         </>
     )
 }
