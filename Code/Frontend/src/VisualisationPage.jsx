@@ -1,9 +1,9 @@
-import Graph from "./components/Graph";
+import VisualisationsDropdownMenu from "./components/VisualisationsDropdownMenu"
 
 export default function VisualisationPage() {
     return (
         <>
-            <Graph></Graph>
+            <VisualisationsDropdownMenu></VisualisationsDropdownMenu>
         </>
     )
 }
