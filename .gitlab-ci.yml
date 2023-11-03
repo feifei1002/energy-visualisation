@@ -23,4 +23,5 @@ test:
     - npm install
     - npm install dotenv
     - npm install --save-dev jest
+    - npm install to-fast-properties
     - npm run test
