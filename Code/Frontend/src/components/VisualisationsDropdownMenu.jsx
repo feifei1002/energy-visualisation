@@ -4,13 +4,16 @@ import { useState } from 'react';
 
 export default function VisualisationsDropdownMenu() {
     const data = [
-        { name: 'Heat demand before and after energy efficiency measures', link: '/graph1'},
-        { name: 'Breakdown of heat demand before and after energy efficiency measures', link: '/graph2' },
-        { name: 'Breakdown of energy efficiency improvement costs', link: '/graph3'},
-        { name: 'Half-hourly heat production and gas consumption profiles - Gas boilers', link: '/graph4'},
-        { name: 'Half-hourly heat production and gas consumption profiles - Resistance heaters', link: '/graph5' },
-        { name: 'Summary of heat demand data across England, Wales and Scotland', link: '/graph6' }
+        { name: 'Heat demand before and after energy efficiency measures', link: '/visualisations/graph1'},
+        { name: 'Breakdown of heat demand before and after energy efficiency measures', link: '/visualisations/graph2' },
+        { name: 'Breakdown of energy efficiency improvement costs', link: '/visualisations/graph3'},
+        { name: 'Half-hourly heat production and gas consumption profiles - Gas boilers', link: '/visualisations/graph4'},
+        { name: 'Half-hourly heat production and gas consumption profiles - Resistance heaters', link: '/visualisations/graph5' },
+        { name: 'Summary of heat demand data across England, Wales and Scotland', link: '/visualisations/graph6' }
     ];
+    //The /visualisation/graph link is just to make sure everything works
+    //Please replace the link with the actual graph link later
+
 
     const [dropdown, setDropdown] = useState('Visualisation Graphs');
 

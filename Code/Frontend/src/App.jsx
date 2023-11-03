@@ -11,12 +11,14 @@ function App() {
 
             <Router>
                 <Routes>
-                    <Route path="/visualisation" element={<VisualisationPage />} />
-                    <Route path="/graph1" element={<Graph1 />} />
+                    <Route path="/visualisations" element={<VisualisationPage />} />
+
+                    < Route path="/visualisations/graph1" element={<Graph1 />}  /> 
             </Routes>
             </Router>
         </>
     )
+    //Please replace the path and the element with the actual graph file later
 }
 
 export default App
