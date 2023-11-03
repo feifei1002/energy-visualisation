@@ -9,7 +9,6 @@ export default function VisualisationsDropdownMenu() {
         { name: 'Half-hourly heat production and gas consumption profiles - Gas boilers' },
         { name: 'Half-hourly heat production and gas consumption profiles - Resistance heaters'},
         { name: 'Summary of heat demand data across England, Wales and Scotland' }];
-    const dropdownTitle = "Visualisation Graphs"
 
     const [dropdown, setDropdown] = useState('Visualisation Graphs');
 
