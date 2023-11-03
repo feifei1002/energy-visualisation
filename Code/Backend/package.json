@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"No tests specified\"",
+    "test": "jest",
     "start": "node app.js",
     "app": "nodemon app.js"
   },
