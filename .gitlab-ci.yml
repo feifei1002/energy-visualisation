@@ -11,10 +11,12 @@ cache:
 install_dependencies:
   stage: install
   script:
+    - cd energy_visualization_team2/Code/
     - npm install
     - npm install dotenv
 
 test:
   stage: test
   script:
+    - cd energy_visualization_team2/Code/
     - npm run test
