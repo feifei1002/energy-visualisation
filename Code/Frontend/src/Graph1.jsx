@@ -1,7 +1,10 @@
+import VisualisationsDropdownMenu from "./components/VisualisationsDropdownMenu";
+
 export default function Graph1() {
     return (
         <>
-            <h1>Hello World</h1>
+            <VisualisationsDropdownMenu></VisualisationsDropdownMenu>
+            <h1>Put your graph here please :))</h1>
         </>
     )
 }
