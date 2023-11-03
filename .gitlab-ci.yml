@@ -14,6 +14,7 @@ install_dependencies:
     - cd /builds/c21054715/energy_visualization_team2/Code
     - npm install
     - npm install dotenv
+    - npm install --save-dev jest
 
 test:
   stage: test
