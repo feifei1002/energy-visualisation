@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
-import '../App.css'
+// import '../App.css'
+import './Login.css'
 
 function Login() {
     // https://www.w3schools.com/react/react_forms.asp
@@ -22,17 +23,24 @@ function Login() {
 
     return (
         <>
-        <h1>Login</h1>
 
     <form onSubmit={handleSubmit}>
-      <label>User Name:
-        <input type="text" name="username" value={inputs.username} onChange={handleChange}/>
-      </label>
-      <label>Password:
-        <input type="text" name="password" value={inputs.password} onChange={handleChange}/>
-      </label>
-      <input type="submit" />
+      <div class="inputRow">
+      <label>User Name: </label>
+      <input type="text" name="username" value={inputs.username} onChange={handleChange}/>
+      </div>
+      <div class="inputRow">
+      <label>Password: </label>
+      <input type="password" name="password" value={inputs.password} onChange={handleChange}/>
+      </div>
+      <div class="inputRow">
+      <input type="submit" value="Login" />
+      {/* https://stackoverflow.com/questions/2825856/html-button-to-not-submit-form */}
+      <button type="button" onClick="/">New? Register</button>
+      {/* end */}
+      </div>
     </form>
+    
 
         </>
     );

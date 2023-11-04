@@ -1,0 +1,66 @@
+form {
+    width: 100%;
+}
+
+.inputRow {
+    /* margin-bottom: 10px; */
+    /* width: 100%; */
+    height: 100px;
+    padding: 50px 100px; 
+    line-height: 80px;
+    
+  }
+label {
+    display: inline-block;
+    /* width: 20%; */
+    text-align: center;
+    background-color: #15495f;
+    border: solid #15495f;
+    border-radius: 0px;
+    color: white;
+    /* height: 20%; */
+}
+
+input[type=text] {
+    background-color: #ffffff;
+    border-color: #15495f;
+    border-radius: 0px;
+    color: black;
+    /* width: 60%; */
+    /* height: 20%; */
+  }
+
+ input[type=password] {
+    background-color: #ffffff;
+    border-color: #15495f;
+    border-radius: 0px;
+    color: black;
+    /* width: 60%; */
+    /* height: 20%; */
+  }
+
+input[type=submit] {
+    /* display: inline-block; */
+    /* width: 20%; */
+    text-align: center;
+    background-color: #15495f;
+    border-color: #15495f;
+    border-radius: 0px;
+    border-width: 1px;
+    /* box-sizing: border-box; */
+}
+
+button[type=button]{
+    display: inline-block;
+    /* width: 20%; */
+    text-align: center;
+    background-color: #ffffff;
+    /* border-width: match parent; */
+    border-color: #15495f;
+    border-radius: 0px;
+    color: black;
+    border-width: 1px;
+    /* box-sizing: border-box; */
+}
+
+* { box-sizing: border-box; }

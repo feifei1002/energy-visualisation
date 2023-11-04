@@ -41,15 +41,15 @@
   color: #888;
 }
 
-input {
+/* input {
   border: 1px solid rgb(172, 171, 171);
   border-radius: 10px;
   padding: 1vw 1vw;
   outline: none;
   margin: 5px;
-}
+} */
 
-.Login {
+/* .Login {
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -58,4 +58,6 @@ input {
     padding: 2vw 1vw;
     background-color: rgb(250, 194, 194);
     border-radius: 0 0 10px 10px;
-}
+} */
+
+* { box-sizing: border-box; }
