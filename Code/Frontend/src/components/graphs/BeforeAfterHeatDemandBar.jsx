@@ -67,8 +67,15 @@ export default function BeforeAfterHeatDemandBar() {
     }
   }, [selectedLocalAuthority, jsonData]);
 
+  // Function to sort the local authorities alphabetically
+  function sortLocalAuthorities(authorities) {
+    return authorities.slice().sort((a, b) => a.localeCompare(b));
+  }
+
   // Get a list of unique local authorities from the JSON data
-  const uniqueLocalAuthorities = jsonData ? [...new Set(jsonData.map(entry => entry["Local Authority (2019)"]))] : [];
+  const uniqueLocalAuthorities = jsonData
+    ? sortLocalAuthorities([...new Set(jsonData.map(entry => entry["Local Authority (2019)"]))])
+    : [];
 
   return (
     <div>
