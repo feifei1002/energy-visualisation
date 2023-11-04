@@ -26,6 +26,8 @@ const csvPaths = {
   residentialHeatDemand: path.join(rootPath, 'Data', 'Residential_heat_demand_LSOA_Scotland.csv'),
 };
 
+const geojsonPath = path.join(rootPath, 'Data', 'lsoa.geojson')
+
 // Function to parse and cache CSV data
 async function parseAndCacheCSV(dataKey, cache, data, res) {
   try {
@@ -88,6 +90,21 @@ router.get('/quantification', (req, res) => {
 router.get('/residentialheat', (req, res) => {
   handleCSVRequest(req, res, 'residentialHeatDemandData', residentialHeatDemandCache, csvPaths.residentialHeatDemand);
 });
+
+// API endpoint for geojson data
+router.get('/geojson', async (req, res) => {
+  try {
+    // Read the GeoJSON data from the file
+    const geojsonData = await fs.readFile(geojsonPath, 'utf8');
+    // Parse the GeoJSON data as JSON and send it as a response
+    res.json(JSON.parse(geojsonData));
+  } catch (error) {
+    // Handle errors in reading the GeoJSON file and respond with an error message
+    console.error(error);
+    res.status(500).json({ error: 'Error reading GeoJSON data' });
+  }
+});
+
 
 // Export the router
 module.exports = router;

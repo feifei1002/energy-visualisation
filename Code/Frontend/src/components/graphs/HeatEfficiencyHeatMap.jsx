@@ -1,91 +1,74 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
-import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 export default function HeatEfficiencyHeatMap() {
-  const [geoJsonData, setGeoJsonData] = useState(null);
-  const [heatData, setHeatData] = useState(null);
-  const geoJsonLayerRef = useRef(null);
+  const [data, setData] = useState({ geoJsonData: null, heatData: null });
 
   useEffect(() => {
-    // Simultaneously fetch both sets of data
     Promise.all([
-      fetch('https://open-geography-portalx-ons.hub.arcgis.com/datasets/ons::lower-layer-super-output-area-2011-to-clinical-commissioning-group-to-local-authority-district-april-2020-lookup-in-england-1.geojson?where=1=1').then((response) => response.json()),
-      fetch('http://localhost:8082/data/annualheat').then((response) => response.json())
-    ])
-    .then(([geoJson, heat]) => {
-      setGeoJsonData(geoJson);
-      setHeatData(heat);
-    })
-    .catch(error => console.error('Error loading data:', error));
+      fetch('http://localhost:8082/data/geojson').then(res => res.json()),
+      fetch('http://localhost:8082/data/annualheat').then(res => res.json()),
+    ]).then(([geoJsonData, heatData]) => {
+      setData({ geoJsonData, heatData });
+    }).catch(console.error);
   }, []);
 
-  useEffect(() => {
-    const layer = geoJsonLayerRef.current;
-    if (layer) {
-        console.log("redrawing")
-        layer.clearLayers().addData(geoJsonData);
-    }
-  }, [geoJsonData]);
+  const heatDataMap = useMemo(() => {
+    const map = new Map();
+    data.heatData?.forEach(item => map.set(item.LSOA11CD, item));
+    return map;
+  }, [data.heatData]);
 
   const getColor = (demand) => {
-    // Define a color scale based on the heat demand value
-    // Replace this with appropriate color scale logic
-    return demand > 2000000 ? '#800026' :
-           demand > 1500000  ? '#BD0026' :
-           // ... more colors for different ranges
-           '#FFEDA0';
+    if (demand > 20000000) return '#800026';
+    if (demand > 15000000) return '#E05E42';
+    if (demand > 10000000) return "#FFEDA0";
+    if (demand > 5000000) return "#ADF007";
+    return '#ADF007'; // Default color
   };
 
-  const style = (feature) => {
-    console.log("in")
+  const style = useMemo(() => {
+    return (feature) => {
+      const demandData = heatDataMap.get(feature.properties.LSOA11CD);
+      return demandData ? {
+        fillColor: getColor(demandData['Total heat demand before energy efficiency measures 2018 (kWh)']),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        fillOpacity: 0.7
+      } : {};
+    };
+  }, [heatDataMap]);
 
-    // Find the corresponding heat demand data
-    const demandData = heatData.find(h => h.LSOA11CD === feature.properties.lsoa11cd);
-    return demandData ? {
-      fillColor: getColor(demandData['Total heat demand before energy efficiency measures 2018 (kWh)']),
-      weight: 2,
-      opacity: 1,
-      color: 'white',
-      fillOpacity: 0.7
-    } : {};
-  };
+  const onEachFeature = useMemo(() => {
+    return (feature, layer) => {
+      layer.on('click', () => {
+        const demandData = heatDataMap.get(feature.properties.LSOA11CD);
+        if (demandData) {
+          const popupContent = `Local Authority: ${demandData['Local Authority (2019)']}<br>` +
+                               `Total heat demand (before measures): ${demandData['Total heat demand before energy efficiency measures 2018 (kWh)'].toLocaleString()} kWh`;
+          layer.bindPopup(popupContent).openPopup();
+        }
+      });
+    };
+  }, [heatDataMap]);
 
-  const onEachFeature = (feature, layer) => {
-    console.log("IN")
-
-    // Find the corresponding heat demand data
-    const demandData = heatData.find(h => h.LSOA11CD === feature.properties.lsoa11cd);
-    if (demandData) {
-      // Define the content of the popup
-      const popupContent = `Local Authority: ${demandData['Local Authority (2019)']}<br>Total heat demand (before measures): ${demandData['Total heat demand before energy efficiency measures 2018 (kWh)']}`;
-      layer.bindPopup(popupContent);
-    }
-
-    // Define the click event
-    layer.on('click', function () {
-      // Open the popup on click
-      layer.openPopup();
-    });
-  };
-
-  // Check if data is not yet loaded
-  if (!geoJsonData || !heatData) {
+  if (!data.geoJsonData || !data.heatData) {
     return <div>Loading...</div>;
   }
 
   return (
-    <MapContainer center={[55.3781, -3.4360]} zoom={6} style={{ height: '100vh', width: '100%' }}>
-     {geoJsonData && (<GeoJSON
-        ref={geoJsonLayerRef}
-        data={geoJsonData.features}
+    <div>
+    <h1>Total heat demand before energy efficiency measures 2018 (kWh)</h1>
+    <MapContainer center={[55.3781, -3.4360]} zoom={6} style={{ height: '100vh', width: '100%' }} preferCanvas={true}>
+      <GeoJSON
+        data={data.geoJsonData.features}
         style={style}
         onEachFeature={onEachFeature}
-      />)}
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
+      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
     </MapContainer>
+    </div>
   );
 }
