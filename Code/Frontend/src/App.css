@@ -86,6 +86,36 @@
 .read-the-docs {
   color: #888;
   text-decoration: none;
+<<<<<<< HEAD
+=======
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(29, 102, 134, 0.99);
+}
+
+.list {
+  margin: 0 10px;
+  text-align: center;
+}
+
+.list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.list ul li {
+  margin: 5px 0;
+  color: #ffffff;
+}
+
+.list h2 {
+  color: #ffffff;
+  font-size: 100%;
+>>>>>>> af46578eb684d1d01ea7bd9946e91d1f74c66182
 }
 
 .container {

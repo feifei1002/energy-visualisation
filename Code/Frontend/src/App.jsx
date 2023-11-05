@@ -1,4 +1,4 @@
-//import { useState } from 'react'
+
 import UkriLogo from './assets/UkriLogo1.png'
 import FlexisLogo from './assets/FlexisLogo2.png'
 import CardiffUniLogo from './assets/CardiffUniLogo.png'
@@ -61,6 +61,22 @@ function App() {
                         We intend to use this space to share key results from our
 
                         research on energy demand data in the form of interactive visualisations
+
+                         Supply (CIREGS) at Cardiff University’s School of Engineering was established in 2008 as a
+
+                         multidisciplinary engineering research group with international expertise in the supply,
+
+                         transmission and demand of energy.
+
+
+                         As a result of academic and industry projects funded by EPSRC (i.e. UKERC, MISSION, and Heat Prosumers projects), National Grid (Zero2050 South Wales project) and Welsh European Funding Office (Flexis project), we developed a methodology for
+
+                         estimating spatial and temporal heat demand and energy consumption for heating in England & Wales, along with a database that includes heat demand time series for Lower layer Super OutputAreas (LSOAs) across England & Wales.
+
+
+                         We intend to use this space to share key results from our
+
+                         research on energy demand data in the form of interactive visualisations
                     </p>
                     <h3>Team</h3>
                     <div className="container">
