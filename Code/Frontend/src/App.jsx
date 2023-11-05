@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import VisualisationPage from './VisualisationPage';
 import Graph1 from './Graph1';
 import Login from './components/Login'
-// import Home from './components/Home'
 
 function App() {
 

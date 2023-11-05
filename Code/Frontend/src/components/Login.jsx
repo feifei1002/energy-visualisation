@@ -4,7 +4,7 @@ import { useState } from "react";
 import './Login.css'
 
 function Login() {
-    // https://www.w3schools.com/react/react_forms.asp
+    // https://www.w3schools.com/react/react_forms.asp on 04/11
     const [inputs, setInputs,] = useState("");
 
     const handleChange = (event) => {
@@ -15,33 +15,31 @@ function Login() {
     
     const handleSubmit = (event) => {
         event.preventDefault();
-        // console.log(inputs)
-        alert(event.target.elements.username.value + " and " + event.target.elements.password.value);
-        // alert("hello");
+        // below line is for testing the username and pass are correctly submitted
+        // alert(event.target.elements.username.value + " and " + event.target.elements.password.value);
     }
     // end of code
 
     return (
         <>
 
-    <form onSubmit={handleSubmit}>
-      <div class="inputRow">
-      <label>User Name: </label>
-      <input type="text" name="username" value={inputs.username} onChange={handleChange}/>
-      </div>
-      <div class="inputRow">
-      <label>Password: </label>
-      <input type="password" name="password" value={inputs.password} onChange={handleChange}/>
-      </div>
-      <div class="inputRow">
-      <input type="submit" value="Login" />
-      {/* https://stackoverflow.com/questions/2825856/html-button-to-not-submit-form */}
-      <button type="button" onClick="/">New? Register</button>
-      {/* end */}
-      </div>
-    </form>
+        <form onSubmit={handleSubmit} class="loginForm">
+            <div class="inputRow">
+            <label>User Name</label>
+            <input type="text" name="username" value={inputs.username} onChange={handleChange}/>
+            </div>
+            <div class="inputRow">
+            <label>Password</label>
+            <input type="password" name="password" value={inputs.password} onChange={handleChange}/>
+            </div>
+            <div class="inputRow">
+            <input type="submit" value="Login" />
+            {/* https://stackoverflow.com/questions/2825856/html-button-to-not-submit-form  on 04/11*/}
+            <button type="button" onClick="/">Register</button>
+            {/* end */}
+            </div>
+        </form>
     
-
         </>
     );
 }

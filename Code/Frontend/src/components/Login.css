@@ -1,24 +1,21 @@
-form {
-    width: 100%;
+* { 
+  box-sizing: border-box; 
+  padding: 0;
+  margin: 0;
 }
 
 .inputRow {
-    /* margin-bottom: 10px; */
-    /* width: 100%; */
     height: 100px;
-    padding: 50px 100px; 
     line-height: 80px;
-    
   }
 label {
     display: inline-block;
-    /* width: 20%; */
     text-align: center;
     background-color: #15495f;
     border: solid #15495f;
     border-radius: 0px;
     color: white;
-    /* height: 20%; */
+    padding: 0px 80px; 
 }
 
 input[type=text] {
@@ -26,8 +23,7 @@ input[type=text] {
     border-color: #15495f;
     border-radius: 0px;
     color: black;
-    /* width: 60%; */
-    /* height: 20%; */
+    padding: 0px 50px; 
   }
 
  input[type=password] {
@@ -35,32 +31,29 @@ input[type=text] {
     border-color: #15495f;
     border-radius: 0px;
     color: black;
-    /* width: 60%; */
-    /* height: 20%; */
+    padding: 0px 50px; 
   }
 
 input[type=submit] {
-    /* display: inline-block; */
-    /* width: 20%; */
     text-align: center;
     background-color: #15495f;
     border-color: #15495f;
     border-radius: 0px;
     border-width: 1px;
-    /* box-sizing: border-box; */
+    padding: 0px 50px; 
+    
 }
 
 button[type=button]{
     display: inline-block;
-    /* width: 20%; */
     text-align: center;
     background-color: #ffffff;
-    /* border-width: match parent; */
     border-color: #15495f;
     border-radius: 0px;
     color: black;
-    border-width: 1px;
-    /* box-sizing: border-box; */
+    border-width: 2px;
+    width: 50%;
+    padding: 0px 50px; 
 }
 
-* { box-sizing: border-box; }
+
