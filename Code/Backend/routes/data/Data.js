@@ -28,48 +28,104 @@ const csvPaths = {
 
 const geojsonPath = path.join(rootPath, 'Data', 'lsoa.geojson')
 
-// Function to parse and cache CSV data
-async function parseAndCacheCSV(dataKey, cache, data, res) {
-  try {
-    const results = await new Promise((resolve, reject) => {
-      // Use PapaParse to parse the CSV data
-      Papa.parse(data, {
-        header: true,          // Treat the first row as headers
-        dynamicTyping: true,   // Automatically convert data types
-        skipEmptyLines: true,  // Skip empty lines
-        complete: (results) => resolve(results.data),
-        error: (error) => reject(error),
-      });
-    });
+const cacheDirPath = path.join(rootPath, 'cache'); // Define a directory for cached files
 
-    // Cache the parsed data and send it as a JSON response
-    cache.set(dataKey, results);
-    res.json(results);
+// Function to check if a cache file exists and is recent enough
+async function getCachedData(filePath) {
+  try {
+    const stats = await fs.stat(filePath);
+    const now = new Date();
+    if (now - stats.mtime < cacheTTL * 1000) {
+      // The file is recent enough, read and return its content
+      return await fs.readFile(filePath, 'utf8');
+    }
+    // If the file is too old, remove it
+    await fs.unlink(filePath);
   } catch (error) {
-    // Handle errors in parsing and respond with an error message
-    console.error('CSV Parsing Error:', error.message);
-    res.status(500).json({ error: 'Error parsing CSV data' });
+    if (error.code !== 'ENOENT') { // Ignore error if the file does not exist
+      throw error;
+    }
   }
+  return null; // No valid cache file found
+}
+
+// Function to parse and cache CSV data
+async function parseAndCacheCSV(filePath) {
+  const data = await fs.readFile(filePath, 'utf8');
+  const cacheFilePath = path.join(cacheDirPath, path.basename(filePath) + '.cache');
+  
+  const results = await new Promise((resolve, reject) => {
+    Papa.parse(data, {
+      header: true,
+      dynamicTyping: true,
+      skipEmptyLines: true,
+      complete: (results) => resolve(results.data),
+      error: (error) => reject(error),
+    });
+  });
+
+  // Write the parsed data to a cache file
+  await fs.writeFile(cacheFilePath, JSON.stringify(results), 'utf8');
+  return results;
 }
 
 // Function to handle CSV data requests
-async function handleCSVRequest(req, res, dataKey, cache, filePath) {
-  const cachedData = cache.get(dataKey);
+async function handleCSVRequest(req, res, filePath) {
+  const cacheFilePath = path.join(cacheDirPath, path.basename(filePath) + '.cache');
+  
+  try {
+    // Try to get data from cache file
+    let data = await getCachedData(cacheFilePath);
+    
+    if (data) {
+      // Parse the data from cache and send it as a response
+      data = JSON.parse(data);
+    } else {
+      // Data was not cached, parse from CSV and cache it
+      data = await parseAndCacheCSV(filePath);
+    }
+    
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error handling CSV data request' });
+  }
+}
 
-  if (cachedData) {
-    // If data is in the cache, use the cached data and respond
-    console.log("Using cached CSV data");
-    res.json(cachedData);
-  } else {
-    try {
-      // Read the CSV data from the file
-      const data = await fs.readFile(filePath, 'utf8');
-      // Parse and cache the CSV data, then send it as a JSON response
-      await parseAndCacheCSV(dataKey, cache, data, res);
-    } catch (error) {
-      // Handle errors in reading or parsing data and respond with an error message
-      console.error(error);
-      res.status(500).json({ error: 'Error reading or parsing CSV data' });
+// Function to stream and serve GeoJSON data
+async function handleGeoJSONRequest(req, res, filePath) {
+  const cacheFilePath = path.join(cacheDirPath, path.basename(filePath) + '.cache');
+
+  try {
+    const stats = await fs.promises.stat(cacheFilePath);
+    const now = new Date();
+
+    if (now - stats.mtime < cacheTTL * 1000) {
+      // The file is recent enough, stream it from cache
+      res.sendFile(cacheFilePath);
+    } else {
+      // Cache is old, stream the file and re-cache it
+      const stream = fs.createReadStream(filePath);
+      const cacheStream = fs.createWriteStream(cacheFilePath);
+      
+      stream.pipe(cacheStream);
+      stream.pipe(res);
+    }
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      // Cache file doesn't exist, create it
+      const stream = fs.createReadStream(filePath);
+      const cacheStream = fs.createWriteStream(cacheFilePath);
+      
+      stream.pipe(cacheStream);
+      stream.on('error', (streamError) => {
+        console.error('Error streaming the GeoJSON data:', streamError);
+        res.status(500).json({ error: 'Error streaming GeoJSON data' });
+      });
+      stream.pipe(res);
+    } else {
+      console.error('Error handling GeoJSON data request:', error);
+      res.status(500).json({ error: 'Error handling GeoJSON data request' });
     }
   }
 }
@@ -78,31 +134,26 @@ async function handleCSVRequest(req, res, dataKey, cache, filePath) {
 
 // API endpoint for annual heat data
 router.get('/annualheat', (req, res) => {
+  res.set('Cache-Control', `public, max-age=${cacheTTL}`);
   handleCSVRequest(req, res, 'annualHeatData', annualHeatCache, csvPaths.annualHeat);
 });
 
 // API endpoint for quantification data
 router.get('/quantification', (req, res) => {
+  res.set('Cache-Control', `public, max-age=${cacheTTL}`);
   handleCSVRequest(req, res, 'quantificationData', quantificationCache, csvPaths.quantification);
 });
 
 // API endpoint for residential heat demand data
 router.get('/residentialheat', (req, res) => {
+  res.set('Cache-Control', `public, max-age=${cacheTTL}`);
   handleCSVRequest(req, res, 'residentialHeatDemandData', residentialHeatDemandCache, csvPaths.residentialHeatDemand);
 });
 
 // API endpoint for geojson data
-router.get('/geojson', async (req, res) => {
-  try {
-    // Read the GeoJSON data from the file
-    const geojsonData = await fs.readFile(geojsonPath, 'utf8');
-    // Parse the GeoJSON data as JSON and send it as a response
-    res.json(JSON.parse(geojsonData));
-  } catch (error) {
-    // Handle errors in reading the GeoJSON file and respond with an error message
-    console.error(error);
-    res.status(500).json({ error: 'Error reading GeoJSON data' });
-  }
+router.get('/geojson', (req, res) => {
+  res.set('Cache-Control', `public, max-age=${cacheTTL}`);
+  handleGeoJSONRequest(req, res, geojsonPath);
 });
 
 

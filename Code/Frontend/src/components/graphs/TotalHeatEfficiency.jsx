@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-export default function TotalHeatEfficiency() {
-  const [data, setData] = useState([]);
-
-  // Effect to fetch data from the API and update the 'data' state
-  useEffect(() => {
-    // Fetch data from the API
-    fetch('http://localhost:8082/data/annualheat')
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data); // Store the fetched data in the 'data' state
-      });
-  }, []);
+export default function TotalHeatEfficiency({heatData}) {
+  const [data, setData] = useState(heatData);
 
   // Function to calculate total heat efficiency
   function calculateTotalHeatEfficiency(data) {

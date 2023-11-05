@@ -1,39 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { ResponsiveBar } from "@nivo/bar";
 
-export default function BeforeAfterHeatDemandBar() {
+export default function BeforeAfterHeatDemandBar({data}) {
   // State variables for managing data and user interface
-  const [jsonData, setJsonData] = useState(null);  // Holds the fetched data
-  const [loading, setLoading] = useState(true);     // Indicates if data is being loaded
-  const [error, setError] = useState(null);         // Stores any loading errors
+  const [jsonData, setJsonData] = useState(data);  // Holds the fetched data
+  const [loading, setLoading] = useState(false);     // Indicates if data is being loaded
+  // const [error, setError] = useState(null);         // Stores any loading errors
   const [selectedLocalAuthority, setSelectedLocalAuthority] = useState(''); // Selected Local Authority from drop-down
   const [localAuthorities, setLocalAuthorities] = useState([]); // Holds calculated data or empty array
-
-  // API endpoint for data retrieval
-  const apiUrl = 'http://localhost:8082/data/annualheat';
-
-  // Effect to fetch and load data from the API
-  useEffect(() => {
-    // Memoize the API URL to prevent unnecessary re-renders
-    const memoizedApiUrl = apiUrl;
-
-    // Fetch data from the API and handle responses
-    fetch(memoizedApiUrl)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setJsonData(data);   // Store fetched data
-        setLoading(false);    // Mark data loading as complete
-      })
-      .catch((err) => {
-        setError(err);        // Store any loading errors
-        setLoading(false);    // Mark data loading as complete
-      });
-  }, [apiUrl]);
+  const [error, setError] = useState(null);
 
   // Function to calculate total heat demand before and after energy efficiency measures
   const calculateTotalHeatDemand = (data) => {

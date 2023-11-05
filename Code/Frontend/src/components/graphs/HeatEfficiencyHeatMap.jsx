@@ -2,23 +2,13 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-export default function HeatEfficiencyHeatMap() {
-  const [data, setData] = useState({ geoJsonData: null, heatData: null });
-
-  useEffect(() => {
-    Promise.all([
-      fetch('http://localhost:8082/data/geojson').then(res => res.json()),
-      fetch('http://localhost:8082/data/annualheat').then(res => res.json()),
-    ]).then(([geoJsonData, heatData]) => {
-      setData({ geoJsonData, heatData });
-    }).catch(console.error);
-  }, []);
+export default function HeatEfficiencyHeatMap({heatData, geoJsonData }) {
 
   const heatDataMap = useMemo(() => {
     const map = new Map();
-    data.heatData?.forEach(item => map.set(item.LSOA11CD, item));
+    heatData.forEach(item => map.set(item.LSOA11CD, item));
     return map;
-  }, [data.heatData]);
+  }, [heatData]);
 
   const getColor = (demand) => {
     if (demand > 20000000) return '#800026';
@@ -54,21 +44,49 @@ export default function HeatEfficiencyHeatMap() {
     };
   }, [heatDataMap]);
 
-  if (!data.geoJsonData || !data.heatData) {
-    return <div>Loading...</div>;
+  if (!geoJsonData) {
+    return (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        textAlign: 'center' // Center the text horizontally
+      }}>
+        <p style={{
+          fontSize: '24px', // Increase font size
+          fontWeight: 'bold', // Make font bold
+          margin: '0 0 20px 0', // Add some margin below the text
+          color: '#333' // Change the text color to dark gray 
+        }}>Loading Map Data...</p>
+        <img 
+          src="https://i.gifer.com/ZKZg.gif" 
+          alt="Loading..."
+          style={{
+            width: '50px', 
+            height: '50px' 
+          }}
+        />
+      </div>
+    );
   }
 
   return (
-    <div>
-    <h1>Total heat demand before energy efficiency measures 2018 (kWh)</h1>
-    <MapContainer center={[55.3781, -3.4360]} zoom={6} style={{ height: '100vh', width: '100%' }} preferCanvas={true}>
-      <GeoJSON
-        data={data.geoJsonData.features}
-        style={style}
-        onEachFeature={onEachFeature}
-      />
-      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-    </MapContainer>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'left', width: '50%'}}>
+    <h3 style={{textAlign: 'left'}}>
+      Total heat demand before energy efficiency measures 2018 (kWh)
+    </h3>
+    <div style={{height: '50vh', width: '100%' }}>
+      <MapContainer center={[55.3781, -3.4360]} maxZoom={12} minZoom={6} zoom={6} style={{ height: '100%', width: '100%' }} preferCanvas={true}>
+        <GeoJSON
+          data={geoJsonData.features}
+          style={style}
+          onEachFeature={onEachFeature}
+        />
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      </MapContainer>
     </div>
+  </div>
   );
 }
