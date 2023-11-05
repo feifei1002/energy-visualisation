@@ -3,22 +3,10 @@ import FlexisLogo from './assets/FlexisLogo2.png'
 import CardiffUniLogo from './assets/CardiffUniLogo.png'
 import UkercLogo from './assets/UkercLogo.png'
 import Zero2025 from './assets/Zero2050Logo.png'
+import Header from './Header';
+import Footer from './Footer';
 import './App.css'
 
-import PropTypes from 'prop-types';
-
-function HeaderLink({ href, text }) {
-    return (
-        <a href={href} target="_blank" rel="noreferrer">
-            {text}
-        </a>
-    );
-}
-
-HeaderLink.propTypes = {
-    href: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired, // Define PropTypes for the 'text' prop
-};
 
 // eslint-disable-next-line react/prop-types
 function ListItem({ name }) {
@@ -43,18 +31,7 @@ function App() {
 
     return (
         <div className="landing-page">
-            <header>
-                <div className="navbar-title">
-                    <h1>Modular Heat and Cooling Report</h1>
-                </div>
-                <nav className="navbar">
-                    <ul className="nav-links">
-                        <HeaderLink href="/About" text="About" />
-                        <HeaderLink href="/visualizations" text="Visualizations" />
-                        <HeaderLink href="/login" text="Login" />
-                    </ul>
-                </nav>
-            </header>
+            <Header />
             <main>
                 <div>
                     {logos.map((logo, index) => (
@@ -106,15 +83,10 @@ function App() {
                 </div>
             </main>
 
-            <footer>
-                <p>
-                    <a className="read-the-docs" href="https://www.linkedin.com/showcase/centre-for-integrated-renewable-energy-generation-and-supply-ciregs-" target="_blank" rel="noreferrer">
-                        Follow us on LinkedIn
-                    </a>
-                </p>
-            </footer>
+            <Footer />
         </div>
     );
 }
 
 export default App;
+
