@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import BeforeAfterHeatDemandBar from '../components/graphs/BeforeAfterHeatDemandBar';
 import TotalHeatEfficiency from '../components/graphs/TotalHeatEfficiency';
-import HeatEfficiencyHeatMap from '../components/graphs/HeatEfficiencyHeatMap';
+import HeatEfficiencyBeforeHeatMap from '../components/graphs/HeatEfficiencyBeforeHeatMap';
+import HeatEfficiencyAfterHeatMap from '../components/graphs/HeatEfficiencyAfterHeatMap';
 
 export default function BeforeAfterHeatDemandPage() {
   console.log('beforeAfterHeatDemandPage');
@@ -98,7 +99,20 @@ export default function BeforeAfterHeatDemandPage() {
   } else {
     return (
       <>
-        <HeatEfficiencyHeatMap heatData={heatData} geoJsonData={geoJsonData} />
+        <div style={{
+          display: 'flex', 
+          flexDirection: 'row', 
+          width: '100%', 
+          alignItems: 'stretch', // This will make children stretch to fill the parent height
+          boxSizing: 'border-box', // This ensures padding and border are included in the width
+        }}>
+          <div style={{ flex: 1, padding: '0', margin: '0.5em', boxSizing: 'border-box' }}>
+            <HeatEfficiencyBeforeHeatMap heatData={heatData} geoJsonData={geoJsonData} />
+          </div>
+          <div style={{ flex: 1, padding: '0', margin: '0.5em', boxSizing: 'border-box' }}>
+            <HeatEfficiencyAfterHeatMap heatData={heatData} geoJsonData={geoJsonData} />
+          </div>
+        </div>
         <TotalHeatEfficiency heatData={heatData} />
         <BeforeAfterHeatDemandBar data={heatData} />
       </>
