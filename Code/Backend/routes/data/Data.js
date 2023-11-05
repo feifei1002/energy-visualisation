@@ -2,8 +2,8 @@
 const express = require('express');
 const router = express.Router();
 const NodeCache = require('node-cache');
-const fs = require('fs').promises; // Using Promises for file operations
 const Papa = require('papaparse');
+const fs = require('fs').promises; // Correct way to require fs.promises
 
 // Define the time-to-live (TTL) for caching in seconds (one day)
 const cacheTTL = 24 * 60 * 60; 
@@ -92,42 +92,15 @@ async function handleCSVRequest(req, res, filePath) {
   }
 }
 
-// Function to stream and serve GeoJSON data
 async function handleGeoJSONRequest(req, res, filePath) {
-  const cacheFilePath = path.join(cacheDirPath, path.basename(filePath) + '.cache');
-
   try {
-    const stats = await fs.promises.stat(cacheFilePath);
-    const now = new Date();
-
-    if (now - stats.mtime < cacheTTL * 1000) {
-      // The file is recent enough, stream it from cache
-      res.sendFile(cacheFilePath);
-    } else {
-      // Cache is old, stream the file and re-cache it
-      const stream = fs.createReadStream(filePath);
-      const cacheStream = fs.createWriteStream(cacheFilePath);
-      
-      stream.pipe(cacheStream);
-      stream.pipe(res);
-    }
+    const geojsonData = await fs.readFile(filePath, 'utf8');
+    res.type('application/json');
+    res.send(geojsonData);
   } catch (error) {
-    if (error.code === 'ENOENT') {
-      // Cache file doesn't exist, create it
-      const stream = fs.createReadStream(filePath);
-      const cacheStream = fs.createWriteStream(cacheFilePath);
-      
-      stream.pipe(cacheStream);
-      stream.on('error', (streamError) => {
-        console.error('Error streaming the GeoJSON data:', streamError);
-        res.status(500).json({ error: 'Error streaming GeoJSON data' });
-      });
-      stream.pipe(res);
-    } else {
-      console.error('Error handling GeoJSON data request:', error);
-      res.status(500).json({ error: 'Error handling GeoJSON data request' });
-    }
-  }
+    console.error('Error serving GeoJSON data:', error);
+    res.status(500).json({ error: 'Error serving GeoJSON data' });
+}
 }
 
 // Define API endpoints to get different types of CSV data
@@ -135,7 +108,7 @@ async function handleGeoJSONRequest(req, res, filePath) {
 // API endpoint for annual heat data
 router.get('/annualheat', (req, res) => {
   res.set('Cache-Control', `public, max-age=${cacheTTL}`);
-  handleCSVRequest(req, res, 'annualHeatData', annualHeatCache, csvPaths.annualHeat);
+  handleCSVRequest(req, res, csvPaths.annualHeat); // Corrected to pass the file path
 });
 
 // API endpoint for quantification data
