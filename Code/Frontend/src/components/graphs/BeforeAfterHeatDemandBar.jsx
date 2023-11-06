@@ -83,13 +83,50 @@ export default function BeforeAfterHeatDemandBar({data}) {
         <div>
           <div>
             {/* Nivo ResponsiveBar component for displaying data visually */}
-            <div style={{ width: 800, height: 400 }}>
+            <div style={{width: '100vw', height: 400 }}>
               <ResponsiveBar
-                data={localAuthorities}
-                keys={["Total heat demand before energy efficiency measures", "Total heat demand after energy efficiency measures"]}
-                indexBy="Local Authority (2019)"
-                valueFormat={(value) => `${value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} GWh`}
-              />
+              data={localAuthorities}
+              keys={[
+                "Total heat demand before energy efficiency measures",
+                "Total heat demand after energy efficiency measures"
+              ]}
+              indexBy="Local Authority (2019)"
+              colors={({ id, data }) => id === "Total heat demand after energy efficiency measures" ? "green" : "red"}
+              labelTextColor="#ffffff"
+              labelSkipWidth={12}
+              labelSkipHeight={12}
+              labelFormat={(d) => `${Number(d).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} GWh`}
+              label={(d) => {
+                // Here you can access your bar data to return different label
+                const valueFormatted = Number(d.value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                const labelBefore = `${valueFormatted} GWh Before Energy Efficiency Measures`;
+                const labelAfter = `${valueFormatted} GWh After Energy Efficiency Measures`;
+
+                return d.id === "Total heat demand before energy efficiency measures" ? labelBefore : labelAfter;
+              }}
+              theme={{
+                axis: {
+                  ticks: {
+                    text: {
+                      fontWeight: 'bold'
+                    }
+                  },
+                  legend: {
+                    text: {
+                      fontWeight: 'bold'
+                    }
+                  }
+                },
+                labels: {
+                  text: {
+                    fontSize: '1em',
+                    fontWeight: 'bold',
+                    fill: '#ffffff'
+                  }
+                }
+              }}
+              // ... other props
+            />
             </div>
           </div>
         </div>

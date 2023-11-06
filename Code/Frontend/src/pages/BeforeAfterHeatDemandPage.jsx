@@ -127,12 +127,13 @@ export default function BeforeAfterHeatDemandPage() {
           width: '100%', 
           alignItems: 'stretch',
           boxSizing: 'border-box',
+          flexWrap: 'wrap'
         }}>
           {/* Heat maps showing data before and after efficiency measures */}
-          <div style={{ flex: 1, padding: '0', margin: '0.5em', boxSizing: 'border-box' }}>
+          <div style={{ flex: 1, padding: '0', margin: '0.5em', boxSizing: 'border-box', minWidth: '500px' }}>
             <HeatEfficiencyBeforeHeatMap heatData={heatData} geoJsonData={geoJsonData} />
           </div>
-          <div style={{ flex: 1, padding: '0', margin: '0.5em', boxSizing: 'border-box' }}>
+          <div style={{ flex: 1, padding: '0', margin: '0.5em', boxSizing: 'border-box', minWidth: '500px' }}>
             <HeatEfficiencyAfterHeatMap heatData={heatData} geoJsonData={geoJsonData} />
           </div>
         </div>
