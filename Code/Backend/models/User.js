@@ -2,12 +2,25 @@ const mongoose = require('mongoose');
 
 //Test schema for database
 const UserSchema = new mongoose.Schema({
-  title: {
-    fullName: String,
-    username: String,
-    password: String,
-    email: String,
-  }
+    fullName: {
+        type: String,
+        required: true
+    },
+    username: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    }
+
 });
 
 module.exports = User = mongoose.model('User', UserSchema);
