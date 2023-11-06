@@ -1,24 +1,24 @@
 const User = require('../models/User');
 
-const getProfile = async (req, res) => {
+const getProfile = async (request, response) => {
     try {
         //this is assuming user ID is stored in the session or token (up to alex)
-        const userId = req.user._id;
+        const userId = request.user._id;
         const user = await User.findById(userId);
-        res.json(user.profile);
+        response.json(user.profile);
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching profile data' });
+        response.status(500).json({ message: 'Error fetching profile data' });
     }
 };
 
-const updateProfile = async (req, res) => {
+const updateProfile = async (request, response) => {
     try {
-        const userId = req.user._id;
-        const updateData = req.body;
+        const userId = request.user._id;
+        const updateData = request.body;
         const user = await User.findByIdAndUpdate(userId, { profile: updateData }, { new: true });
-        res.json(user.profile);
+        response.json(user.profile);
     } catch (error) {
-        res.status(500).json({ message: 'Error updating profile data' });
+        response.status(500).json({ message: 'Error updating profile data' });
     }
 };
 
