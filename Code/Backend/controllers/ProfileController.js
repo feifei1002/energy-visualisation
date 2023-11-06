@@ -1,4 +1,6 @@
 const User = require('../models/User');
+const bcrypt = require("bcrypt");
+const saltRounds = 10; //increasing this increases security to bruteforce but also time it takes to hash
 
 const getProfile = async (request, response) => {
     try {

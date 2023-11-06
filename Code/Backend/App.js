@@ -53,6 +53,10 @@ app.use(express.json({ extended: false }));
 //Import and configure the API routes
 const apiRouter = require('./routes/api/Api');
 app.use('/api', apiRouter);
+const csvRouter = require('./routes/api/Csv');
+app.use('/api', csvRouter);
+const profileRouter = require('./routes/api/Profile');
+app.use('/api', profileRouter);
 
 //Start the server
 app.listen(port, () => console.log(`Server running on port ${port}`));
