@@ -2,8 +2,9 @@
 const express = require('express');
 const router = express.Router();
 
-// Load Test model
+// Load Test and user model
 const Test = require('../../models/Test');
+const User = require('../../models/User')
 
 // @route GET api/test
 // @description test route
