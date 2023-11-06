@@ -8,14 +8,12 @@ function App() {
 
     return (
         <>
-
-
             <Router>
                 <Routes>
                     <Route path="/visualisations" element={<VisualisationPage />} />
                     <Route path="/visualisations/graph1" element={<Graph1 />}  />
-                    <Route path="/profiledashboard" element={<ProfileDashboardPage />} /> {/* Add this line */}
-            </Routes>
+                    <Route path="/profiledashboard" element={<ProfileDashboardPage />} />
+                </Routes>
             </Router>
         </>
     )
