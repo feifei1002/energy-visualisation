@@ -4,9 +4,6 @@ import VisualisationPage from "./VisualisationPage.jsx";
 import Graph1 from "./Graph1.jsx";
 import { Link } from "react-router-dom";
 import './css/Header.css';
-import ProfileDashboardPage from "./ProfileDashboardPage.jsx";
-
-
 
 
 function HeaderLink({ to, text }) {
@@ -38,7 +35,7 @@ function Header() {
                     <HeaderLink to="/visualisations" text="Visualizations" />
                     <HeaderLink to="/login" text="Login" />
                     <HeaderLink href="/About" text="About" />
-                    <HeaderLink href="visualisations" to="/visualisations" text="Visualizations" />
+                    <HeaderLink href="visualisations" to="/visualisations" text="Visualisations" />
                     <HeaderLink href="/login" text="Login" />
                 </ul>
             </nav>
