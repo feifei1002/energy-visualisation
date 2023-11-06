@@ -5,6 +5,8 @@ import BeforeAfterHeatDemandBar from '../components/graphs/BeforeAfterHeatDemand
 import TotalHeatEfficiency from '../components/graphs/TotalHeatEfficiency';
 import HeatEfficiencyBeforeHeatMap from '../components/graphs/HeatEfficiencyBeforeHeatMap';
 import HeatEfficiencyAfterHeatMap from '../components/graphs/HeatEfficiencyAfterHeatMap';
+import VisualisationsDropdownMenu from "../components/VisualisationsDropdownMenu";
+import Header from "../Header";
 
 // The main component function that will be exported and used to display the page.
 export default function BeforeAfterHeatDemandPage() {
@@ -84,14 +86,17 @@ export default function BeforeAfterHeatDemandPage() {
   // Render a loading state if the data has not been loaded yet.
   if (!heatData || !geoJsonData) {
     return (
+      <>
+      <Header />
+      <VisualisationsDropdownMenu></VisualisationsDropdownMenu>
       <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        textAlign: 'center'
+        display: 'flex', 
+        flexDirection: 'row', 
+        width: '100%', 
+        alignItems: 'stretch',
+        boxSizing: 'border-box',
       }}>
+        <div style={{ flex: 1, padding: '0', margin: '0.5em', boxSizing: 'border-box' }}>
         <p style={{
           fontSize: '24px',
           fontWeight: 'bold',
@@ -106,12 +111,16 @@ export default function BeforeAfterHeatDemandPage() {
             height: '50px'
           }}
         />
+        </div>
       </div>
+      </>
     );
   } else {
     // Render the main content of the page if the data is available.
     return (
       <>
+        <Header />
+        <VisualisationsDropdownMenu></VisualisationsDropdownMenu>
         <div style={{
           display: 'flex', 
           flexDirection: 'row', 

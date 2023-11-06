@@ -2,19 +2,21 @@ import PropTypes from "prop-types";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import VisualisationPage from "./VisualisationPage.jsx";
 import Graph1 from "./Graph1.jsx";
+import { Link } from "react-router-dom";
 
-function HeaderLink({ href, text }) {
+function HeaderLink({ to, text }) {
     return (
-        <a href={href} target="_blank" rel="noreferrer">
+        <Link to={to}>
             {text}
-        </a>
+        </Link>
     );
 }
 
 HeaderLink.propTypes = {
-    href: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired, // Define PropTypes for the 'text' prop
+    to: PropTypes.string.isRequired, // 'to' prop for React Router Link
+    text: PropTypes.string.isRequired,
 };
+
 function Header() {
     return (
         <header>
@@ -23,20 +25,14 @@ function Header() {
             </div>
             <nav className="navbar">
                 <ul className="nav-links">
-                    <HeaderLink href="/About" text="About" />
-                    <HeaderLink href="visualisations" to="/visualisations" text="Visualizations" />
-                    <HeaderLink href="/login" text="Login" />
-                    <Router>
-                        <Routes>
-                            <Route path="/visualisations" element={<VisualisationPage />} />
-
-                            < Route path="/visualisations/graph1" element={<Graph1 />}  />
-                        </Routes>
-                    </Router>
+                    {/* Use the 'to' prop for navigation with React Router */}
+                    <HeaderLink to="/" text="About" />
+                    <HeaderLink to="/visualisations" text="Visualizations" />
+                    <HeaderLink to="/login" text="Login" />
                 </ul>
             </nav>
+            {/* Your Routes should typically be outside of the Header component, and not nested within */}
         </header>
-
     );
 }
 

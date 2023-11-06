@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 export default function VisualisationsDropdownMenu() {
     const data = [
-        { name: 'Heat demand before and after energy efficiency measures', link: '/visualisations/graph1'},
+        { name: 'Heat demand before and after energy efficiency measures', link: '/visualisations/beforeafterheatdemand'},
         { name: 'Breakdown of heat demand before and after energy efficiency measures', link: '/visualisations/graph2' },
         { name: 'Breakdown of energy efficiency improvement costs', link: '/visualisations/graph3'},
         { name: 'Half-hourly heat production and gas consumption profiles - Gas boilers', link: '/visualisations/graph4'},
