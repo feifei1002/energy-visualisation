@@ -10,6 +10,73 @@ export default function BeforeAfterHeatDemandBar({data}) {
   const [localAuthorities, setLocalAuthorities] = useState([]); // Holds calculated data or empty array
   const [error, setError] = useState(null);
 
+  //Define the bar chart theme 
+  const [chartTheme, setChartTheme] = useState({
+    axis: {
+      ticks: {
+        text: {
+          fontWeight: 'bold',
+          fontSize: '0.75em' // Start with a default size in 'em'
+        }
+      },
+      legend: {
+        text: {
+          fontWeight: 'bold',
+          fontSize: '1em' // Start with a default size in 'em'
+        }
+      }
+    },
+    labels: {
+      text: {
+        fontSize: '0.5em', // Start with a default size in 'em'
+        fontWeight: 'bold',
+        fill: '#ffffff'
+      }
+    }
+  });
+
+  // Logic to determine the font size based on the current window width
+  useEffect(() => {
+    const handleResize = () => {
+      // Logic to determine the font size based on the current window width
+      const fontSizeForAxisTicks = Math.max(0.5, window.innerWidth / 1000).toFixed(2) + 'em';
+      const fontSizeForLabels = Math.max(0.3, window.innerWidth / 1500).toFixed(2) + 'em';
+  
+      setChartTheme({
+        axis: {
+          ticks: {
+            text: {
+              fontWeight: 'bold',
+              fontSize: fontSizeForAxisTicks
+            }
+          },
+          legend: {
+            text: {
+              fontWeight: 'bold',
+              fontSize: '1em'
+            }
+          }
+        },
+        labels: {
+          text: {
+            fontSize: fontSizeForLabels,
+            fontWeight: 'bold',
+            fill: '#ffffff'
+          }
+        }
+      });
+    };
+  
+    // Set the font size on initial load
+    handleResize();
+  
+    // Add event listener for window resize
+    window.addEventListener('resize', handleResize);
+  
+    // Remove event listener on cleanup
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // Function to calculate total heat demand before and after energy efficiency measures
   const calculateTotalHeatDemand = (data) => {
     // Calculate total heat demand before and after energy efficiency measures
@@ -104,27 +171,7 @@ export default function BeforeAfterHeatDemandBar({data}) {
 
                 return d.id === "Total heat demand before energy efficiency measures" ? labelBefore : labelAfter;
               }}
-              theme={{
-                axis: {
-                  ticks: {
-                    text: {
-                      fontWeight: 'bold'
-                    }
-                  },
-                  legend: {
-                    text: {
-                      fontWeight: 'bold'
-                    }
-                  }
-                },
-                labels: {
-                  text: {
-                    fontSize: '1em',
-                    fontWeight: 'bold',
-                    fill: '#ffffff'
-                  }
-                }
-              }}
+              theme={chartTheme}
               // ... other props
             />
             </div>
