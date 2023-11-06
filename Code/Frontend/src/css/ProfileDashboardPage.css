@@ -7,8 +7,8 @@
 }
 
 .profile-header {
-    background-color: rgba(29, 102, 134, 0.99);
-    padding: 20px;
+    background-color: transparent;
+    padding: 0;
     text-align: center;
 }
 
@@ -29,4 +29,8 @@ body, html {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+#profile-header-text {
+    padding-top: 3%;
 }

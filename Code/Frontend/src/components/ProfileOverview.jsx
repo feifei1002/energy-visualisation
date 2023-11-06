@@ -7,7 +7,9 @@ const ProfileOverview = () => {
         username: '',
         email: '',
         name: '',
+        newPassword: '',
     });
+    const [file, setFile] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
@@ -17,7 +19,6 @@ const ProfileOverview = () => {
                 setProfile(response.data);
             } catch (error) {
                 console.error('Error fetching profile data:', error);
-                //notification to tell user failed to, maybe just reload again?
             }
         };
 
@@ -32,21 +33,41 @@ const ProfileOverview = () => {
         }));
     };
 
-    const handleSubmit = async (e) => {
+    const handleFileChange = (e) => {
+        setFile(e.target.files[0]);
+    };
+
+    const handleProfileSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.put('/api/profile', profile);
             setProfile(response.data);
             setIsEditing(false);
-            //tell user edit worked
         } catch (error) {
             console.error('Error updating profile:', error);
-            //tell user edit failed
+        }
+    };
+
+    const handleCSVSubmit = async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const response = await axios.post('/api/upload-csv', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            //tell user was success
+        } catch (error) {
+            console.error('Error uploading CSV:', error);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} className="profile-form">
+        <div className="profile-container">
+        <form onSubmit={handleProfileSubmit} className="profile-form">
             <div className="form-group">
                 <label htmlFor="username" className="form-label">Username</label>
                 <input
@@ -83,14 +104,49 @@ const ProfileOverview = () => {
                     disabled={!isEditing}
                 />
             </div>
+            <div className="form-group">
+                <label htmlFor="newPassword" className="form-label">New Password</label>
+                <input
+                    type="password"
+                    id="newPassword"
+                    name="newPassword"
+                    className="form-control"
+                    value={profile.newPassword}
+                    onChange={handleInputChange}
+                    disabled={!isEditing}
+                />
+            </div>
             {isEditing ? (
-                <button type="submit" className="btn save-btn">Save Changes</button>
+                <>
+                    <button type="submit" className="btn save-btn">Save Changes</button>
+                    <button type="button" className="btn cancel-btn" onClick={() => setIsEditing(false)}>
+                        Cancel
+                    </button>
+                </>
             ) : (
                 <button type="button" className="btn edit-btn" onClick={() => setIsEditing(true)}>
                     Edit Profile
                 </button>
             )}
         </form>
+            <div className="csv-upload-form">
+                <form onSubmit={handleCSVSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="csv" className="form-label">Upload CSV</label>
+                        <input
+                            type="file"
+                            id="csv"
+                            name="csv"
+                            className="form-control"
+                            onChange={handleFileChange}
+                            accept=".csv"
+                        />
+                    </div>
+                    <button type="submit" className="btn save-btn">Upload CSV</button>
+                </form>
+            </div>
+        </div>
     );
 };
+
 export default ProfileOverview;

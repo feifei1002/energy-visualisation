@@ -39,10 +39,13 @@
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
 }
 
+.cancel-btn {
+    margin-left: 3%;
+}
+
 .edit-btn {
     background-color: rgba(29, 102, 134, 0.99);
     color: rgba(255, 255, 255, 0.99);
-    border: 1px solid rgba(29, 102, 134, 0.99);
 }
 
 .save-btn {
@@ -54,4 +57,16 @@
     background-color: white;
     color: rgba(29, 102, 134, 0.99);
     transform: scale(1.05);
+}
+
+.profile-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.profile-form,
+.csv-upload-form {
+    flex: 1;
+    margin-right: 20px;
 }
