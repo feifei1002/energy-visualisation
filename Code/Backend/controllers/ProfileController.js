@@ -2,11 +2,12 @@ const User = require('../models/User');
 
 const getProfile = async (request, response) => {
     try {
-        //this is assuming user ID is stored in the session or token (up to alex)
+        //placeholder until alex merges how he will be handling logged in users
         const userId = request.user._id;
-        const user = await User.findById(userId);
+        const user = await User.findById(userId).select('-password'); //to exclude the password field
         response.json(user.profile);
     } catch (error) {
+        console.error('Error fetching profile data:', error);
         response.status(500).json({ message: 'Error fetching profile data' });
     }
 };
@@ -15,9 +16,17 @@ const updateProfile = async (request, response) => {
     try {
         const userId = request.user._id;
         const updateData = request.body;
-        const user = await User.findByIdAndUpdate(userId, { profile: updateData }, { new: true });
+
+        //if updating the password we hash it before saving it
+        if (updateData.newPassword) {
+            updateData.password = await bcrypt.hash(updateData.newPassword, saltRounds);
+            delete updateData.newPassword;
+        }
+
+        const user = await User.findByIdAndUpdate(userId, { profile: updateData }, { new: true }).select('-password');
         response.json(user.profile);
     } catch (error) {
+        console.error('Error updating profile data:', error);
         response.status(500).json({ message: 'Error updating profile data' });
     }
 };
