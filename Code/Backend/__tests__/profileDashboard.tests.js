@@ -38,7 +38,7 @@ describe('User Profile', () => {
         });
 
         //WHEN
-        await UserController.getUserProfile(request, response);
+        await UserController.getProfile(request, response);
 
         //THEN
         expect(response.json).toHaveBeenCalledWith({
