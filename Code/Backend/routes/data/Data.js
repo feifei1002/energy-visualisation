@@ -4,6 +4,7 @@ const router = express.Router();
 const NodeCache = require('node-cache');
 const Papa = require('papaparse');
 const fs = require('fs').promises; // Correct way to require fs.promises
+const compression = require('compression');
 
 // Define the time-to-live (TTL) for caching in seconds (one day)
 const cacheTTL = 24 * 60 * 60; 
@@ -107,6 +108,7 @@ async function handleGeoJSONRequest(req, res, filePath) {
 
 // API endpoint for annual heat data
 router.get('/annualheat', (req, res) => {
+  router.use(compression());
   res.set('Cache-Control', `public, max-age=${cacheTTL}`);
   handleCSVRequest(req, res, csvPaths.annualHeat); // Corrected to pass the file path
 });

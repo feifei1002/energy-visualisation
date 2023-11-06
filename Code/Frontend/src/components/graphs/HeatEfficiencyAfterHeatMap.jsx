@@ -37,8 +37,9 @@ export default function HeatEfficiencyAfterHeatMap({heatData, geoJsonData }) {
       layer.on('click', () => {
         const demandData = heatDataMap.get(feature.properties.LSOA11CD);
         if (demandData) {
-          const popupContent = `Local Authority: ${demandData['Local Authority (2019)']}<br>` +
-                               `Total heat demand (after measures): ${demandData['Total heat demand after energy efficiency measures 2018 (kWh)'].toLocaleString()} kWh`;
+          const popupContent = `LSOA Code: ${feature.properties.LSOA11CD}<br>` +
+          `Local Authority: ${demandData['Local Authority (2019)']}<br>` +
+          `Total heat demand (after measures): ${demandData['Total heat demand after energy efficiency measures 2018 (kWh)'].toLocaleString()} kWh`;
           layer.bindPopup(popupContent).openPopup();
         }
       });
