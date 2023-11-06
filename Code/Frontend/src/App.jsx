@@ -1,18 +1,20 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css'
 import BeforeAfterHeatDemandPage from './pages/BeforeAfterHeatDemandPage';
+import LandingPage from './pages/LandingPage'
+import VisualisationPage from './VisualisationPage'
+import Graph1 from './Graph1'
 
-function App() {
+
+export default function App() {
   return (
     <Router>
-      <Routes>
-      <Route path="/visualisations/beforeafterheatdemand" element={<BeforeAfterHeatDemandPage/>} /> 
-      </Routes>
-    </Router>
+        <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/visualisations/beforeafterheatdemand" element={<BeforeAfterHeatDemandPage/>} />
+        <Route path="/visualisations" element={<VisualisationPage />} />
+        <Route path="/visualisations/graph1" element={<Graph1 />}  />
+        </Routes>
+  </Router>
   )
 }
-
-export default App

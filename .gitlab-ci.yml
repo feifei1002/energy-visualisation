@@ -1,0 +1,27 @@
+image: node:latest
+
+stages:
+  - install
+  - test
+
+cache:
+  paths:
+    - node_modules/
+
+install_dependencies:
+  stage: install
+  script:
+    - cd /builds/c21054715/energy_visualization_team2/Code
+    - npm install
+    - npm install dotenv
+    - npm install --save-dev jest
+
+test:
+  stage: test
+  script:
+    - cd /builds/c21054715/energy_visualization_team2/Code/Backend
+    - npm install
+    - npm install dotenv
+    - npm install --save-dev jest
+    - npm install to-fast-properties
+    - npm run test
