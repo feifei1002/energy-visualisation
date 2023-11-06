@@ -6,7 +6,7 @@ const getProfile = async (request, response) => {
     try {
         //placeholder until alex merges how he will be handling logged in users
         //const userId = request.user._id;
-        const userId = new ObjectId("6547a45b34f0a29c8b36978f"); //this is temporary until login functioanlity and session ids get added
+        const userId = new ObjectId("6547a45b34f0a29c8b36978f"); //this is temporary until login functionality and session ids get added
         const user = await User.findById(userId).select('fullName username email'); //to exclude the password field
         response.json(user);
     } catch (error) {

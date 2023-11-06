@@ -16,7 +16,7 @@ const port = process.env.PORT || 8082;
 const password = process.env.MONGODB_PASSWORD;
 
 // Construct the MongoDB URI
-const uri = `mongodb+srv://milliganec:${password}@climatedata.fh5ht06.mongodb.net/?retryWrites=true&w=majority/ClimateData`;
+const uri = `mongodb+srv://milliganec:${password}@climatedata.fh5ht06.mongodb.net/ClimateData?retryWrites=true&w=majority`;
 
 // Function to connect to the MongoDB database
 const connectDB = async () => {
@@ -30,6 +30,8 @@ const connectDB = async () => {
 
      // Log a success message
      console.log('MongoDB is connected');
+    console.log('MongoDB is connected to database:', mongoose.connection.name);
+
   } catch (err) {
      //Log an error message and exit with an error code
     console.error('MongoDB connection error:', err);

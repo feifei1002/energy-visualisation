@@ -1,6 +1,7 @@
 const UserController = require('../controllers/ProfileController');
 const User = require('../models/User');
 const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
 //mock user model
@@ -22,7 +23,7 @@ describe('User Profile', () => {
 
     it('should fetch the correct user details', async () => {
         //GIVEN
-        const request = { user: { id: '6547a45b34f0a29c8b36978f' } };
+        const request = { user: { id: new ObjectId('6547a45b34f0a29c8b36978f') } };
         const response = {
             json: jest.fn(),
             status: jest.fn(() => response),
@@ -30,7 +31,7 @@ describe('User Profile', () => {
 
         //mock findbyID method in user model
         User.findById.mockResolvedValue({
-            _id: '6547a45b34f0a29c8b36978f',
+            _id: new ObjectId('6547a45b34f0a29c8b36978f'),
             fullName: 'Bob',
             username: 'bobadmin',
             password: 'bob@456', //this should be hashed and will be in future
@@ -42,7 +43,7 @@ describe('User Profile', () => {
 
         //THEN
         expect(response.json).toHaveBeenCalledWith({
-            _id: '6547a45b34f0a29c8b36978f',
+            _id: new ObjectId('6547a45b34f0a29c8b36978f'),
             fullName: 'Bob',
             username: 'bobadmin',
             email: 'bob@def.com',
