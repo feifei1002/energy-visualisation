@@ -7,8 +7,8 @@ require('dotenv').config();
 
 // for login authentication
 const router = express.Router();
-const bcrypt = require("bcryptjs");
-const jwt = require(jsonwebtoken);
+// const bcrypt = require("bcryptjs");
+// const jwt = require(jsonwebtoken);
 const User = require("./models/User"); 
 
 // Define the root route for API

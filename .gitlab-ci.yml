@@ -1,4 +1,7 @@
-image: node:latest
+image: node:buster
+
+services:
+  - mongo:latest
 
 stages:
   - install
@@ -11,6 +14,7 @@ cache:
 install_dependencies:
   stage: install
   script:
+    - apt-get update -qq && apt-get install -y libssl1.1
     - cd /builds/c21054715/energy_visualization_team2/Code
     - npm install
     - npm install dotenv
@@ -19,6 +23,7 @@ install_dependencies:
 test:
   stage: test
   script:
+    - apt-get update -qq && apt-get install -y libssl1.1
     - cd /builds/c21054715/energy_visualization_team2/Code/Backend
     - npm install
     - npm install dotenv

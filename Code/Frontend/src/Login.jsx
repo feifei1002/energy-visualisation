@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 // import '../App.css'
 import './Login.css'
+import { useNavigate } from "react-router-dom";
 
 function Login() {
     // https://www.w3schools.com/react/react_forms.asp on 04/11
@@ -24,6 +25,14 @@ function Login() {
     }
     // end of code
 
+    // from https://stackoverflow.com/questions/50644976/react-button-onclick-redirect-page 06/11
+    let navigate = useNavigate();
+    const routeChange = ()  => {
+        let path = '/register';
+        navigate(path);
+    }
+    // end of code
+
     return (
         <>
 
@@ -40,7 +49,7 @@ function Login() {
             <div class="inputRow">
             <input type="submit" value="Login" />
             {/* https://stackoverflow.com/questions/2825856/html-button-to-not-submit-form  on 04/11*/}
-            <button type="button" onClick="/">Register</button>
+            <button type="button" onClick={routeChange}>Register</button>
             {/* end */}
             </div>
         </form>
