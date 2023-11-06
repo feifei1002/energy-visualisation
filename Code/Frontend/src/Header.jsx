@@ -6,7 +6,7 @@ import './css/Header.css';
 import ProfileDashboardPage from "./ProfileDashboardPage.jsx";
 
 
-// eslint-disable-next-line react/prop-types
+
 function HeaderLink({ href, text }) {
     return (
         <a className="header-link" href={href} rel="noreferrer">
@@ -30,13 +30,7 @@ function Header() {
                     <HeaderLink href="/About" text="About" />
                     <HeaderLink href="visualisations" to="/visualisations" text="Visualizations" />
                     <HeaderLink href="/login" text="Login" />
-                    <Router>
-                        <Routes>
-                            <Route path="/visualisations" element={<VisualisationPage />} />
-                            <Route path="/profiledashboard" element={<ProfileDashboardPage />} />
-                            < Route path="/visualisations/graph1" element={<Graph1 />}  />
-                        </Routes>
-                    </Router>
+
                 </ul>
             </nav>
         </header>
