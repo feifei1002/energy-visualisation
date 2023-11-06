@@ -1,11 +1,5 @@
 import PropTypes from "prop-types";
-import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import VisualisationPage from "./VisualisationPage.jsx";
-import Graph1 from "./Graph1.jsx";
 import './css/Header.css';
-import ProfileDashboardPage from "./ProfileDashboardPage.jsx";
-
-
 
 function HeaderLink({ href, text }) {
     return (
@@ -28,7 +22,7 @@ function Header() {
             <nav className="navbar">
                 <ul className="nav-links">
                     <HeaderLink href="/About" text="About" />
-                    <HeaderLink href="visualisations" to="/visualisations" text="Visualizations" />
+                    <HeaderLink href="visualisations" to="/visualisations" text="Visualisations" />
                     <HeaderLink href="/login" text="Login" />
 
                 </ul>
