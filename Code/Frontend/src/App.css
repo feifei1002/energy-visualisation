@@ -145,3 +145,14 @@
   font-size: 100%;
 }
 
+#dropdown-basic-button {
+    background-color: rgba(29, 102, 134, 0.99);
+    border-color: rgba(29, 102, 134, 0.99);
+    box-shadow: none;
+}
+
+.dropdown-item {
+    background-color: rgba(29, 102, 134, 0.99);
+    border: none;
+}
+
