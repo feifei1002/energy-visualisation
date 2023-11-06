@@ -28,8 +28,7 @@ const connectDB = async () => {
       useNewUrlParser: true,
     });
 
-     // Log a success message
-     console.log('MongoDB is connected');
+     // Log a success message WITH THE DATABASE ITS CONNECTED TO
     console.log('MongoDB is connected to database:', mongoose.connection.name);
 
   } catch (err) {
