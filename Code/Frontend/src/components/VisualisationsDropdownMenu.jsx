@@ -22,7 +22,7 @@ export default function VisualisationsDropdownMenu() {
 
     return (
         <>
-            <DropdownButton className="super-colors" id="dropdown-basic-button" key="dropdown-button" drop="down-centered" title={dropdown}>
+            <DropdownButton id="dropdown-basic-button" key="dropdown-button" drop="down-centered" title={dropdown}>
                 {data.map((d) =>
                     <Dropdown.Item class="dropdown-item" key={d.name} href={d.link} onClick={() => handleDropdownChange(d.name)}>{d.name}</Dropdown.Item>)}
                 </DropdownButton>

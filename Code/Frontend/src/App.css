@@ -138,6 +138,7 @@
 }
 
 .dropdown-item {
+    color: white;
     background-color: rgba(29, 102, 134, 0.99);
     border: none;
 }
