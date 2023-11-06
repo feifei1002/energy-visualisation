@@ -1,0 +1,36 @@
+.profile-page {
+    font-family: 'Raleway', sans-serif;
+    color: #1d6686;
+    background-color: #f4f4f4;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.profile-header {
+    background-color: transparent;
+    padding: 0;
+    text-align: center;
+}
+
+.profile-title {
+    color: white;
+    margin: 0;
+    padding: 20px 0;
+}
+
+.profile-content {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#profile-header-text {
+    padding-top: 3%;
+}
