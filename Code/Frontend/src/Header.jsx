@@ -3,7 +3,7 @@ import './css/Header.css';
 
 function HeaderLink({ href, text }) {
     return (
-        <a className="header-link" href={href} target="_blank" rel="noreferrer">
+        <a className="header-link" href={href} rel="noreferrer">
             {text}
         </a>
     );
