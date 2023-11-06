@@ -1,7 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
+
 #root {
-  max-width: 1280px;
+  min-width: 100vw;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
 }
 
@@ -86,8 +87,6 @@
 .read-the-docs {
   color: #888;
   text-decoration: none;
-<<<<<<< HEAD
-=======
 }
 
 .container {
@@ -115,7 +114,6 @@
 .list h2 {
   color: #ffffff;
   font-size: 100%;
->>>>>>> af46578eb684d1d01ea7bd9946e91d1f74c66182
 }
 
 .container {

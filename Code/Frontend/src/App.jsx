@@ -1,4 +1,3 @@
-
 import UkriLogo from './assets/UkriLogo1.png'
 import FlexisLogo from './assets/FlexisLogo2.png'
 import CardiffUniLogo from './assets/CardiffUniLogo.png'
@@ -8,10 +7,9 @@ import Header from './Header';
 import Footer from './Footer';
 import './App.css'
 
-
 // eslint-disable-next-line react/prop-types
 function ListItem({ name }) {
-    return <li>{name}</li>;
+    return <li>{name}</li>
 }
 
 function App() {
@@ -104,5 +102,4 @@ function App() {
         </div>
     );
 }
-
 export default App;
