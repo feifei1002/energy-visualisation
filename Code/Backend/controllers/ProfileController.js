@@ -1,12 +1,14 @@
 const User = require('../models/User');
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
 const getProfile = async (request, response) => {
     try {
         //placeholder until alex merges how he will be handling logged in users
         //const userId = request.user._id;
-        const userId = "6547a45b34f0a29c8b36978f";
-        const user = await User.findById(userId).select('-password'); //to exclude the password field
-        response.json(user.profile);
+        const userId = new ObjectId("6547a45b34f0a29c8b36978f"); //this is temporary until login functioanlity and session ids get added
+        const user = await User.findById(userId).select('fullName username email'); //to exclude the password field
+        response.json(user);
     } catch (error) {
         console.error('Error fetching profile data:', error);
         response.status(500).json({ message: 'Error fetching profile data' });
@@ -15,7 +17,8 @@ const getProfile = async (request, response) => {
 
 const updateProfile = async (request, response) => {
     try {
-        const userId = request.user._id;
+        //const userId = request.user._id;
+        const userId = new ObjectId("6547a45b34f0a29c8b36978f"); //this is temporary until login functioanlity and session ids get added
         const updateData = request.body;
 
         //if updating the password we hash it before saving it
@@ -25,7 +28,7 @@ const updateProfile = async (request, response) => {
         }
 
         const user = await User.findByIdAndUpdate(userId, { profile: updateData }, { new: true }).select('-password');
-        response.json(user.profile);
+        response.json(user);
     } catch (error) {
         console.error('Error updating profile data:', error);
         response.status(500).json({ message: 'Error updating profile data' });
