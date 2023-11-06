@@ -15,8 +15,12 @@ function Login() {
     
     const handleSubmit = (event) => {
         event.preventDefault();
+        console.log(event);
         // below line is for testing the username and pass are correctly submitted
         // alert(event.target.elements.username.value + " and " + event.target.elements.password.value);
+
+        // backend section
+        
     }
     // end of code
 
@@ -26,11 +30,12 @@ function Login() {
         <form onSubmit={handleSubmit} class="loginForm">
             <div class="inputRow">
             <label>User Name</label>
-            <input type="text" name="username" value={inputs.username} onChange={handleChange}/>
+            {/* sets max length for username and password as 15 values, and both have to be a value */}
+            <input type="text" name="username" value={inputs.username} onChange={handleChange} {...{ required: true, maxLength: 15 }} />
             </div>
             <div class="inputRow">
             <label>Password</label>
-            <input type="password" name="password" value={inputs.password} onChange={handleChange}/>
+            <input type="password" name="password" value={inputs.password} onChange={handleChange} {...{ required: true, maxLength: 15 }} />
             </div>
             <div class="inputRow">
             <input type="submit" value="Login" />

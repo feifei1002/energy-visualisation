@@ -6,6 +6,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 // Define the root route for API
+// go to http://localhost:8082/ for backend
 app.get('/', (req, res) => res.send('index route!'));
 
 //Define port
@@ -59,32 +60,31 @@ app.listen(port, () => console.log(`Server running on port ${port}`));
 
 
 // https://www.geeksforgeeks.org/login-form-using-node-js-and-mongodb/ 06/11
-var express = require("express"), 
-    mongoose = require("mongoose"), 
-    passport = require("passport"), 
-    bodyParser = require("body-parser"), 
-    LocalStrategy = require("passport-local"), 
-    passportLocalMongoose =  
-        require("passport-local-mongoose") 
-const User = require("./model/User"); 
+// var express = require("express"), 
+//     mongoose = require("mongoose"), 
+//     passport = require("passport"), 
+//     bodyParser = require("body-parser"), 
+//     LocalStrategy = require("passport-local"), 
+//     passportLocalMongoose =  
+//         require("passport-local-mongoose") 
+const User = require("./models/User"); 
 // var app = express(); 
   
-mongoose.connect("mongodb://localhost/27017"); 
   
-app.set("view engine", "ejs"); 
-app.use(bodyParser.urlencoded({ extended: true })); 
-app.use(require("express-session")({ 
-    secret: "Rusty is a dog", 
-    resave: false, 
-    saveUninitialized: false
-})); 
+// app.set("view engine", "ejs"); 
+// app.use(bodyParser.urlencoded({ extended: true })); 
+// app.use(require("express-session")({ 
+//     secret: "Rusty is a dog", 
+//     resave: false, 
+//     saveUninitialized: false
+// })); 
   
-app.use(passport.initialize()); 
-app.use(passport.session()); 
+// app.use(passport.initialize()); 
+// app.use(passport.session()); 
   
-passport.use(new LocalStrategy(User.authenticate())); 
-passport.serializeUser(User.serializeUser()); 
-passport.deserializeUser(User.deserializeUser()); 
+// passport.use(new LocalStrategy(User.authenticate())); 
+// passport.serializeUser(User.serializeUser()); 
+// passport.deserializeUser(User.deserializeUser()); 
   
 //===================== 
 // ROUTES 
@@ -117,22 +117,3 @@ app.post("/login", async function(req, res){
       } 
 }); 
   
-//Handling user logout  
-// app.get("/logout", function (req, res) { 
-//     req.logout(function(err) { 
-//         if (err) { return next(err); } 
-//         res.redirect('/'); 
-//       }); 
-// }); 
-  
-  
-  
-function isLoggedIn(req, res, next) { 
-    if (req.isAuthenticated()) return next(); 
-    res.redirect("/login"); 
-} 
-  
-// var port = process.env.PORT || 3000; 
-app.listen(port, function () { 
-    console.log("Server Has Started!"); 
-}); 
