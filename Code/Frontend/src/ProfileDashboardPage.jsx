@@ -1,4 +1,4 @@
-import ProfileOverview from './ProfileOverview';
+import ProfileOverview from './components/ProfileOverview';
 
 const ProfileDashboardPage = () => {
     return (
