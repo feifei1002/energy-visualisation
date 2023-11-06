@@ -2,13 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\Code",
-    "\\Code\\Backend",
-    "\\Code\\Backend\\routes\\api",
     "\\Code\\Frontend",
-    "\\Code\\Frontend\\public",
     "\\Code\\Frontend\\src",
     "\\Code\\Frontend\\src\\components"
   ],
-  "SelectedNode": "\\Code\\Frontend\\src\\components\\VisualisationsDropdownMenu.jsx",
+  "SelectedNode": "\\Code\\Frontend\\src\\Header.jsx",
   "PreviewInSolutionExplorer": false
 }
