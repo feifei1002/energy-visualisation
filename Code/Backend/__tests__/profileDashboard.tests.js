@@ -22,10 +22,10 @@ describe('User Profile', () => {
 
     it('should fetch the correct user details', async () => {
         //GIVEN
-        const req = { user: { id: '6547a45b34f0a29c8b36978f' } };
-        const res = {
+        const request = { user: { id: '6547a45b34f0a29c8b36978f' } };
+        const response = {
             json: jest.fn(),
-            status: jest.fn(() => res),
+            status: jest.fn(() => response),
         };
 
         //mock findbyID method in user model
@@ -38,10 +38,10 @@ describe('User Profile', () => {
         });
 
         //WHEN
-        await UserController.getUserProfile(req, res);
+        await UserController.getUserProfile(request, response);
 
         //THEN
-        expect(res.json).toHaveBeenCalledWith({
+        expect(response.json).toHaveBeenCalledWith({
             _id: '6547a45b34f0a29c8b36978f',
             fullName: 'Bob',
             username: 'bobadmin',
@@ -50,6 +50,6 @@ describe('User Profile', () => {
         });
 
         //make sure password isnt included in response for security
-        expect(res.json.mock.calls[0][0].password).toBeUndefined();
+        expect(response.json.mock.calls[0][0].password).toBeUndefined();
     });
 });
