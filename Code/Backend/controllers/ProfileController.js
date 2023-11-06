@@ -3,7 +3,8 @@ const User = require('../models/User');
 const getProfile = async (request, response) => {
     try {
         //placeholder until alex merges how he will be handling logged in users
-        const userId = request.user._id;
+        //const userId = request.user._id;
+        const userId = "6547a45b34f0a29c8b36978f";
         const user = await User.findById(userId).select('-password'); //to exclude the password field
         response.json(user.profile);
     } catch (error) {
