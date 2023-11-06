@@ -6,7 +6,7 @@
   text-align: center;
 }
 
-/* 
+
 .navbar {
   background-color: rgba(29, 102, 134, 0.99);
   width: 100%;
@@ -65,7 +65,7 @@
   width: 59%;
   margin: 0 auto;
 }
-rgba(29, 102, 134, 0.99)
+
 .card p{
   background-color: rgba(29, 102, 134, 0.99);
   color: #ffffff;
@@ -136,9 +136,9 @@ rgba(29, 102, 134, 0.99)
   color: white;
   padding: 0 0;
   text-align: center;
-} */
+} 
 
-/* .navbar-title h1 {
+.navbar-title h1 {
   margin: 0;
   padding-bottom: 10px;
 }
@@ -228,7 +228,7 @@ rgba(29, 102, 134, 0.99)
 .nav-links li:hover {
   transform: scale(1);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-} */
+}
 
 #dropdown-basic-button {
     background-color: rgba(29, 102, 134, 0.99);
@@ -241,5 +241,3 @@ rgba(29, 102, 134, 0.99)
     background-color: rgba(29, 102, 134, 0.99);
     border: none;
 }
-
-
