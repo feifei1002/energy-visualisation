@@ -23,7 +23,7 @@ export default function VisualisationsDropdownMenu() {
 
     return (
         <>
-            <DropdownButton id="dropdown-basic-button" key="dropdown-button" drop="down-centered" title={dropdown}>
+            <DropdownButton id="dropdown-basic-button" key="dropdown-button" drop="down-centered" title={dropdown} style={{paddingTop: "1em"}}>
                 {data.map((d) =>
                     <Dropdown.Item key={d.name} href={d.link} onClick={() => handleDropdownChange(d.name)}>{d.name}</Dropdown.Item>
                 )};
