@@ -1,5 +1,8 @@
 image: node:latest
 
+services:
+  - mongo:latest
+
 stages:
   - install
   - test
@@ -7,6 +10,9 @@ stages:
 cache:
   paths:
     - node_modules/
+
+before_script:
+  - apt-get update -qq && apt-get install -y libssl1.1
 
 install_dependencies:
   stage: install
