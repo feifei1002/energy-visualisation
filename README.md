@@ -24,3 +24,6 @@ https://git.cardiff.ac.uk/c21054715/energy_visualization_team2/-/wikis/Problem/P
 
 **Provide details and links to learning resources – which would help the team onboard a new developer. This should include an example application that you will have begun development onin class sessions between weeks 4 and 6:**
 
+Good MERN Tutorial: https://blog.logrocket.com/mern-stack-tutorial/ I used vite to create the react app but the principles are good.
+
+React Beginner Tutorial: https://www.youtube.com/watch?v=SqcY0GlETPk kind of similar to what Nathan taught in class.
