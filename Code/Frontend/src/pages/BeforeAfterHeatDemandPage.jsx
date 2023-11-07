@@ -7,6 +7,7 @@ import HeatEfficiencyBeforeHeatMap from '../components/graphs/HeatEfficiencyBefo
 import HeatEfficiencyAfterHeatMap from '../components/graphs/HeatEfficiencyAfterHeatMap';
 import VisualisationsDropdownMenu from "../components/VisualisationsDropdownMenu";
 import Header from "../Header";
+import LoadingGif from "../assets/LoadingGif.gif";
 
 // The main component function that will be exported and used to display the page.
 export default function BeforeAfterHeatDemandPage() {
@@ -104,7 +105,7 @@ export default function BeforeAfterHeatDemandPage() {
           color: '#333'
         }}>Getting your data...</p>
         <img 
-          src="https://i.gifer.com/ZKZg.gif"
+          src={LoadingGif}
           alt="Loading..."
           style={{
             width: '50px',
