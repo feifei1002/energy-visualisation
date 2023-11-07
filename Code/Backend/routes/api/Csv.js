@@ -20,8 +20,8 @@ const csvStorage = multer.diskStorage({
             const oldFilePath = path.join('../data/', oldFileName);
 
             //rename the existing file
-            fileSystem.renameSync(targetPath, oldFilePath, (err) => {
-                if (err) throw err;
+            fileSystem.renameSync(targetPath, oldFilePath, (error) => {
+                if (error) throw error;
             });
         }
         // TODO: do some auth stuff later on here on user permissions/session
