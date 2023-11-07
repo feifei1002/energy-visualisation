@@ -14,6 +14,32 @@ npm start app to launch the backend server.
 
 **Details of any important assumptions you have made during design or development:**
 
+Data Availability and Format Assumptions:
+
+We assume that the project will have access to the required data in a structured and accessible format.
+
+Data sources are assumed to provide necessary endpoints or APIs for data retrieval.
+
+Performance and Scalability Assumptions:
+
+We assume that the MERN stack can handle the expected data load efficiently.
+
+The initial project phase focuses on a data subset, with an assumption that the architecture is scalable for future data expansion.
+
+Third-Party Integration Assumptions:
+
+The project relies on third-party tools and libraries for data visualization, such as D3.js and Nivo.rocks.
+
+Assumption that these libraries will integrate seamlessly with the MERN stack.
+
+Security Assumptions:
+
+Assumption that the project will implement necessary security measures to protect data and user interactions.
+
+Technical Skill Assumptions:
+
+Development assumes a team with adequate skills in React, Node.js, and MongoDB.
+
 **A link to requirements or a list of requirements (unless you are using the features for requirements gathering and monitoring provided in your source control application):**
 
 https://git.cardiff.ac.uk/c21054715/energy_visualization_team2/-/issues/?sort=created_date&state=all&first_page_size=20
