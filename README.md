@@ -1,4 +1,4 @@
-**How to build/start/run/compile the project.**
+**How to build/start/run/compile the project:**
 
 In the 'frontend' folder, open a terminal, and run the following commands:
 
