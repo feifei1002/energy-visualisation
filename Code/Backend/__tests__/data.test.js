@@ -1,18 +1,30 @@
-// data.test.js
+// Import the required modules
 const express = require('express');
 const request = require('supertest'); 
+
+// Initialize an express application
 const app = express();
+
+// Import the router from the data routes
 const router = require('../routes/data/Data'); 
 
-// Apply the router to the express app
+// Use the imported router in the express application
 app.use(router);
 
+// Describe the test suite for API endpoints
 describe('API endpoint tests', () => {
-    //Test for the /annualheat endpoint
+    // Test case for the /annualheat endpoint
     test('GET /annualheat should return CSV data', async () => {
+      // Send a GET request to the /annualheat endpoint and store the response
       const response = await request(app).get('/annualheat');
+
+      // Check if the response status code is 200
       expect(response.statusCode).toBe(200);
+
+      // Check if the response type is 'application/json'
       expect(response.type).toBe('application/json');
+
+      // Check if the response body contains an array of objects with specific properties
       expect(response.body).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -21,13 +33,20 @@ describe('API endpoint tests', () => {
           }),
         ])
       );
-    }, 10000); // Timeout set to 10 seconds if needed
+    }, 10000); // Set a timeout of 10 seconds for this test case if needed
   
-    //Test for the /geojson endpoint
+    // Test case for the /geojson endpoint
     test('GET /geojson should return GeoJSON data', async () => {
+      // Send a GET request to the /geojson endpoint and store the response
       const response = await request(app).get('/geojson');
+
+      // Check if the response status code is 200
       expect(response.statusCode).toBe(200);
+
+      // Check if the response type is 'application/json'
       expect(response.type).toBe('application/json');
+
+      // Check if the response body matches a specific structure
       expect(response.body).toMatchObject({
         type: "FeatureCollection",
         crs: {
@@ -44,5 +63,5 @@ describe('API endpoint tests', () => {
           }),
         ])
       });
-    }, 10000); // Timeout set to 10 seconds if needed
+    }, 10000); // Set a timeout of 10 seconds for this test case if needed
 });
