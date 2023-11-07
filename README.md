@@ -18,7 +18,7 @@ npm start app to launch the backend server.
 
 https://git.cardiff.ac.uk/c21054715/energy_visualization_team2/-/issues/?sort=created_date&state=all&first_page_size=20
 
-**Links to the documentation/websites of the frameworks, languages, libraries you have usedand why they have been used.Include links to a WIKI or make use of the WIKI feature in your GitLab project:**
+**Links to the documentation/websites of the frameworks, languages, libraries you have used and why they have been used.Include links to a WIKI or make use of the WIKI feature in your GitLab project:**
 
 https://git.cardiff.ac.uk/c21054715/energy_visualization_team2/-/wikis/Problem/Project-Info
 
