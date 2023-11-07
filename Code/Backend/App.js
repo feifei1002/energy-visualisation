@@ -60,6 +60,9 @@ app.use(express.json({ extended: false }));
 const apiRouter = require('./routes/api/Api');
 app.use('/api', apiRouter);
 
+const loginRouter = require('./routes/api/Login');
+app.use('/api',loginRouter);
+
 //Start the server
 app.listen(port, () => console.log(`Server running on port ${port}`));
 

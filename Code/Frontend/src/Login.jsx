@@ -3,6 +3,7 @@ import { useState } from "react";
 // import '../App.css'
 import './Login.css'
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 function Login() {
     // https://www.w3schools.com/react/react_forms.asp on 04/11
@@ -21,7 +22,11 @@ function Login() {
         // alert(event.target.elements.username.value + " and " + event.target.elements.password.value);
 
         // backend section
-        
+        try {
+            const response = axios.put('/api/login');
+        } catch (error) {
+            console.error('Error with login:', error);
+        }
     }
     // end of code
 
