@@ -1,0 +1,50 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.inputRow {
+    height: 100px;
+    line-height: 80px;
+    text-align: center;
+    background-color: #ffffff;
+    border-color: #15495f;
+    border-radius: 0px;
+    color: black;
+    padding: 0px 50px;
+    /*width: 194px;*/
+}
+label {
+    display: inline-block;
+    border: solid #15495f;
+    border-radius: 0px;
+    width: 194px;
+    padding: 2px 2px 2px 2px;
+    background-color: rgba(20, 72, 94, 0.99);
+    box-sizing: border-box;
+    font-family: "Raleway", sans-serif;
+    color: #ffffff;
+    text-align: center;
+    /*line-height: normal;*/
+    height: 83px;
+    line-height: 80px;
+}
+
+
+
+button[type=button]{
+    display: inline-block;
+    text-align: center;
+    background-color: #ffffff;
+    border-color: #15495f;
+    border-radius: 0px;
+    font-family: "Raleway", sans-serif;
+    color: #000000;
+    border-width: 2px;
+    padding: 2px 2px 2px 2px;
+    width: 300px;
+    height: 50px;
+    line-height: normal;
+}
+

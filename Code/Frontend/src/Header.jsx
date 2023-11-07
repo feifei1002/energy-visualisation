@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
-import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import VisualisationPage from "./VisualisationPage.jsx";
-import Graph1 from "./Graph1.jsx";
+// import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
+// import VisualisationPage from "./VisualisationPage.jsx";
+// import Graph1 from "./Graph1.jsx";
 import { Link } from "react-router-dom";
 import './css/Header.css';
 
@@ -30,6 +30,7 @@ function Header() {
                     <HeaderLink to="/" text="About" />
                     <HeaderLink to="/visualisations" text="Visualisations" />
                     <HeaderLink to="/login" text="Login" />
+                    <HeaderLink to="/register" text="Register" />
                 </ul>
             </nav>
             {/* Your Routes should typically be outside of the Header component, and not nested within */}
