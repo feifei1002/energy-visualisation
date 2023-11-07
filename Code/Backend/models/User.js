@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
-//Test schema for database
-const UserSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     fullName: {
         type: String,
         required: true
@@ -20,8 +19,8 @@ const UserSchema = new mongoose.Schema({
         required: true,
         unique: true
     }
-
 });
 
-module.exports = User = mongoose.model('User', UserSchema);
+const User = mongoose.model('User', userSchema, 'User');
 
+module.exports = User;

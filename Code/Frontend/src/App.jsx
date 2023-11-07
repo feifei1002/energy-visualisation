@@ -1,4 +1,3 @@
-
 import UkriLogo from './assets/UkriLogo1.png'
 import FlexisLogo from './assets/FlexisLogo2.png'
 import CardiffUniLogo from './assets/CardiffUniLogo.png'
@@ -7,15 +6,15 @@ import Zero2025 from './assets/Zero2050Logo.png'
 import Header from './Header';
 import Footer from './Footer';
 import './App.css'
-
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import VisualisationPage from './VisualisationPage';
-import Graph1 from './Graph1';
+import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
+import VisualisationPage from "./VisualisationPage.jsx";
+import ProfileDashboardPage from "./ProfileDashboardPage.jsx";
+import Graph1 from "./Graph1.jsx";
 import Login from './Login'
 
 // eslint-disable-next-line react/prop-types
 function ListItem({ name }) {
-    return <li>{name}</li>;
+    return <li>{name}</li>
 }
 
 function App() {
@@ -115,9 +114,15 @@ function App() {
             </main>
 
             <Footer />
+            <Router>
+                <Routes>
+                    <Route path="/visualisations" element={<VisualisationPage />} />
+                    <Route path="/profiledashboard" element={<ProfileDashboardPage />} />
+                    <Route path="/visualisations/graph1" element={<Graph1 />}  />
+                </Routes>
+            </Router>
         </div>
         </>
     );
 }
-
 export default App;
