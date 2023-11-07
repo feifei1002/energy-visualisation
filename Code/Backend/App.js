@@ -23,16 +23,16 @@ const connectDB = async () => {
   try {
     mongoose.set('strictQuery', true);
 
-     // Use the new URL parser
+    // Use the new URL parser
     await mongoose.connect(uri, {
       useNewUrlParser: true,
     });
 
-     // Log a success message WITH THE DATABASE ITS CONNECTED TO
+    // Log a success message WITH THE DATABASE ITS CONNECTED TO
     console.log('MongoDB is connected to database:', mongoose.connection.name);
 
   } catch (err) {
-     //Log an error message and exit with an error code
+    //Log an error message and exit with an error code
     console.error('MongoDB connection error:', err);
     process.exit(1);
   }
