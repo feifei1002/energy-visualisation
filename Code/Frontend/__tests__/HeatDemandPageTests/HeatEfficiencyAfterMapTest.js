@@ -4,11 +4,11 @@ import '@testing-library/jest-dom';
 import HeatEfficiencyAfterHeatMap from '../../src/components/graphs/HeatEfficiencyAfterHeatMap';
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 
-// Mock the GeoJSON component
+// Mock the GeoJSON component to return a div with a data-testid attribute.
 jest.mock('react-leaflet', () => ({
-  MapContainer: jest.fn(() => <div data-testid="map-container"></div>),
+  MapContainer: jest.fn(({ children }) => <div data-testid="map-container">{children}</div>),
   TileLayer: jest.fn(() => null),
-  GeoJSON: jest.fn(() => null) // Mocking GeoJSON as a jest function
+  GeoJSON: jest.fn(() => <div data-testid="geojson-layer"></div>)
 }));
 
 // Sample test data for the HeatEfficiencyAfterHeatMap component
@@ -16,14 +16,12 @@ const heatData = [
   {
     "LSOA11CD": "E01000001",
     "Total heat demand after energy efficiency measures 2018 (kWh)": 1904451.61,
-    // ... other properties
   },
   {
     "LSOA11CD": "E01000002",
     "Total heat demand after energy efficiency measures 2018 (kWh)": 2387009.62,
-    // ... other properties
   },
-  // ... more data entries
+
 ];
 
 const geoJsonData = {
@@ -69,5 +67,29 @@ describe('HeatEfficiencyAfterHeatMap', () => {
       
       // Then
       expect(titleElement).toBeInTheDocument();
+    });
+  
+    it('renders GeoJSON element when data is provided', () => {
+      // Render the component with provided heatData and geoJsonData
+      render(<HeatEfficiencyAfterHeatMap heatData={heatData} geoJsonData={geoJsonData} />);
+      
+      // Check if the MapContainer has been called and it contains the GeoJSON layer
+      const mapContainer = screen.getByTestId('map-container');
+      expect(mapContainer).toContainElement(screen.getByTestId('geojson-layer'));
+  
+      // Additionally, check if the GeoJSON component has been called with the correct data prop
+      expect(GeoJSON).toHaveBeenCalledWith(expect.objectContaining({
+        data: geoJsonData.features
+      }), {});
+    });
+  
+    it('calls MapContainer with correct props', () => {
+      // Render the component with provided heatData and geoJsonData
+      render(<HeatEfficiencyAfterHeatMap heatData={heatData} geoJsonData={geoJsonData} />);
+      // Check if MapContainer is called with the expected props
+      expect(MapContainer).toHaveBeenCalledWith(expect.objectContaining({
+        center: [55.3781, -3.4360],
+        zoom: 6
+      }), expect.anything());
     });
 });
