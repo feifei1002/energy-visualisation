@@ -5,6 +5,10 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
+
+const clientSecret = process.env.AUTH0_CLIENT_SECRET;
+
+
 // Define the root route for API
 app.get('/', (req, res) => res.send('index route!'));
 

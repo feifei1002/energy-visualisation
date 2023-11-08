@@ -33,7 +33,7 @@ label {
 
 
 
-button[type=button]{
+.btn save-btn{
     display: inline-block;
     text-align: center;
     background-color: #ffffff;

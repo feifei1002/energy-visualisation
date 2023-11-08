@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css'
 import BeforeAfterHeatDemandPage from './pages/BeforeAfterHeatDemandPage';
 import LandingPage from './pages/LandingPage'
@@ -9,9 +9,9 @@ import RegistrationPage from "./RegistrationPage.jsx";
 import { Auth0Provider } from '@auth0/auth0-react';
 
 const auth0Config = {
-    domain: 'yourAuth0Domain',
-    clientId: 'yourAuth0ClientId',
-    audience: 'https://yourAuth0Domain/api/v2/',
+    domain:"dev-osrswyxpukb5rlqq.us.auth0.com",
+    clientId:"u3BzR6uc5HGjp7P7fJiiUswVX5bjVyhK",
+    audience: 'https://dev-osrswyxpukb5rlqq.us.auth0.com/api/v2/',
     redirect_uri: window.location.origin,
     scope: 'read:current_user update:current_user_metadata',
 };

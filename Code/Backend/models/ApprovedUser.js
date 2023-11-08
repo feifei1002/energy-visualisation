@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+const approvedUserSchema = new mongoose.Schema({
     fullName: {
         type: String,
         required: true
@@ -21,10 +21,10 @@ const userSchema = new mongoose.Schema({
     },
     approved: {
         type: Boolean,
-        default: false // Initially not approved, The admin can update the approved field to true for approved users.
+        default: false
     }
 });
 
-const User = mongoose.model('User', userSchema, 'User');
+const ApprovedUser = mongoose.model('ApprovedUser', approvedUserSchema, 'ApprovedUser');
 
-module.exports = User;
+module.exports = ApprovedUser;
