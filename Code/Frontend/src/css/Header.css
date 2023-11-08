@@ -14,13 +14,13 @@
 
 .navbar {
     background-color: rgba(29, 102, 134, 0.99);
-    width: 100%;
-    height: auto;
+    width: 100%!important;
+    height: 100%!important;  
     display: flex;
-    padding: 0;
+    padding: 10px!important;
     justify-content: center;
     flex-wrap: wrap;
-}
+} 
 
 .nav-links {
     list-style: none;
@@ -32,7 +32,7 @@
 
 .nav-links li {
     background-color: rgba(29, 102, 134, 0.99);
-    padding: 10px 20px;
+    padding: 10px 20px!important;
     margin: 0 5px;
     transition: transform 0.3s;
 }
@@ -93,6 +93,7 @@
     align-items: center;
     justify-content: center;
     height: 100%;
+    padding-right: 10px !important;
 }
 
 .nav-links li:hover {

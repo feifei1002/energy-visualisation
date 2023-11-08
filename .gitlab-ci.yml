@@ -30,3 +30,9 @@ test:
     - npm install --save-dev jest
     - npm install to-fast-properties
     - npm run test
+    - cd /builds/c21054715/energy_visualization_team2/Code/Frontend
+    - npm install
+    - npm install dotenv
+    - npm install --save-dev jest
+    - npm install to-fast-properties
+    - npm run test

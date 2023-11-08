@@ -11,7 +11,6 @@ const Test = require('../../models/Test');
 // @access Public
 router.get('/', (req, res) => res.send('route testing!'));
 
-
 // // attempting login auth
 // const passport = require("passport");
 // const User = require('../../models/User')
@@ -72,6 +71,5 @@ const ProfileController = require('../../controllers/ProfileController');
 router.get('/profile', ProfileController.getProfile);
 //update profile
 router.put('/profile', ProfileController.updateProfile);
-
 
 module.exports = router;
