@@ -3,14 +3,14 @@ import React, {useEffect, useState} from "react";
 export default function ResistanceHeatersHeatProduced({data}) {
 
     const [heatData, setHeatData] = useState([]);
+    const [average, setAverage] = useState([]);
 
     useEffect(() => {
         const fetchHeatData = async () => {
             try {
                 const fetchData = await fetch('http://localhost:8082/data/halfhourlyheatingprofile');
                 const fetchDataResponse = await fetchData.json();
-                const averages = fetchDataResponse.map(entry => entry["UK_daily_average_OAT_[degrees_C]"]);
-                setHeatData(averages);
+                setHeatData(fetchDataResponse);
             } catch (error) {
                 console.error("Error occurs when fetching data", error);
             }
@@ -18,6 +18,18 @@ export default function ResistanceHeatersHeatProduced({data}) {
         fetchHeatData();
         // console.log(heatData[0][ "UK_daily_average_OAT_[degrees_C]"]);
     }, []);
+
+    useEffect(() => {
+        const fetchAverageData = async () => {
+            try {
+                const averages = heatData.map(entry => entry["UK_daily_average_OAT_[degrees_C]"]);
+                setAverage((averages));
+            } catch (error) {
+                console.error("Error occurs when fetching data", error);
+            }
+        };
+        fetchAverageData();
+    })
 
     // const averageOAT = heatData ? (new Set(heatData.map(entry => entry["UK_daily_average_OAT_[degrees_C]"]))) : [setAverageOAT()];
     //
@@ -51,9 +63,9 @@ export default function ResistanceHeatersHeatProduced({data}) {
     return(
         <>
             <h1>Graph here - Heat produced</h1>
-            {heatData.length > 0 ? (
+            {average.length > 0 ? (
                 <ul>
-                    {heatData.map((average, index) => (
+                    {average.map((average, index) => (
                         <li key={index}>{average}</li>
                     ))}
                 </ul>
