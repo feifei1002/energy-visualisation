@@ -50,5 +50,23 @@ describe('BeforeAfterHeatDemandBar', () => {
     //Add more later
   });
 
-  // Add more test cases for different scenarios
+  it('renders the component with default message when no data is loaded', () => {
+    render(<BeforeAfterHeatDemandBar data={[]} />);
+    
+    // Assert that the default message is displayed
+    const defaultMessageElement = screen.getByText('Heat efficiency before and after energy efficiency measures for a Local Authority in GWh');
+    expect(defaultMessageElement).toBeInTheDocument();
+  });
+
+  it('updates the selected local authority when a user selects from the dropdown', () => {
+    render(<BeforeAfterHeatDemandBar data={testData} />);
+    
+    // Simulate user interaction with the dropdown
+    const selectElement = screen.getByRole('combobox');
+    fireEvent.change(selectElement, { target: { value: 'City of London' } });
+    
+    // Assert that the selected local authority is displayed
+    const selectedAuthorityElement = screen.getByText('Local Authority (2019): City of London');
+    expect(selectedAuthorityElement).toBeInTheDocument();
+  });
 });

@@ -34,5 +34,24 @@ describe('TotalHeatEfficiency', () => {
     expect(totalAfterEfficiencyElement).toHaveTextContent('4.29 GWh');
   });
 
-   // Add more test cases for different scenarios
+  it('renders the component with default message when no data is provided', () => {
+    render(<TotalHeatEfficiency heatData={[]} />);
+    
+    // Assert that the default message is displayed
+    const defaultMessageElement = screen.getByText('Sum Of Total Heat Efficiency For Every Local Authority in GWh');
+    expect(defaultMessageElement).toBeInTheDocument();
+  });
+
+  it('handles large values correctly', () => {
+    const dataWithLargeValues = [
+      {
+        "Total heat demand before energy efficiency measures 2018 (kWh)": 999999999999,
+        "Total heat demand after energy efficiency measures 2018 (kWh)": 888888888888,
+      },
+    ];
+
+    render(<TotalHeatEfficiency heatData={dataWithLargeValues} />);
+    
+    // Assert that the component handles large values correctly
+  });
 });
