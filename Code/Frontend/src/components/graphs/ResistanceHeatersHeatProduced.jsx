@@ -4,6 +4,7 @@ export default function ResistanceHeatersHeatProduced({data}) {
 
     const [heatData, setHeatData] = useState([]);
     const [average, setAverage] = useState([]);
+    const [time, setTime] = useState([]);
 
     useEffect(() => {
         const fetchHeatData = async () => {
@@ -29,10 +30,20 @@ export default function ResistanceHeatersHeatProduced({data}) {
             }
         };
         fetchAverageData();
-    })
+    }, []);
 
-    // const averageOAT = heatData ? (new Set(heatData.map(entry => entry["UK_daily_average_OAT_[degrees_C]"]))) : [setAverageOAT()];
-    //
+    useEffect(() => {
+        const fetchTimeData = async () => {
+            try {
+                const times = heatData.map(entry => entry["index"]);
+                setTime((times));
+            } catch (error) {
+                console.error("Error occurs when fetching data", error);
+            }
+        };
+        fetchTimeData();
+    }, []);
+
     // const heatProducedAreaBumpChart = () => (
     //     <ResponsiveBump
     //         data={data}
@@ -67,6 +78,16 @@ export default function ResistanceHeatersHeatProduced({data}) {
                 <ul>
                     {average.map((average, index) => (
                         <li key={index}>{average}</li>
+                    ))}
+                </ul>
+            ) : (
+                <p>Loading...</p>
+            )}
+
+            {time.length > 0 ? (
+                <ul>
+                    {time.map((time, index) => (
+                        <li key={index}>{time}</li>
                     ))}
                 </ul>
             ) : (
