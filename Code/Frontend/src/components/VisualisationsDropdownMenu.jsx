@@ -7,7 +7,7 @@ export default function VisualisationsDropdownMenu() {
         { name: 'Breakdown of heat demand before and after energy efficiency measures', link: '/visualisations/graph2' },
         { name: 'Breakdown of energy efficiency improvement costs', link: '/visualisations/graph3'},
         { name: 'Half-hourly heat production and gas consumption profiles - Gas boilers', link: '/visualisations/graph4'},
-        { name: 'Half-hourly heat production and gas consumption profiles - Resistance heaters', link: '/visualisations/graph5' },
+        { name: 'Half-hourly heat production and gas consumption profiles - Resistance heaters', link: '/visualisations/halfhourlyresistanceheaters' },
         { name: 'Summary of heat demand data across England, Wales and Scotland', link: '/visualisations/graph6' }
     ];
     //The /visualisation/graph link is just to make sure everything works
