@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const approvedUserSchema = new mongoose.Schema({
+const UnapprovedUserSchema = new mongoose.Schema({
     fullName: {
         type: String,
         required: true
@@ -25,6 +25,6 @@ const approvedUserSchema = new mongoose.Schema({
     }
 });
 
-const ApprovedUser = mongoose.model('ApprovedUser', approvedUserSchema, 'ApprovedUser');
+const UnapprovedUser = mongoose.model('UnapprovedUser', UnapprovedUserSchema, 'UnapprovedUser');
 
-module.exports = ApprovedUser;
+module.exports = UnapprovedUser;

@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     },
     approved: {
         type: Boolean,
-        default: false // Initially not approved, The admin can update the approved field to true for approved users.
+        default: false
     }
 });
 

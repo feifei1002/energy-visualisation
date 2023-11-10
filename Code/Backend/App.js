@@ -11,7 +11,9 @@ const clientSecret = process.env.AUTH0_CLIENT_SECRET;
 
 // Define the root route for API
 app.get('/', (req, res) => res.send('index route!'));
-
+app.get('/authorized', function (req, res) {
+  res.send('Secured Resource');
+});
 //Define port
 const port = process.env.PORT || 8082;
 
@@ -52,8 +54,12 @@ app.use(express.json({ extended: false }));
 //Import and configure the API routes
 const apiRouter = require('./routes/api/Api');
 const dataRouter = require('./routes/data/Data');
+// const registerRouter = require('./routes/api/Register');
 app.use('/api', apiRouter);
 app.use('/data', dataRouter);
+// app.use('/register', registerRouter);
+app.use(checkJwt);
+
 
 //Start the server
 app.listen(port, () => console.log(`Server running on port ${port}`));

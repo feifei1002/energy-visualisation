@@ -1,11 +1,8 @@
- import React, { useState } from 'react'; // Import useState for state management
-import { useAuth0 } from '@auth0/auth0-react';
+ import { useState} from 'react'; // Import useState for state management
+ import axios from "axios";
 // import { useHistory } from 'react-router-dom';
 
 const RegistrationForm = () => {
-    const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
-    // const history = useHistory();
-    //
     const [formData, setFormData] = useState({
         fullName: '',
         username: '',
@@ -18,23 +15,24 @@ const RegistrationForm = () => {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleRegistration = () => {
-        loginWithRedirect({
-            screen_hint: 'signup', // Use 'signup' instead of 'register'
-        }).then(() => {
-        //     // After successful registration, redirect to the home page
-        //     history.push('/');
-         });
+    const handleRegistration = async (e) => {
+        e.preventDefault(); // Prevent the default form submission behavior
+        try {
+            const response = await axios.put('/api/register', formData);
+            setFormData(response.data);
+            const responseData = await response.json();
+            console.log('Registration successful:', responseData);
+            window.location.href = '/';
+        } catch (error) {
+            // Handle unexpected errors
+            console.error('Unexpected error during registration:', error);
+        }
     };
 
     return (
         <div>
+            <form onSubmit={handleRegistration} className="profile-form">
             <h2>Registration Form</h2>
-            {isLoading ? (
-                <div>Loading...</div>
-            ) : isAuthenticated ? (
-                <p>You are already logged in. No need to register.</p>
-            ) : (
                 <div>
                     <div className="form-group">
                         <label htmlFor="fullName">Full Name:</label>
@@ -78,7 +76,7 @@ const RegistrationForm = () => {
                     </div>
                     <button onClick={handleRegistration}>Register</button>
                 </div>
-            )}
+            </form>
         </div>
     );
 };

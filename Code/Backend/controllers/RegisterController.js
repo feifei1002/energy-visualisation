@@ -1,8 +1,10 @@
 const User = require('../models/User');
-const ApprovedUser = require('../models/ApprovedUser');
+const UnapprovedUser = require('../models/UnapprovedUser');
 const express = require('express');
 const app = express();
 const { auth } = require('express-oauth2-jwt-bearer');
+const bcrypt = require("bcrypt");
+const saltRounds = 10; //increasing this increases security to bruteforce but also time it takes to hash
 
 const port = process.env.PORT || 8082;
 
@@ -24,10 +26,15 @@ app.listen(port);
 console.log('Running on port ', port);
 // Register a new user
 const registerNewUser = async (req, res) => {
+
     try {
         const { fullName, username, password, email } = req.body;
-
-        const newUser = new User({ fullName, username, password, email });
+        const formData = req.body;
+        if (formData.password) {
+            formData.password = await bcrypt.hash(formData.password, saltRounds);
+            delete formData.password;
+        }
+        const newUser = new UnapprovedUser({ fullName, username, password, email });
         await newUser.save();
 
         res.status(201).json({ message: 'Registration successful. Awaiting approval.' });
@@ -47,14 +54,14 @@ const approveUser = async (req, res) => {
         }
 
         // Create an ApprovedUser instance and save the details
-        const approvedUser = new ApprovedUser({
+        const UnapprovedUser = new UnapprovedUser({
             fullName: user.fullName,
             username: user.username,
             password: user.password,
             email: user.email,
         });
 
-        await approvedUser.save();
+        await UnapprovedUser.save();
 
         // Update the original user's approval status
         user.approved = true;
