@@ -3,6 +3,7 @@ import React, { useRef, useState, useEffect } from 'react';
 // Import various graph components that will be used to display data visualizations.
 import VisualisationsDropdownMenu from "../components/VisualisationsDropdownMenu";
 import LocalAuthorityDropDownMenu from "../components/LocalAuthorityDropDownMenu";
+import BreakDownOfHeatDemandHeatTechnology from '../components/graphs/BreakDownOfHeatDemandHeatTechnology';
 import Header from "../Header";
 import LoadingGif from "../assets/LoadingGif.gif";
 
@@ -111,9 +112,13 @@ export default function BreakDownOfHeatDemandPage() {
     //drop down style for this page
     const dropdownStyle = {
         padding: '1em', // Padding inside the sidebar
-        height: 'calc(100vh - 2em)', // Full height minus padding
+        height: 'calc(15vh - 2em)', // Full height minus padding
         overflowY: 'auto', // Scroll vertically if content overflows
     };
+
+    const pieChart1Style = {
+     //To add
+    }
   
     // Render a loading state if the data has not been loaded yet.
     if (!heatData || !geoJsonData) {
@@ -160,6 +165,15 @@ export default function BreakDownOfHeatDemandPage() {
                 selectedAuthority={selectedAuthority}
                 onSelectAuthority={handleSelectAuthority}
                />}
+            </div>
+          </div>
+          <div style={pageStyle}>
+          <div style={pieChart1Style}>
+                <h5>Most common type of boilers used in {selectedAuthority} by percent</h5>
+                <BreakDownOfHeatDemandHeatTechnology
+                  heatData={heatData} // Pass necessary props to the child component
+                  localAuthority={selectedAuthority} // Pass selectedAuthority as localAuthority prop
+               />
             </div>
           </div>
         </>

@@ -15,6 +15,7 @@
     "@nivo/bar": "^0.83.0",
     "@nivo/core": "^0.83.0",
     "@nivo/heatmap": "^0.83.0",
+    "@nivo/pie": "^0.83.0",
     "@testing-library/jest-dom": "^6.1.4",
     "axios": "^1.6.0",
     "d3": "^7.8.5",
@@ -65,6 +66,8 @@
     "moduleNameMapper": {
       "\\\\.css$": "<rootDir>/__mocks__/styleMock.js"
     },
-    "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"]
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.js"
+    ]
   }
 }
