@@ -4,6 +4,8 @@ import React, { useRef, useState, useEffect } from 'react';
 import VisualisationsDropdownMenu from "../components/VisualisationsDropdownMenu";
 import LocalAuthorityDropDownMenu from "../components/LocalAuthorityDropDownMenu";
 import BreakDownOfHeatDemandHeatTechnology from '../components/graphs/BreakDownOfHeatDemandHeatTechnology';
+import BreakDownOfHeatDemandDwellings from '../components/graphs/BreakDownOfHeatDemandDwellings';
+import BreakDownOfHeatDemandRurality from '../components/graphs/BreakDownOfHeatDemandRurality';
 import Header from "../Header";
 import LoadingGif from "../assets/LoadingGif.gif";
 
@@ -87,8 +89,15 @@ export default function BreakDownOfHeatDemandPage() {
           // Remove duplicate entries and set the unique local authorities state.
           const uniqueAuthorities = Array.from(new Set(localAuthorities));
           setUniqueLocalAuthorities(uniqueAuthorities);
+          
+          // Select "Adur" by default if it exists in the data
+          if (!selectedAuthority && uniqueAuthorities.includes("Adur")) {
+            setSelectedAuthority("Adur");
+          } else if (!selectedAuthority && uniqueAuthorities.length > 0) {
+            setSelectedAuthority(uniqueAuthorities[0]);
+          }
         }
-      }, [heatData]);
+    }, [heatData]);
 
     // Callback function to handle authority selection.
     const handleSelectAuthority = (selectedAuthority) => {
@@ -112,7 +121,7 @@ export default function BreakDownOfHeatDemandPage() {
     //drop down style for this page
     const dropdownStyle = {
         padding: '1em', // Padding inside the sidebar
-        height: 'calc(15vh - 2em)', // Full height minus padding
+        height: 'calc(20vh - 2em)', // Full height minus padding
         overflowY: 'auto', // Scroll vertically if content overflows
     };
 
@@ -160,6 +169,7 @@ export default function BreakDownOfHeatDemandPage() {
           <VisualisationsDropdownMenu></VisualisationsDropdownMenu>
           <div style={pageStyle}>
             <div style={dropdownStyle}>
+               <h3>Breakdown of heat demand before energy efficiency measures for {selectedAuthority}</h3>
                {<LocalAuthorityDropDownMenu
                 authorities={uniqueLocalAuthorities}
                 selectedAuthority={selectedAuthority}
@@ -174,6 +184,16 @@ export default function BreakDownOfHeatDemandPage() {
                   heatData={heatData} // Pass necessary props to the child component
                   localAuthority={selectedAuthority} // Pass selectedAuthority as localAuthority prop
                />
+                <h5>Breakdown of heat demand by dwellings for {selectedAuthority} by percent</h5>
+                 <BreakDownOfHeatDemandDwellings
+                  heatData={heatData} // Pass necessary props to the child component
+                  localAuthority={selectedAuthority} // Pass selectedAuthority as localAuthority prop
+               />
+                <h5>Breakdown of heat demand by rurality for {selectedAuthority} by percent</h5>
+                 <BreakDownOfHeatDemandRurality
+                  heatData={heatData} // Pass necessary props to the child component
+                  localAuthority={selectedAuthority} // Pass selectedAuthority as localAuthority prop
+                 />
             </div>
           </div>
         </>

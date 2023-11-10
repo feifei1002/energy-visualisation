@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { ResponsivePie } from '@nivo/pie';
 
-export default function BreakDownOfHeatDemandHeatTechnology ({ heatData, localAuthority }){
-  // States for managing loading, error, and technology data
+export default function BreakDownOfHeatDemandDwellings ({ heatData, localAuthority }) {
+  // States for managing loading, error, and dwelling data
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [technologyData, setTechnologyData] = useState([]);
+  const [dwellingData, setDwellingData] = useState([]);
 
-  // Use useEffect to update technologyData when heatData or localAuthority changes
+  // Use useEffect to update dwellingData when heatData or localAuthority changes
   useEffect(() => {
     if (!heatData || !localAuthority) return; // Ensure necessary data exists
 
@@ -18,31 +18,34 @@ export default function BreakDownOfHeatDemandHeatTechnology ({ heatData, localAu
       (data) => data['Local Authority (2019)'] === localAuthority
     );
 
-    // Extract and aggregate the heat demand for different technologies
-    const technologyBreakdown = selectedAuthorityData.reduce((acc, curr) => {
-      for (const key in curr) {
-        if (key.includes('Average heat demand after energy efficiency measures for')) {
-          const tech = key.split('for ')[1].replace(' (kWh)', '');
-          acc[tech] = (acc[tech] || 0) + curr[key];
-        }
-      }
+    // Extract and aggregate the heat demand for different dwelling types
+    const dwellingBreakdown = selectedAuthorityData.reduce((acc, curr) => {
+      // Iterate through each dwelling type
+      ['detached', 'flat', 'semi-detached', 'terraced'].forEach((dwellingType) => {
+        // Calculate total value for each dwelling type
+        const totalDwellingValue = Object.keys(curr)
+          .filter((key) => key.includes(`after energy efficiency measures for ${dwellingType}`))
+          .reduce((total, key) => total + curr[key], 0);
+
+        acc[dwellingType] = (acc[dwellingType] || 0) + totalDwellingValue; // Aggregate the values
+      });
       return acc;
     }, {});
 
     // Calculate the total to get the percentage values
-    const totalValue = Object.values(technologyBreakdown).reduce((acc, curr) => acc + curr, 0);
+    const totalValue = Object.values(dwellingBreakdown).reduce((acc, curr) => acc + curr, 0);
 
     // Format the data for Nivo pie chart
-    const formattedData = Object.entries(technologyBreakdown).map(([technology, value]) => ({
-      id: technology,
+    const formattedData = Object.entries(dwellingBreakdown).map(([dwellingType, value]) => ({
+      id: dwellingType,
       value: parseFloat(((value / totalValue) * 100).toFixed(2)), // Convert to a format that allows a percentage
     }));
 
-    setTechnologyData(formattedData); // Set the formatted data
+    setDwellingData(formattedData); // Set the formatted data
     setLoading(false); // Set loading state to false when data is ready
   }, [heatData, localAuthority]); // Depend on heatData and localAuthority changes
 
-  // Rendering the component based on loading state, errors, and technology data
+  // Rendering the component based on loading state, errors, and dwelling data
   return (
     <div>
       <div>
@@ -50,12 +53,12 @@ export default function BreakDownOfHeatDemandHeatTechnology ({ heatData, localAu
           <p>Loading data...</p>
         ) : error ? (
           <p>Error: {error.message}</p>
-        ) : technologyData.length ? (
+        ) : dwellingData.length ? (
           <div>
             <div>
               <div style={{ width: '50vw', height: 400 }}>
                 <ResponsivePie
-                  data={technologyData}
+                  data={dwellingData}
                   margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
                   innerRadius={0.5}
                   padAngle={0.7}
@@ -64,10 +67,8 @@ export default function BreakDownOfHeatDemandHeatTechnology ({ heatData, localAu
                   borderWidth={1}
                   borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
                   enableRadialLabels={false}
-                  valueFormat={function (e) {
-                    return e + '%';
-                  }}
-                  sliceLabel={(slice) => `${slice.id}: ${slice.value}`} // Display as a percentage
+                  valueFormat={(e) => e + '%'}
+                  sliceLabel={(slice) => `${slice.id}: ${slice.value}%`}
                 />
               </div>
             </div>
