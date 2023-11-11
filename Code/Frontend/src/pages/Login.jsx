@@ -5,29 +5,36 @@ import '../css/Login.css'
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Header from "../Header.jsx";
+import {useAuth0} from "@auth0/auth0-react";
 
 function Login() {
-    // https://www.w3schools.com/react/react_forms.asp on 04/11
-    const [inputs, setInputs,] = useState("");
 
-    const handleChange = (event) => {
-        const username = event.target.username;
-        const password = event.target.password;
-        setInputs(values => ({...values, [username]: password}))
-      }
-    
-    const handleSubmit = (event) => {
+    // https://stackoverflow.com/questions/71536244/check-username-password-login-form-using-react-hooks
+    const [inputs, setInputs] = useState({
+        username: '',
+        password: ''
+    });
+
+    const {uname, pass} = inputs;
+
+    const handleChange = (e) => {
+        setInputs({...inputs, [e.target.name]:[e.target.value]})
+    }
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(event);
-        // below line is for testing the username and pass are correctly submitted
-        // alert(event.target.elements.username.value + " and " + event.target.elements.password.value);
 
         // backend section
         try {
-            const response = axios.put('/api/login');
+            console.log("inputs are: " + inputs.username + " " + inputs.password);
+            const response = await axios.put('/api/login1', inputs);
+            console.log(response)
+            setInputs(response.data)
         } catch (error) {
             console.error('Error with login:', error);
         }
+        // const {loginWithRedirect} = useAuth0();
     }
     // end of code
 
@@ -44,21 +51,22 @@ function Login() {
             <Header />
 
             <main>
-                <div class="login">
-                <form onSubmit={handleSubmit} class="loginForm">
-                    <div class="inputRow">
+                <div className="login">
+                <form onSubmit={handleSubmit}>
+                    <div className="inputRow">
                     <label>User Name</label>
                     {/* sets max length for username and password as 15 values, and both have to be a value */}
-                    <input type="text" name="username" value={inputs.username} onChange={handleChange} {...{ required: true, maxLength: 15 }} />
+                    <input type="text" name="username" value={uname} onChange={handleChange} {...{ required: true, maxLength: 15 }} />
                     </div>
-                    <div class="inputRow">
+                    <div className="inputRow">
                     <label>Password</label>
-                    <input type="password" name="password" value={inputs.password} onChange={handleChange} {...{ required: true, maxLength: 15 }} />
+                    <input type="password" name="password" value={pass} onChange={handleChange} {...{ required: true, maxLength: 15 }} />
                     </div>
-                    <div class="inputRow">
+                    <div className="inputRow">
                     <input type="submit" value="Login" />
+                    {/*    <button onClick={() => loginWithRedirect()} value="Login"></button>*/}
                     {/* https://stackoverflow.com/questions/2825856/html-button-to-not-submit-form  on 04/11*/}
-                    <button type="button" onClick={routeChange}>Register</button>
+                    {/*<button type="button" onClick={routeChange}>Register</button>*/}
                     {/* end */}
                     </div>
                 </form>
