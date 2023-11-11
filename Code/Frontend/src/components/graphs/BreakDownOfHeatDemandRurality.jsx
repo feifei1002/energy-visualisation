@@ -1,19 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { ResponsivePie } from '@nivo/pie';
 
-export default function BreakDownOfHeatDemandRurality({ heatData, localAuthority }){
-  // State variables for managing loading state, errors, and the rurality data
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [ruralityData, setRuralityData] = useState([]);
+export default function BreakDownOfHeatDemandRurality({ heatData, localAuthority }) {
+  // State variables for managing loading, errors, and the rurality data
+  const [loading, setLoading] = useState(false); // Manages the loading state
+  const [error, setError] = useState(null); // Stores potential error messages
+  const [ruralityData, setRuralityData] = useState([]); // Stores processed rurality data
+
+  //Get color for the row in the corresponding table
+  const getColor = (index) => {
+    // Predefined color scheme for data representation
+    const schemeCategory10 = [
+      '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
+      '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'
+    ];
+    return schemeCategory10[index % schemeCategory10.length]; // Returns a color based on the index
+  };
 
   // Fetch and process data whenever 'heatData' or 'localAuthority' changes
   useEffect(() => {
     // If no data or authority is provided, return without doing anything
     if (!heatData || !localAuthority) return;
 
-    // Set loading state to true
-    setLoading(true);
+    setLoading(true); // Indicate data loading
 
     // Filter data based on the selected local authority
     const selectedAuthorityData = heatData.filter(
@@ -30,7 +39,7 @@ export default function BreakDownOfHeatDemandRurality({ heatData, localAuthority
     // Calculate the count of each rurality type in the selected data
     selectedAuthorityData.forEach((data) => {
       const rurality = data['Rurality'];
-      ruralityBreakdown[rurality]++;
+      ruralityBreakdown[rurality]++; // Increment rurality count
     });
 
     // Calculate the total count of rurality types
@@ -38,17 +47,20 @@ export default function BreakDownOfHeatDemandRurality({ heatData, localAuthority
 
     // Format the rurality data for display in the pie chart
     const formattedData = Object.entries(ruralityBreakdown).map(
-      ([ruralityType, count]) => ({
-        id: ruralityType,
-        value: parseFloat(((count / total) * 100).toFixed(2)),
+      ([ruralityType, count], index) => ({
+        id: ruralityType, // Name of rurality type
+        value: parseFloat(((count / total) * 100).toFixed(2)), // Calculate percentage
+        color: getColor(index), // Assign color based on index
       })
     );
 
     // Update the state with the formatted rurality data
     setRuralityData(formattedData);
-    // Set loading state to false since data processing is completed
-    setLoading(false);
-  }, [heatData, localAuthority]); // Dependencies that trigger the effect on change
+    setLoading(false); // Indicate data processing completion
+  }, [heatData, localAuthority]); // Triggers this effect on 'heatData' or 'localAuthority' changes
+
+  // Sort the rurality data for table display by the 'value' in descending order
+  const sortedTableData = [...ruralityData].sort((a, b) => b.value - a.value);
 
   // Render the component with the data, loading state, and potential errors
   return (
@@ -61,21 +73,42 @@ export default function BreakDownOfHeatDemandRurality({ heatData, localAuthority
         ) : ruralityData.length ? ( // Display the pie chart if data is available
           <div>
             <div>
-              <div style={{ width: '50vw', height: 400 }}>
+              <div style={{ width: '100vw', height: 400 }}>
                 <ResponsivePie
-                  data={ruralityData}
-                  margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+                  data={ruralityData} // Pass rurality data to the Nivo pie chart
+                  margin={{ top: 40, right: 80, bottom: 40, left: 80 }}
                   innerRadius={0.5}
                   padAngle={0.7}
                   cornerRadius={3}
                   colors={{ scheme: 'category10' }}
                   borderWidth={1}
                   borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
+                  enableArcLinkLabels={false}
                   enableRadialLabels={false}
-                  valueFormat={(e) => e + '%'}
-                  sliceLabel={(slice) => `${slice.id}: ${slice.value}%`}
+                  enableSlicesLabels={false} 
+                  enableLabels={false} 
+                  enableArcLabels={false}
+                  legends={[]} 
                 />
               </div>
+            </div>
+            <div style={{ width: '100vw', display:'flex', justifyContent: 'center', marginBottom: '1vh'}}>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Rurality Type</th>
+                    <th>Percentage</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sortedTableData.map((data) => (
+                    <tr key={data.id} style={{ backgroundColor: data.color }}>
+                      <td>{data.id}</td>
+                      <td>{data.value}%</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         ) : ( // Display a message when no data is found for the selected authority
