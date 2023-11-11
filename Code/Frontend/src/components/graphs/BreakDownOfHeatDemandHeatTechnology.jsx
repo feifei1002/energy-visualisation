@@ -70,6 +70,7 @@ export default function BreakDownOfHeatDemandHeatTechnology ({ heatData, localAu
             <div>
               <div style={{ width: '100vw', height: 400 }}>
                 <ResponsivePie
+                  data-testid="pie-chart"
                   data={technologyData}
                   margin={{ top: 40, right: 80, bottom: 40, left: 80 }}
                   innerRadius={0.5}
