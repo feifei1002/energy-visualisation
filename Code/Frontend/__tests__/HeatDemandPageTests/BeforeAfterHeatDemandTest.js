@@ -46,8 +46,6 @@ describe('BeforeAfterHeatDemandBar', () => {
     // Assert that the selected local authority is displayed
     const selectedAuthorityElement = screen.getByText('Local Authority (2019): City of London');
     expect(selectedAuthorityElement).toBeInTheDocument();
-
-    //Add more later
   });
 
   it('renders the component with default message when no data is loaded', () => {
@@ -68,5 +66,21 @@ describe('BeforeAfterHeatDemandBar', () => {
     // Assert that the selected local authority is displayed
     const selectedAuthorityElement = screen.getByText('Local Authority (2019): City of London');
     expect(selectedAuthorityElement).toBeInTheDocument();
+  });
+
+  it('shows the select identicator', () => {
+    render(<BeforeAfterHeatDemandBar data={testData} />);
+    
+    //Check select identicator is shown
+    const selectIndicator = screen.getByText('Select a Local Authority:');
+    expect(selectIndicator).toBeInTheDocument();
+  });
+
+  it('shows the City Of London as a option', () => {
+    render(<BeforeAfterHeatDemandBar data={testData} />);
+    
+    //Check select option is shown
+    const selectOption = screen.getByText('City of London');
+    expect(selectOption).toBeInTheDocument();
   });
 });

@@ -4,7 +4,6 @@ import BreakDownOfHeatDemandHeatTechnology from '../../src/components/graphs/Bre
 import '@testing-library/jest-dom'
 
 // Sample test data for the BreakDownOfHeatDemandHeatTechnology component
-//Sample test data for the before after heat demand bar
 const testData = [
     {
       "LSOA11CD": "E01000001",
