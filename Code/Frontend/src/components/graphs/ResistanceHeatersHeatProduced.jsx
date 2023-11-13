@@ -44,33 +44,6 @@ export default function ResistanceHeatersHeatProduced({data}) {
         fetchTimeData();
     }, []);
 
-    // const heatProducedAreaBumpChart = () => (
-    //     <ResponsiveBump
-    //         data={data}
-    //         margin={{ top: 40, right: 100, bottom: 40, left: 100 }}
-    //         colors={{ scheme: 'nivo' }} // You can customize the color scheme
-    //         lineWidth={3} // Adjust line width as needed
-    //         activeLineWidth={6}
-    //         inactiveLineWidth={3}
-    //         inactiveOpacity={0.15}
-    //         pointSize={10} // Size of data points
-    //         activePointSize={16}
-    //         inactivePointSize={0}
-    //         pointColor={{ theme: 'background' }}
-    //         pointBorderWidth={3}
-    //         activePointBorderWidth={3}
-    //         pointBorderColor={{ from: 'serie.color' }}
-    //         enableGridX={false}
-    //         enableGridY={false}
-    //         axisTop={null}
-    //         axisRight={null}
-    //         axisBottom={null}
-    //         axisLeft={null}
-    //         animate
-    //         motionStiffness={90}
-    //         motionDamping={15}
-    //     />
-    // );
     return(
         <>
             <h1>Graph here - Heat produced</h1>
