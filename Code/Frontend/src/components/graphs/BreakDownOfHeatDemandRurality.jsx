@@ -95,16 +95,18 @@ export default function BreakDownOfHeatDemandRurality({ heatData, localAuthority
             <div style={{ width: '100vw', display:'flex', justifyContent: 'center', marginBottom: '1vh'}}>
               <table>
                 <thead>
-                  <tr>
-                    <th>Rurality Type</th>
-                    <th>Percentage</th>
+                  <tr style={{ border: "1px solid black" }}>
+                  <th style={{ border: "1px solid black" }}>Colour</th>
+                    <th style={{ border: "1px solid black" }}>Rurality Type</th>
+                    <th style={{ border: "1px solid black" }}>Percentage</th>
                   </tr>
                 </thead>
                 <tbody>
                   {sortedTableData.map((data) => (
-                    <tr key={data.id} style={{ backgroundColor: data.color }}>
-                      <td>{data.id}</td>
-                      <td>{data.value}%</td>
+                    <tr key={data.id}>
+                      <td style={{ backgroundColor: data.color, border: "1px solid black"}}></td>
+                      <td style={{ border: "1px solid black" }}>{data.id}</td>
+                      <td style={{ border: "1px solid black" }}>{data.value}%</td>
                     </tr>
                   ))}
                 </tbody>

@@ -88,18 +88,20 @@ export default function BreakDownOfHeatDemandHeatTechnology ({ heatData, localAu
                 />
               </div>
               <div style={{ width: '100vw', display:'flex', justifyContent: 'center', marginBottom: '1vh'}}>
-                <table>
+                <table style={{ border: "1px solid black" }}>
                   <thead>
-                    <tr>
-                      <th>Boiler Type</th>
-                      <th>Percentage</th>
+                    <tr style={{ border: "1px solid black" }}>
+                      <th style={{ border: "1px solid black" }}>Colour</th>
+                      <th style={{ border: "1px solid black" }}>Boiler Type</th>
+                      <th style={{ border: "1px solid black" }}>Percentage</th>
                     </tr>
                   </thead>
                   <tbody>
                     {sortedTableData.map((data) => (
-                      <tr key={data.id} style={{ backgroundColor: data.color }}>
-                        <td>{data.id}</td>
-                        <td>{data.value}%</td>
+                      <tr key={data.id} style={{ border: "1px solid black" }}>
+                        <td style={{ backgroundColor: data.color, border: "1px solid black" }}></td>
+                        <td style={{ border: "1px solid black" }}>{data.id}</td>
+                        <td style={{ border: "1px solid black" }}>{data.value}%</td>
                       </tr>
                     ))}
                   </tbody>
