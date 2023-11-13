@@ -37,7 +37,7 @@ describe('BreakDownOfHeatDemandHeatTechnology', () => {
 
     // Check if the table is rendered by looking for table headers
     const tableHeaders = screen.getAllByRole('columnheader');
-    expect(tableHeaders).toHaveLength(2); // Assuming there are two columns: "Boiler Type" and "Percentage"
+    expect(tableHeaders).toHaveLength(3); // Assuming there are three columns: "Colour", "Boiler Type" and "Percentage"
 
     // Check if individual table rows are rendered
     const tableRows = screen.getAllByRole('row');

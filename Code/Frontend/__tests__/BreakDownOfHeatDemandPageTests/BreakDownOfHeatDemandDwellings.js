@@ -37,7 +37,7 @@ describe('BreakDownOfHeatDemandHeatDwellings', () => {
 
     // Check if the table is rendered by looking for table headers
     const tableHeaders = screen.getAllByRole('columnheader');
-    expect(tableHeaders).toHaveLength(2); // Assuming there are two columns: "Dwelling Type" and "Heat Demand Percentage"
+    expect(tableHeaders).toHaveLength(3); // Assuming there are three columns: "Colour", "Dwelling Type" and "Heat Demand Percentage"
 
     // Check if individual table rows are rendered
     const tableRows = screen.getAllByRole('row');
