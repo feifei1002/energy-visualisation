@@ -96,7 +96,7 @@ export default function BreakDownOfHeatDemandPage() {
 
       // Remove duplicate entries and set the unique local authorities state.
       const uniqueAuthorities = Array.from(new Set(localAuthorities));
-      setUniqueLocalAuthorities(uniqueAuthorities);
+      setUniqueLocalAuthorities(uniqueAuthorities.sort()); //Sort in alphabetical order
 
       // Select "Adur" by default if it exists in the data
       if (!selectedAuthority && uniqueAuthorities.includes("Adur")) {
@@ -203,11 +203,11 @@ export default function BreakDownOfHeatDemandPage() {
         <div style={pageStyle}>
           <div style={dropdownStyle}>
             <h3>Breakdown of heat demand before energy efficiency measures for {selectedAuthority}</h3>
-            {<LocalAuthorityDropDownMenu
-              authorities={uniqueLocalAuthorities}
+            {uniqueLocalAuthorities && (<LocalAuthorityDropDownMenu
+              authorities={['All Authorities', ...uniqueLocalAuthorities]}
               selectedAuthority={selectedAuthority}
               onSelectAuthority={handleSelectAuthority}
-            />}
+            />)}
           </div>
         </div>
         <div style={pageStyle}>
@@ -220,7 +220,7 @@ export default function BreakDownOfHeatDemandPage() {
               <h5>Most common type of boilers used in {selectedAuthority} by percent</h5>
               <BreakDownOfHeatDemandHeatTechnology
                 heatData={heatData} // Pass necessary props to the child component
-                localAuthority={selectedAuthority} // Pass selectedAuthority as localAuthority prop
+                localAuthority={selectedAuthority === 'All' ? null : selectedAuthority}// Pass selectedAuthority as localAuthority prop
               />
             </div>
             <div style={pieStyle}>
@@ -231,7 +231,7 @@ export default function BreakDownOfHeatDemandPage() {
               <h5>Breakdown of heat demand by dwellings for {selectedAuthority} by percent</h5>
               <BreakDownOfHeatDemandDwellings
                 heatData={heatData} // Pass necessary props to the child component
-                localAuthority={selectedAuthority} // Pass selectedAuthority as localAuthority prop
+                localAuthority={selectedAuthority === 'All' ? null : selectedAuthority} // Pass selectedAuthority as localAuthority prop
               />
             </div>
             <div style={pieStyle}>
@@ -242,7 +242,7 @@ export default function BreakDownOfHeatDemandPage() {
               <h5>Breakdown of heat demand by rurality for {selectedAuthority} by percent</h5>
               <BreakDownOfHeatDemandRurality
                 heatData={heatData} // Pass necessary props to the child component
-                localAuthority={selectedAuthority} // Pass selectedAuthority as localAuthority prop
+                localAuthority={selectedAuthority === 'All' ? null : selectedAuthority} // Pass selectedAuthority as localAuthority prop
               />
             </div>
           </div>
