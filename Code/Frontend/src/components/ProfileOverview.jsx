@@ -43,7 +43,6 @@ const ProfileOverview = () => {
             const response = await axios.put('/api/profile', profile);
             setProfile(response.data);
             setIsEditing(false);
-            window.location.href = '/';
         } catch (error) {
             console.error('Error updating profile:', error);
         }

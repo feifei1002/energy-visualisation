@@ -7,6 +7,13 @@ const RegisterController = require("../../controllers/RegisterController");
 
 //update register
 router.post('/register', RegisterController.registerNewUser);
+
+// Handle GET requests to /api/register
+router.get('/register', (req, res) => {
+    res.status(404).send('Not Found');
+});
+module.exports = router;
+
 // const app = express();
 // app.use(bodyParser.json());
 //
@@ -28,7 +35,5 @@ router.post('/register', RegisterController.registerNewUser);
 // app.listen(port, () => {
 //     console.log('Server is running on port', port);
 // });
-
-module.exports = router;
 
 

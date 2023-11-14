@@ -2,83 +2,88 @@
  import axios from "axios";
 // import { useHistory } from 'react-router-dom';
 
-const RegistrationForm = () => {
-    const [formData, setFormData] = useState({
-        fullName: '',
-        username: '',
-        email: '',
-        password: '',
-    });
+ const RegistrationForm = () => {
+     const [formData, setFormData] = useState({
+         fullName: '',
+         username: '',
+         email: '',
+         password: '',
+     });
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+     const handleInputChange = (e) => {
+         const { name, value } = e.target;
+         setFormData({ ...formData, [name]: value });
+     };
 
-    const handleRegistration = async (e) => {
-        e.preventDefault(); // Prevent the default form submission behavior
-        try {
-            const response = await axios.put('/api/register', formData);
-            setFormData(response.data);
-            const responseData = await response.json();
-            console.log('Registration successful:', responseData);
-            window.location.href = '/';
-        } catch (error) {
-            // Handle unexpected errors
-            console.error('Unexpected error during registration:', error);
-        }
-    };
+     const handleRegistration = async (e) => {
+         e.preventDefault();
+         try {
+             const response = await axios.post('http://localhost:8082/api/register', formData);
+             console.log('Axios Response:', response);
 
-    return (
-        <div>
-            <form onSubmit={handleRegistration} className="profile-form">
-            <h2>Registration Form</h2>
-                <div>
-                    <div className="form-group">
-                        <label htmlFor="fullName">Full Name:</label>
-                        <input
-                            type="text"
-                            id="fullName"
-                            name="fullName"
-                            value={formData.fullName}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="username">Username:</label>
-                        <input
-                            type="text"
-                            id="username"
-                            name="username"
-                            value={formData.username}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="email">Email:</label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="password">Password:</label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <button onClick={handleRegistration}>Register</button>
-                </div>
-            </form>
-        </div>
-    );
-};
+             setFormData({
+                 fullName: '',
+                 username: '',
+                 email: '',
+                 password: '',
+             });
+         } catch (error) {
+             console.error('Axios Error:', error);
+         }
+     };
 
-export default RegistrationForm;
+     return (
+         <div>
+             <form onSubmit={handleRegistration} className="register-form">
+                 <h2>Registration Form</h2>
+                 <div className="form-group">
+                     <label htmlFor="fullName">Full Name:</label>
+                     <input
+                         type="text"
+                         id="fullName"
+                         name="fullName"
+                         value={formData.fullName}
+                         onChange={handleInputChange}
+                         autoComplete="name"
+                     />
+                 </div>
+                 <div className="form-group">
+                     <label htmlFor="username">Username:</label>
+                     <input
+                         type="text"
+                         id="username"
+                         name="username"
+                         value={formData.username}
+                         onChange={handleInputChange}
+                         autoComplete="username"
+                     />
+                 </div>
+                 <div className="form-group">
+                     <label htmlFor="email">Email:</label>
+                     <input
+                         type="email"
+                         id="email"
+                         name="email"
+                         value={formData.email}
+                         onChange={handleInputChange}
+                         autoComplete="email"
+                     />
+                 </div>
+                 <div className="form-group">
+                     <label htmlFor="password">Password:</label>
+                     <input
+                         type="password"
+                         id="password"
+                         name="password"
+                         value={formData.password}
+                         onChange={handleInputChange}
+                         autoComplete="new-password"
+                     />
+                 </div>
+                 <button type="submit" className="btn register-btn">Register</button>
+             </form>
+         </div>
+     );
+ };
+
+ export default RegistrationForm;

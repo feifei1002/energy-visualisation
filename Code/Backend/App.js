@@ -3,17 +3,14 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 require('dotenv').config();
 
-
-const clientSecret = process.env.AUTH0_CLIENT_SECRET;
-
-
-// Define the root route for API
-app.get('/', (req, res) => res.send('index route!'));
-app.get('/authorized', function (req, res) {
-  res.send('Secured Resource');
-});
+// // Define the root route for API
+// app.get('/', (req, res) => res.send('index route!'));
+// app.get('/authorized', function (req, res) {
+//   res.send('Secured Resource');
+// });
 //Define port
 const port = process.env.PORT || 8082;
 
@@ -48,8 +45,11 @@ const connectDB = async () => {
 connectDB();
 
 //Configure CORS and JSON parsing
-app.use(cors({ origin: true, credentials: true }));
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+//app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ extended: false }));
+app.use(bodyParser.json()); // Using bodyParser for JSON parsing
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //Import and configure the API routes
 const apiRouter = require('./routes/api/Api');
@@ -58,7 +58,8 @@ const dataRouter = require('./routes/data/Data');
 app.use('/api', apiRouter);
 app.use('/data', dataRouter);
 // app.use('/register', registerRouter);
-app.use(checkJwt);
+
+
 
 
 //Start the server
