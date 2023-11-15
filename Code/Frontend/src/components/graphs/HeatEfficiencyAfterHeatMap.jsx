@@ -47,9 +47,18 @@ export default function HeatEfficiencyAfterHeatMap({ heatData, geoJsonData }) {
         const demandData = heatDataMap.get(feature.properties.LSOA11CD);
         // If there's demand data, create a popup with information about the feature
         if (demandData) {
-          const popupContent = `LSOA Code: ${feature.properties.LSOA11CD}<br>` +
-          `Local Authority: ${demandData['Local Authority (2019)']}<br>` +
-          `Total heat demand (after measures): ${demandData['Total heat demand after energy efficiency measures 2018 (kWh)'].toLocaleString()} kWh`;
+          const popupContent = `
+          LSOA Code: ${feature.properties.LSOA11CD}<br>
+          Local Authority: ${demandData['Local Authority (2019)']}<br>
+          Total heat demand (after measures): ${demandData['Total heat demand after energy efficiency measures 2018 (kWh)'].toLocaleString()} kWh<br>
+          Annual Heat Demand by Dwellings (after measures):
+          <ul>
+            <li>Detached: ${demandData['Average heat demand after energy efficiency measures for detached gas boiler (kWh)'].toLocaleString()} kWh</li>
+            <li>Flat: ${demandData['Average heat demand after energy efficiency measures for flat gas boiler (kWh)'].toLocaleString()} kWh</li>
+            <li>Semi-detached: ${demandData['Average heat demand after energy efficiency measures for semi-detached gas boiler (kWh)'].toLocaleString()} kWh</li>
+            <li>Terraced: ${demandData['Average heat demand after energy efficiency measures for terraced gas boiler (kWh)'].toLocaleString()} kWh</li>
+          </ul>
+        `;
           layer.bindPopup(popupContent).openPopup();
         }
       });
