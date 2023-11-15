@@ -4,6 +4,8 @@ const bodyParser = require("body-parser");
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+const bcrypt = require("bcrypt");
+const saltRounds = 10; //increasing this increases security to bruteforce but also time it takes to hash
 
 // post login data
 const getLogin = async (request, response) => {
@@ -25,20 +27,35 @@ const postLogin = async (req, res) => {
     // Read username and password from request body
     const data = req.body;
 
-    // const usern = req.body.username;
-    // const userp = req.body.password;
-
-    // Filter user from the users array by username and password
-    // const user = users.find(u => { return u.username === username && u.password === password });
     try {
-        console.log("username inputted: " + data.username)
-        const user = await User.findOne({username: data.username}).select('password'); //to exclude the password field
-        console.log("password is " + user.password);
-        if (data.password === user.password) {
-            console.log("user and pass correct, ");
+        // find the user in the table with the same username inputted
+        // and selects the password
+        const user = await User.findOne({username: data.username}).select('password');
+        // compares the password inputted with the hashed password in the database, using bcrypt.compare
+        const comparison = await bcrypt.compare(String(data.password), user.password);
+
+        // comparison is true if both password match
+        if (comparison === true) {
+            // user is authenticated, after correctly logs in
+            // for testing
+            console.log("passwords match");
+
+            // // generate auth token
+            // const authToken = generateAuthToken();
+            //
+            // // Store authentication token
+            // authTokens[authToken] = user;
+            //
+            // // Setting the auth token in cookies
+            // res.cookie('AuthToken', authToken);
+            //
+            // // Redirect user to the protected page
+            // res.redirect('/protected');
         } else {
-            console.log("password incorrect, ")
+            // for testing
+            console.log("dont match");
         }
+
 
     } catch (error) {
             console.error('Error fetching password:', error);
