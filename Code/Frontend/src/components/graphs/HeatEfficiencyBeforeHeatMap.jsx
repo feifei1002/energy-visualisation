@@ -6,6 +6,7 @@ import Chart from 'chart.js/auto';
 export default function HeatEfficiencyBeforeHeatMap({ heatData, geoJsonData }) {
   const [selectedFeature, setSelectedFeature] = useState(null);
   const [myChart, setMyChart] = useState(null);
+  const [chartInUse, setChartInUse] = useState(false);
 
   const heatDataMap = useMemo(() => {
     const map = new Map();
@@ -55,17 +56,26 @@ export default function HeatEfficiencyBeforeHeatMap({ heatData, geoJsonData }) {
         `;
           setSelectedFeature(feature);
           layer.bindPopup(popupContent).openPopup();
-          createOrUpdateStackedBarChart(demandData);
         }
       });
     };
   }, [heatDataMap]);
- 
-  useEffect(() => {
-    // Create or update the stacked bar chart
-    createOrUpdateStackedBarChart();
-  }, [heatData, selectedFeature, geoJsonData]); // Include geoJsonData as a dependency
 
+  useEffect(() => {
+    if (chartInUse && selectedFeature) {
+      if (selectedFeature) {
+        const demandData = heatDataMap.get(selectedFeature.properties.LSOA11CD);
+        if (demandData) {
+          createOrUpdateStackedBarChart(demandData);
+        }
+      }
+    }
+  }, [chartInUse, selectedFeature, heatDataMap]);
+
+  const showBarChart = () => {
+    setChartInUse(true);
+  };
+  
   const createOrUpdateStackedBarChart = () => {
     if (!geoJsonData) {
       return;
@@ -100,6 +110,13 @@ export default function HeatEfficiencyBeforeHeatMap({ heatData, geoJsonData }) {
                 stacked: true,
               },
             },
+            plugins: {
+              title: {
+                  display: true,
+                  text: `Heat demand for ${demandData['Local Authority (2019)']}`
+              }
+             
+            }
           },
         }));
       }
@@ -155,7 +172,28 @@ export default function HeatEfficiencyBeforeHeatMap({ heatData, geoJsonData }) {
           <GeoJSON data={geoJsonData.features} style={style} onEachFeature={onEachFeature} />
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         </MapContainer>
-        <canvas id="stackedBarChart"></canvas>
+        {chartInUse && (
+        <canvas id="stackedBarChart" style={{ position: 'absolute', top: '37%', left: '1%', zIndex: 1000, background: '#fff'}}></canvas>
+        )
+        }
+        {selectedFeature && !myChart && (
+            <button onClick={() => showBarChart()} 
+            style={{ position: 'absolute', top: '80%', left: '1%', padding: '5px', background: '#000', zIndex: 1001, cursor: 'pointer', color: '#fff' }}
+            >
+            Show Bar Chart For Region</button>
+        )}
+        {myChart && (
+          <button
+            style={{ position: 'absolute', top: '37%', left: '1%', padding: '5px', background: '#000', zIndex: 1001, cursor: 'pointer', color: '#fff' }}
+            onClick={() =>  {if (myChart) {
+              myChart.destroy();
+              setChartInUse(false);
+              setMyChart(null);
+            }}}
+          >
+            Close
+          </button>
+        )}
       </div>
     </div>
   );
