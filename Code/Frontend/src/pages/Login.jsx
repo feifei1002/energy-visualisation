@@ -27,10 +27,10 @@ function Login() {
 
         // backend section
         try {
-            console.log("inputs are: " + inputs.username + " " + inputs.password);
-            const response = await axios.put('/api/login1', inputs);
+            const response = await axios.post('/api/login', inputs);
             console.log(response)
             setInputs(response.data)
+            navigate('/profiledashboard');
         } catch (error) {
             console.error('Error with login:', error);
         }
@@ -66,7 +66,7 @@ function Login() {
                     <input type="submit" value="Login" />
                     {/*    <button onClick={() => loginWithRedirect()} value="Login"></button>*/}
                     {/* https://stackoverflow.com/questions/2825856/html-button-to-not-submit-form  on 04/11*/}
-                    {/*<button type="button" onClick={routeChange}>Register</button>*/}
+                    <button type="button" onClick={routeChange}>Register</button>
                     {/* end */}
                     </div>
                 </form>
