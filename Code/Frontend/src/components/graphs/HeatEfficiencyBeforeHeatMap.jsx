@@ -96,7 +96,7 @@ export default function HeatEfficiencyBeforeHeatMap({ heatData, geoJsonData }) {
       const demandData = heatDataMap.get(selectedFeature.properties.LSOA11CD);
       if (demandData) {
         const data = getChartData(demandData);
-        const ctx = document.getElementById('stackedBarChart').getContext('2d');
+        const ctx = document.getElementById('stackedBarChartBefore').getContext('2d');
 
         setMyChart(new Chart(ctx, {
           type: 'bar',
@@ -113,7 +113,7 @@ export default function HeatEfficiencyBeforeHeatMap({ heatData, geoJsonData }) {
             plugins: {
               title: {
                   display: true,
-                  text: `Heat demand for ${demandData['Local Authority (2019)']}`
+                  text: `Heat demand for ${demandData['Local Authority (2019)']}(${selectedFeature.properties.LSOA11CD})`
               }
              
             }
@@ -173,14 +173,14 @@ export default function HeatEfficiencyBeforeHeatMap({ heatData, geoJsonData }) {
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         </MapContainer>
         {chartInUse && (
-        <canvas id="stackedBarChart" style={{ position: 'absolute', top: '37%', left: '1%', zIndex: 1000, background: '#fff'}}></canvas>
+        <canvas id="stackedBarChartBefore" style={{ position: 'absolute', top: '37%', left: '1%', zIndex: 1000, background: '#fff'}}></canvas>
         )
         }
         {selectedFeature && !myChart && (
             <button onClick={() => showBarChart()} 
             style={{ position: 'absolute', top: '80%', left: '1%', padding: '5px', background: '#000', zIndex: 1001, cursor: 'pointer', color: '#fff' }}
             >
-            Show Bar Chart For Region</button>
+            Show Bar Chart For Region(LSOA)</button>
         )}
         {myChart && (
           <button
