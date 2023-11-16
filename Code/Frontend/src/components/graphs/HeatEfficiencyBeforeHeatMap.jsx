@@ -149,6 +149,26 @@ export default function HeatEfficiencyBeforeHeatMap({ heatData, geoJsonData }) {
             demandData['Number of terraced gas boiler in 2018'],
           ],
         },
+        {
+          label: 'Oil Boiler',
+          backgroundColor: '#FFFF66',
+          data: [
+            demandData['Number of detached oil boiler in 2018'],
+            demandData['Number of flat oil boiler in 2018'],
+            demandData['Number of semi-detached oil boiler in 2018'],
+            demandData['Number of terraced oil boiler in 2018'],
+          ],
+        },
+        {
+          label: 'Resistance Heating',
+          backgroundColor: '#440D31',
+          data: [
+            demandData['Number of detached resistance heating in 2018'],
+            demandData['Number of flat resistance heating in 2018'],
+            demandData['Number of semi-detached resistance heating in 201'],
+            demandData['Number of terraced resistance heating in 2018'],
+          ],
+        },
       ],
     };
   
