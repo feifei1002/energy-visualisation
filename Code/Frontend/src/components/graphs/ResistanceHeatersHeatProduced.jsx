@@ -1,6 +1,4 @@
 import { ResponsiveLine } from '@nivo/line';
-import { ResponsiveAreaBump } from '@nivo/bump'
-import { ResponsiveBump } from '@nivo/bump'
 import React, {useEffect, useState} from "react";
 export default function ResistanceHeatersHeatProduced() {
 
@@ -22,28 +20,44 @@ export default function ResistanceHeatersHeatProduced() {
     }, []);
 
     //Extract the needed data and put it into a new list
-    const formatData = heatData.map(({"Normalised_Resistance_heater_elec": resHeat, "UK_daily_average_OAT_[degrees_C]": temperature, "index": time}, index) => ({
-        index,
-        time,
+    const formatData = heatData.map(({index, "Normalised_Resistance_heater_elec": resHeat, "UK_daily_average_OAT_[degrees_C]": temperature}, dataIndex) => ({
+        index: dataIndex,
+        time: new Date(index),
         temperature,
         resHeat,
     }));
 
-    const formattedDataList = formatData.map((item => ({
-            id: item.temperature,
+
+    const formattedDataList = formatData.map((item) => [
+        {
+            id: 'Resistance heater heat',
+            color: 'red',
             data: [
                 {
-                    x: new Date(item.time), y: item.resHeat
-                }
-            ]
-        }
-        // <li key={item.index}>
-        //     Time: {item.time},
-        //     Temperature: {item.temperature},
-        //     Resistance heater heat: {item.resHeat},
-        // </li>
-    )))
+                    x: new Date(item.time),
+                    y: item.resHeat*1000000,
+                },
+            ],
+        },
+        {
+            id: 'Temperature',
+            color: 'blue',
+            data: [
+                {
+                    x: new Date(item.time),
+                    y: item.temperature,
+                },
+            ],
+        },
+    ]);
 
+    // const displaylist = formatData.map((item => (
+    //     <li key={item.index}>
+    //         Time: {item.time},
+    //         Temperature: {item.temperature},
+    //         Resistance heater heat: {item.resHeat},
+    //     </li>
+    // )))
 
 
 
@@ -51,36 +65,34 @@ export default function ResistanceHeatersHeatProduced() {
 
     return(
         <>
-            <h1>Graph here - Heat produced</h1>
             <div style={{ width: '100vw', height: 400}}>
                 <ResponsiveLine
-                    data={formattedDataList}
+                    data={formattedDataList.flat()}
                     margin={{ top: 40, right: 100, bottom: 40, left: 100 }}
                     xScale={
                     { type: 'time',
                         format: '%Y-%m-%dT%H:%M:%S',
                         precision: "month",
-                        min: ("2013-01-01T00:00:00"),
-                        max: ("2013-12-31T23:30:00"),
+                        min: new Date("2013-01-01T00:00:00"),
+                        max: new Date("2013-12-31T23:30:00"),
                     }
                 }
-                    yScale={{ type: 'linear', min: 5, max: 100, stacked: true, reverse: false }}
+                    yScale={{ type: 'linear', min: 'auto', max: 100, stacked: true, reverse: false }}
                     axisBottom={{
                         format: '%b %Y',
-                        tickValues: 'every 1 month'
+                        tickValues: 'every 1 month',
                     }}
                     axisTop={null}
                     axisRight={null}
                     enableGridX={false}
-                    colors={{ scheme: 'set1' }}
-                    pointSize={5}
+                    colors={(d) => d.color}
+                    pointSize={10}
                     pointColor={{ theme: 'background' }}
                     pointBorderWidth={3}
                     pointBorderColor={{ from: 'serieColor' }}
                 />
             </div>
 
-            <ul>{formattedDataList}</ul>
         </>
     )
 }
