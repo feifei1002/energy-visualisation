@@ -1,11 +1,10 @@
 import { ResponsiveAreaBump } from '@nivo/bump';
 import React, {useEffect, useState} from "react";
-export default function ResistanceHeatersHeatProduced({data}) {
+export default function ResistanceHeatersHeatProduced() {
 
     const [heatData, setHeatData] = useState([]);
-    const [average, setAverage] = useState([]);
-    const [time, setTime] = useState([]);
 
+    //fetch all the data from the CSV
     useEffect(() => {
         const fetchHeatData = async () => {
             try {
@@ -20,52 +19,30 @@ export default function ResistanceHeatersHeatProduced({data}) {
         // console.log(heatData[0][ "UK_daily_average_OAT_[degrees_C]"]);
     }, []);
 
-    useEffect(() => {
-        const fetchAverageData = async () => {
-            try {
-                const averages = heatData.map(entry => entry["UK_daily_average_OAT_[degrees_C]"]);
-                setAverage((averages));
-            } catch (error) {
-                console.error("Error occurs when fetching data", error);
-            }
-        };
-        fetchAverageData();
-    }, []);
+    const formatData = heatData.map(({"Normalised_Resistance_heater_elec": resHeat, "UK_daily_average_OAT_[degrees_C]": temperature, "index": time}, index) => ({
+        index,
+        time,
+        temperature,
+        resHeat,
+    }));
 
-    useEffect(() => {
-        const fetchTimeData = async () => {
-            try {
-                const times = heatData.map(entry => entry["index"]);
-                setTime((times));
-            } catch (error) {
-                console.error("Error occurs when fetching data", error);
-            }
-        };
-        fetchTimeData();
-    }, []);
+    const formattedDataList = formatData.map((item => (
+        <li key={item.index}>
+            Time: {item.time},
+            Temperature: {item.temperature},
+            Resistance heater heat: {item.resHeat},
+        </li>
+    )))
+
+
+
+
 
     return(
         <>
             <h1>Graph here - Heat produced</h1>
-            {average.length > 0 ? (
-                <ul>
-                    {average.map((average, index) => (
-                        <li key={index}>{average}</li>
-                    ))}
-                </ul>
-            ) : (
-                <p>Loading...</p>
-            )}
 
-            {time.length > 0 ? (
-                <ul>
-                    {time.map((time, index) => (
-                        <li key={index}>{time}</li>
-                    ))}
-                </ul>
-            ) : (
-                <p>Loading...</p>
-            )}
+            <ul>{formattedDataList}</ul>
         </>
     )
 }
