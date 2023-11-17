@@ -30,11 +30,27 @@ function Login() {
             const response = await axios.post('/api/login', inputs);
             console.log(response)
             setInputs(response.data)
-            navigate('/profiledashboard');
+
+            // if auth token sent
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.indexOf("application/json") !== -1) {
+                // The response was a JSON object (with an access token)
+
+                // data has access token
+                navigate('/profiledashboard');
+
+            } else {
+                // The response wasn't a JSON object
+
+                // data inputted was not authenticated
+                console.log("attempt login again");
+
+            }
+
+
         } catch (error) {
             console.error('Error with login:', error);
         }
-        // const {loginWithRedirect} = useAuth0();
     }
     // end of code
 
