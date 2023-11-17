@@ -14,6 +14,7 @@ function Login() {
         username: '',
         password: ''
     });
+    const [status, setStatus] = useState(undefined);
 
     const {uname, pass} = inputs;
 
@@ -36,6 +37,8 @@ function Login() {
             if (contentType && contentType.indexOf("application/json") !== -1) {
                 // The response was a JSON object (with an access token)
 
+                setStatus({ type: 'success'});
+
                 // data has access token
                 navigate('/profiledashboard');
 
@@ -44,6 +47,7 @@ function Login() {
 
                 // data inputted was not authenticated
                 console.log("attempt login again");
+                setStatus({ type: 'error'});
 
             }
 
@@ -76,7 +80,7 @@ function Login() {
                     </div>
                     <div className="inputRow">
                     <label>Password</label>
-                    <input type="password" name="password" value={pass} onChange={handleChange} {...{ required: true, maxLength: 15 }} />
+                    <input type="password" name="password" value={pass} onChange={handleChange} {...{ required: true }} />
                     </div>
                     <div className="inputRow">
                     <input type="submit" value="Login" />
@@ -84,6 +88,10 @@ function Login() {
                     {/* https://stackoverflow.com/questions/2825856/html-button-to-not-submit-form  on 04/11*/}
                     <button type="button" onClick={routeChange}>Register</button>
                     {/* end */}
+
+                        {status?.type === 'success' && <p>Successful Login!</p>}
+                        {status?.type === 'error' && <p>Incorrect username or password, try again!</p>}
+
                     </div>
                 </form>
                 </div>
