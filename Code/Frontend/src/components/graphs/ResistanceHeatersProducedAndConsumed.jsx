@@ -7,7 +7,7 @@ export default function ResistanceHeatersProducedAndConsumed() {
     const [showElecLine, setShowElecLine] = useState(true);
     const [showOATLine, setShowOATLine] = useState(true);
 
-    //use to check for style and features of the graph (it is faster)
+    //a set of test data to use to generate the graph instead of the actual data (very slow)
     const testData = [
         {
             "id": "Data 1",
@@ -91,19 +91,20 @@ export default function ResistanceHeatersProducedAndConsumed() {
             })),
         },
     ];
-
-    const handleshowHeatLineChange = () => {
+    //To handle if the checkboxes are being checked or not
+    const handleShowHeatLineChange = () => {
         setShowHeatLine(!showHeatLine);
     }
 
-    const handleshowElecLineChange = () => {
+    const handleShowElecLineChange = () => {
         setShowElecLine(!showElecLine);
     }
 
-    const handleshowOATLineChange = () => {
+    const handleShowOATLineChange = () => {
         setShowOATLine(!showOATLine);
     }
 
+    //To only the data line when the checkbox is checked
     const filterData = formattedDataList.filter((data) => {
         if(data.id === "Heat Production") {
             return showHeatLine;
@@ -131,17 +132,18 @@ export default function ResistanceHeatersProducedAndConsumed() {
                     margin={{ top: 40, right: 100, bottom: 40, left: 100 }}
                     xScale={
                     { type: 'time',
-                        format: '%Y-%m-%dT%H:%M:%S',
-                        precision: "minute",
+                        format: '%Y-%m-%dT%H:%M:%S', //the time format that is being read
+                        precision: "minute", //set the precision to minute instead of hour to check for half-hourly (30min)
                         tickValues: "every 30 minutes",
+                        //set max and min for conciseness
                         min: new Date("2013-01-01T00:00:00"),
                         max: new Date("2013-12-31T23:30:00"),
                     }
                 }
                     yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
                     axisBottom={{
-                        format: '%b %Y',
-                        tickValues: 'every 1 month',
+                        format: '%b %Y', //the time format that is being shown in the actual graph
+                        tickValues: 'every 1 month', //x-axis shows the months only to make the graph looks cleaner
                     }}
                     axisLeft={{
                         legend: "Half-hourly heat production by resistance heaters in 2013 (GWh) 10^5",
@@ -187,17 +189,19 @@ export default function ResistanceHeatersProducedAndConsumed() {
                             ]
                         }]}
                 />
+
+                {/*actual checkboxes to check*/}
                 <div>
                     <label style={{ color: 'hsl(181, 70%, 50%)', fontWeight: 'bold'}}>
-                        <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showHeatLine} onChange={handleshowHeatLineChange} />
+                        <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showHeatLine} onChange={handleShowHeatLineChange} />
                         Heat Production
                     </label>
                     <label style={{ color: 'hsl(5, 70%, 50%)', fontWeight: 'bold'}}>
-                        <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showElecLine} onChange={handleshowElecLineChange} />
+                        <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showElecLine} onChange={handleShowElecLineChange} />
                         Electricity Consumption
                     </label>
                     <label style={{ color: 'hsl(329, 70%, 50%)', fontWeight: 'bold'}}>
-                        <input style={{ marginRight: '2px' , marginLeft: '15px'}} type="checkbox" checked={showOATLine} onChange={handleshowOATLineChange} />
+                        <input style={{ marginRight: '2px' , marginLeft: '15px'}} type="checkbox" checked={showOATLine} onChange={handleShowOATLineChange} />
                         UK daily OAT
                     </label>
                 </div>
