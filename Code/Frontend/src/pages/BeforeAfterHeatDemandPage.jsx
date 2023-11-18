@@ -6,6 +6,8 @@ import TotalHeatEfficiency from '../components/graphs/TotalHeatEfficiency';
 import HeatEfficiencyBeforeHeatMap from '../components/graphs/HeatEfficiencyBeforeHeatMap';
 import HeatEfficiencyAfterHeatMap from '../components/graphs/HeatEfficiencyAfterHeatMap';
 import VisualisationsDropdownMenu from "../components/VisualisationsDropdownMenu";
+import TotalHeatDemandBeforeTable from "../components/tables/TotalHeatDemandBeforeTable"
+import TotalHeatDemandAfterTable from "../components/tables/TotalHeatDemandAfterTable"
 import Header from "../Header";
 import LoadingGif from "../assets/LoadingGif.gif";
 
@@ -140,8 +142,24 @@ export default function BeforeAfterHeatDemandPage() {
         </div>
         {/* Components that display total heat efficiency and a bar chart of heat demand */}
         <TotalHeatEfficiency heatData={heatData} />
+        <div style={{
+          display: 'flex', 
+          flexDirection: 'row', 
+          width: '100%', 
+          alignItems: 'stretch',
+          boxSizing: 'border-box',
+          flexWrap: 'wrap'
+        }}>
+            <div style={{ flex: 1, padding: '0', margin: '0.5em', boxSizing: 'border-box', minWidth: '500px' }}>
+             <TotalHeatDemandBeforeTable data={heatData} />
+            </div>
+            <div style={{ flex: 1, padding: '0', margin: '0.5em', boxSizing: 'border-box', minWidth: '500px' }}>
+             <TotalHeatDemandAfterTable data={heatData} />
+            </div>
+        </div>
         <BeforeAfterHeatDemandBar data={heatData} />
       </>
     );
   }
 }
+;

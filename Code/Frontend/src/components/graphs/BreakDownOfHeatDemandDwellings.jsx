@@ -29,8 +29,13 @@ export default function BreakDownOfHeatDemandDwellings ({ heatData, localAuthori
       (data) => data['Local Authority (2019)'] === localAuthority
     );
 
+    // Filter the heat data based on the selected local authority
+    const filteredData = localAuthority === 'All Authorities'
+    ? heatData
+    : selectedAuthorityData;
+
     // Extract and aggregate the heat demand for different dwelling types
-    const dwellingBreakdown = selectedAuthorityData.reduce((acc, curr) => {
+    const dwellingBreakdown = filteredData.reduce((acc, curr) => {
       // Iterate through each dwelling type
       ['detached', 'flat', 'semi-detached', 'terraced'].forEach((dwellingType) => {
         // Calculate total value for each dwelling type

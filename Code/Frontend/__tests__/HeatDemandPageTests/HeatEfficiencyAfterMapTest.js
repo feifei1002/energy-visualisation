@@ -92,4 +92,15 @@ describe('HeatEfficiencyAfterHeatMap', () => {
         zoom: 6
       }), expect.anything());
     });
+
+    it('does not initially render the stacked bar chart', () => {
+      // Given
+      render(<HeatEfficiencyAfterHeatMap heatData={heatData} geoJsonData={geoJsonData} />);
+      
+      // When
+      const stackedBarChart = screen.queryByTestId('stackedBarChartAfter');
+  
+      // Then
+      expect(stackedBarChart).toBeNull();
+    });
 });

@@ -29,6 +29,11 @@ export default function BreakDownOfHeatDemandRurality({ heatData, localAuthority
       (data) => data['Local Authority (2019)'] === localAuthority
     );
 
+    // Filter the heat data based on the selected local authority
+    const filteredData = localAuthority === 'All Authorities'
+    ? heatData
+    : selectedAuthorityData;
+
     // Object to store the count of each rurality type
     const ruralityBreakdown = {
       'Village, Town and Fringe': 0,
@@ -37,13 +42,13 @@ export default function BreakDownOfHeatDemandRurality({ heatData, localAuthority
     };
 
     // Calculate the count of each rurality type in the selected data
-    selectedAuthorityData.forEach((data) => {
+     filteredData.forEach((data) => {
       const rurality = data['Rurality'];
       ruralityBreakdown[rurality]++; // Increment rurality count
     });
 
     // Calculate the total count of rurality types
-    const total = selectedAuthorityData.length;
+    const total = filteredData.length;
 
     // Format the rurality data for display in the pie chart
     const formattedData = Object.entries(ruralityBreakdown).map(
