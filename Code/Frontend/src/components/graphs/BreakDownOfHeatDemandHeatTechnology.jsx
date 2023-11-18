@@ -29,8 +29,13 @@ export default function BreakDownOfHeatDemandHeatTechnology ({ heatData, localAu
       (data) => data['Local Authority (2019)'] === localAuthority
     );
 
+    // Filter the heat data based on the selected local authority
+    const filteredData = localAuthority === 'All Authorities'
+    ? heatData
+    : selectedAuthorityData
+
     // Extracts and aggregates the heat demand for different technologies
-    const technologyBreakdown = selectedAuthorityData.reduce((acc, curr) => {
+    const technologyBreakdown = filteredData.reduce((acc, curr) => {
       for (const key in curr) {
         if (key.includes('Average heat demand after energy efficiency measures for')) {
           const tech = key.split('for ')[1].replace(' (kWh)', ''); // Extracts the technology type

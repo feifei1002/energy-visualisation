@@ -7,16 +7,12 @@ export default function LocalAuthorityDropDownMenu({ authorities, selectedAuthor
         return <p>Loading</p>; //Return loading indicator
     }
 
-    // Sort the authorities in alphabetical order for display
-    const sortedAuthorities = authorities.sort();
-
     return (
       <select
         value={selectedAuthority}
         onChange={(e) => onSelectAuthority(e.target.value)}
       >
-        <option value="">Select an Authority</option>
-        {sortedAuthorities.map((authority) => (
+        {authorities.map((authority) => (
           <option key={authority} value={authority}>
             {authority}
           </option>

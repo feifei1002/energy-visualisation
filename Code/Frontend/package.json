@@ -20,6 +20,7 @@
     "@nivo/pie": "^0.83.0",
     "@testing-library/jest-dom": "^6.1.4",
     "axios": "^1.6.0",
+    "chart.js": "^4.4.0",
     "d3": "^7.8.5",
     "dotenv": "^16.3.1",
     "leaflet": "^1.9.4",
@@ -31,6 +32,7 @@
     "react-leaflet": "^4.2.1",
     "react-router-dom": "^6.18.0",
     "react-simple-maps": "^3.0.0",
+    "react-table": "^7.8.0",
     "react-tooltip": "^5.22.0",
     "testing-library": "^0.0.2"
   },
