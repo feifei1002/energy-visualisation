@@ -1,16 +1,16 @@
-import { ResponsiveLine } from '@nivo/line';
 import React, {useEffect, useState} from "react";
-export default function ResistanceHeatersProducedAndConsumed() {
+import {ResponsiveLine} from "@nivo/line";
 
+export default function ElectricityDemandForHeatPumps() {
     const [heatData, setHeatData] = useState([]);
-    const [showHeatLine, setShowHeatLine] = useState(true);
-    const [showElecLine, setShowElecLine] = useState(true);
+    const [showASHPElecLine, setShowASHPElecLine] = useState(true);
+    const [showGSHPElecLine, setShowGSHPElecLine] = useState(true);
     const [showOATLine, setShowOATLine] = useState(true);
 
     //a set of test data to use to generate the graph instead of the actual data (very slow)
     const testData = [
         {
-            "id": "Data 1",
+            "id": "ASHP",
             "color": "hsl(181, 70%, 50%)",
             "data": [
                 {"x": "2013-01-01T00:00:00" , "y": 0.0000894006878634641*100000},
@@ -30,7 +30,7 @@ export default function ResistanceHeatersProducedAndConsumed() {
                 {"x": "2013-05-09T20:00:00", "y": 13},
             ]},
         {
-            "id": "Data 2",
+            "id": "GSHP",
             "color": "hsl(5, 70%, 50%)",
             "data": [
                 {"x": "2013-01-01T00:00:00" , "y": 0.0000894006878634641*100000},
@@ -57,29 +57,29 @@ export default function ResistanceHeatersProducedAndConsumed() {
     }, []);
 
     //Extract the needed data and put it into a new list
-    const formatData = heatData.map(({index, "Normalised_Resistance_heater_heat": resHeaterHeat, "Normalised_Resistance_heater_elec": resHeaterElec, "UK_daily_average_OAT_[degrees_C]": temperature}, dataIndex) => ({
+    const formatData = heatData.map(({index, "Normalised_ASHP_elec": ashpElec, "Normalised_GSHP_elec": gshpElec, "UK_daily_average_OAT_[degrees_C]": temperature}, dataIndex) => ({
         index: dataIndex,
         time: new Date(index),
         temperature,
-        resHeaterHeat,
-        resHeaterElec,
+        ashpElec,
+        gshpElec,
     }));
 
     const formattedDataList = [
         {
-            id: 'Heat Production',
+            id: 'air-source heat pumps',
             color: 'hsl(181, 70%, 50%)',
             data: formatData.map((item) => ({
                 x: item.time,
-                y: item.resHeaterHeat* 100000,
+                y: item.ashpElec* 100000,
             })),
         },
         {
-            id: 'Electricity Consumption',
+            id: 'ground-source heat pumps',
             color: "hsl(5, 70%, 50%)",
             data: formatData.map((item) => ({
                 x: item.time,
-                y: item.resHeaterElec * 100000,
+                y: item.gshpElec * 100000,
             })),
         },
         {
@@ -92,12 +92,12 @@ export default function ResistanceHeatersProducedAndConsumed() {
         },
     ];
     //To handle if the checkboxes are being checked or not
-    const handleShowHeatLineChange = () => {
-        setShowHeatLine(!showHeatLine);
+    const handleShowASHPElecLineChange = () => {
+        setShowASHPElecLine(!setShowASHPElecLine);
     }
 
-    const handleShowElecLineChange = () => {
-        setShowElecLine(!showElecLine);
+    const handleShowGSHPElecLineChange = () => {
+        setShowGSHPElecLine(!setShowGSHPElecLine);
     }
 
     const handleShowOATLineChange = () => {
@@ -106,11 +106,11 @@ export default function ResistanceHeatersProducedAndConsumed() {
 
     //To only the data line when the checkbox is checked
     const filterData = formattedDataList.filter((data) => {
-        if(data.id === "Heat Production") {
-            return showHeatLine;
+        if(data.id === "air-source heat pumps") {
+            return showASHPElecLine;
         }
-        if(data.id === "Electricity Consumption") {
-            return showElecLine;
+        if(data.id === "ground-source heat pumps") {
+            return showGSHPElecLine;
         }
         if(data.id === "UK daily OAT") {
             return showOATLine;
@@ -131,22 +131,22 @@ export default function ResistanceHeatersProducedAndConsumed() {
                     // data={testData}
                     margin={{ top: 40, right: 100, bottom: 40, left: 100 }}
                     xScale={
-                    { type: 'time',
-                        format: '%Y-%m-%dT%H:%M:%S', //the time format that is being read
-                        precision: "minute", //set the precision to minute instead of hour to check for half-hourly (30min)
-                        tickValues: "every 30 minutes",
-                        //set max and min for conciseness
-                        min: new Date("2013-01-01T00:00:00"),
-                        max: new Date("2013-12-31T23:30:00"),
+                        { type: 'time',
+                            format: '%Y-%m-%dT%H:%M:%S', //the time format that is being read
+                            precision: "minute", //set the precision to minute instead of hour to check for half-hourly (30min)
+                            tickValues: "every 30 minutes",
+                            //set max and min for conciseness
+                            min: new Date("2013-01-01T00:00:00"),
+                            max: new Date("2013-12-31T23:30:00"),
+                        }
                     }
-                }
                     yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
                     axisBottom={{
                         format: '%b %Y', //the time format that is being shown in the actual graph
                         tickValues: 'every 1 month', //x-axis shows the months only to make the graph looks cleaner
                     }}
                     axisLeft={{
-                        legend: "Half-hourly heat production by resistance heaters in 2013 (GWh) 10^5",
+                        legend: "Electricity Consumption for heat pumps in 2013 (GWh) 10^5",
                         legendPosition:"middle",
                         legendOffset: -35,
                     }}
@@ -193,12 +193,12 @@ export default function ResistanceHeatersProducedAndConsumed() {
                 {/*actual checkboxes to check*/}
                 <div>
                     <label style={{ color: 'hsl(181, 70%, 50%)', fontWeight: 'bold'}}>
-                        <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showHeatLine} onChange={handleShowHeatLineChange} />
-                        Heat Production
+                        <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showASHPElecLine} onChange={handleShowASHPElecLineChange} />
+                        Electricity Consumption for ASHP
                     </label>
                     <label style={{ color: 'hsl(5, 70%, 50%)', fontWeight: 'bold'}}>
-                        <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showElecLine} onChange={handleShowElecLineChange} />
-                        Electricity Consumption
+                        <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showGSHPElecLine} onChange={handleShowGSHPElecLineChange} />
+                        Electricity Consumption for GSHP
                     </label>
                     <label style={{ color: 'hsl(329, 70%, 50%)', fontWeight: 'bold'}}>
                         <input style={{ marginRight: '2px' , marginLeft: '15px'}} type="checkbox" checked={showOATLine} onChange={handleShowOATLineChange} />
