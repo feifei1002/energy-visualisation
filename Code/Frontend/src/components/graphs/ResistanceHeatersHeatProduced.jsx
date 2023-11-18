@@ -4,6 +4,29 @@ export default function ResistanceHeatersHeatProduced() {
 
     const [heatData, setHeatData] = useState([]);
 
+    const testData = [
+        {
+            "id": "resistance heater heat",
+            "color": "hsl(181, 70%, 50%)",
+            "data": [
+                {"x": "2013-01-01T00:00:00" , "y": 0.0000894006878634641*100000},
+                {"x": "2013-02-12T14:00:00", "y": 0.00007365896427030812*100000},
+                {"x": "2013-03-08T00:00:00", "y": 0.000044381285702676944*100000},
+                {"x": "2013-04-05T01:00:00", "y": 0.00011170909712761813*100000},
+                {"x": "2013-05-09T20:00:00", "y": 0.00003897649693032608*100000},
+            ]},
+        {
+            "id": "Temperature",
+            "color": "hsl(329, 70%, 50%)",
+            "data": [
+                {"x": "2013-01-01T00:00:00", "y": 7.3},
+                {"x": "2013-02-12T14:00:00", "y": 2.2},
+                {"x": "2013-03-08T00:00:00", "y": 7.2},
+                {"x": "2013-04-05T01:00:00", "y": 4},
+                {"x": "2013-05-09T20:00:00", "y": 13},
+            ]
+        }]
+
     //fetch all the data from the CSV
     useEffect(() => {
         const fetchHeatData = async () => {
@@ -27,37 +50,24 @@ export default function ResistanceHeatersHeatProduced() {
         resHeat,
     }));
 
-
-    const formattedDataList = formatData.map((item) => [
+    const formattedDataList = [
         {
             id: 'Resistance heater heat',
-            color: 'red',
-            data: [
-                {
-                    x: new Date(item.time),
-                    y: item.resHeat*1000000,
-                },
-            ],
+            color: 'hsl(181, 70%, 50%)',
+            data: formatData.map((item) => ({
+                x: item.time,
+                y: item.resHeat * 100000,
+            })),
         },
         {
             id: 'Temperature',
-            color: 'blue',
-            data: [
-                {
-                    x: new Date(item.time),
-                    y: item.temperature,
-                },
-            ],
+            color: 'hsl(329, 70%, 50%)',
+            data: formatData.map((item) => ({
+                x: item.time,
+                y: item.temperature,
+            })),
         },
-    ]);
-
-    // const displaylist = formatData.map((item => (
-    //     <li key={item.index}>
-    //         Time: {item.time},
-    //         Temperature: {item.temperature},
-    //         Resistance heater heat: {item.resHeat},
-    //     </li>
-    // )))
+    ];
 
 
 
@@ -72,18 +82,31 @@ export default function ResistanceHeatersHeatProduced() {
                     xScale={
                     { type: 'time',
                         format: '%Y-%m-%dT%H:%M:%S',
-                        precision: "month",
+                        precision: "minute",
+                        tickValues: "every 30 minutes",
                         min: new Date("2013-01-01T00:00:00"),
                         max: new Date("2013-12-31T23:30:00"),
                     }
                 }
-                    yScale={{ type: 'linear', min: 'auto', max: 100, stacked: true, reverse: false }}
+                    yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
                     axisBottom={{
                         format: '%b %Y',
                         tickValues: 'every 1 month',
+                        legend:"Date",
+                        legendPosition:"middle",
+                        legendOffset: 35,
+                    }}
+                    axisLeft={{
+                        legend: "Temperature",
+                        legendPosition:"middle",
+                        legendOffset: -35,
                     }}
                     axisTop={null}
-                    axisRight={null}
+                    axisRight={{
+                        legend: "Resistance heater heat",
+                        legendPosition:"middle",
+                        legendOffset: 35,
+                    }}
                     enableGridX={false}
                     colors={(d) => d.color}
                     pointSize={10}
@@ -92,7 +115,6 @@ export default function ResistanceHeatersHeatProduced() {
                     pointBorderColor={{ from: 'serieColor' }}
                 />
             </div>
-
         </>
     )
 }
