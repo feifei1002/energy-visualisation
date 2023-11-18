@@ -1,13 +1,16 @@
 import { ResponsiveLine } from '@nivo/line';
 import React, {useEffect, useState} from "react";
-export default function ResistanceHeatersHeatProduced() {
+export default function ResistanceHeatersProducedAndConsumed() {
 
     const [heatData, setHeatData] = useState([]);
+    const [showHeatLine, setShowHeatLine] = useState(true);
+    const [showElecLine, setShowElecLine] = useState(true);
+    const [showOATLine, setShowOATLine] = useState(true);
 
     //use to check for style and features of the graph (it is faster)
     const testData = [
         {
-            "id": "resistance heater heat",
+            "id": "Data 1",
             "color": "hsl(181, 70%, 50%)",
             "data": [
                 {"x": "2013-01-01T00:00:00" , "y": 0.0000894006878634641*100000},
@@ -27,7 +30,7 @@ export default function ResistanceHeatersHeatProduced() {
                 {"x": "2013-05-09T20:00:00", "y": 13},
             ]},
         {
-            "id": "Normalised ASHP elec",
+            "id": "Data 2",
             "color": "hsl(5, 70%, 50%)",
             "data": [
                 {"x": "2013-01-01T00:00:00" , "y": 0.0000894006878634641*100000},
@@ -54,33 +57,33 @@ export default function ResistanceHeatersHeatProduced() {
     }, []);
 
     //Extract the needed data and put it into a new list
-    const formatData = heatData.map(({index, "Normalised_ASHP_elec": ASHPElec, "Normalised_GSHP_elec": GSHPElec, "UK_daily_average_OAT_[degrees_C]": temperature}, dataIndex) => ({
+    const formatData = heatData.map(({index, "Normalised_Resistance_heater_heat": resHeaterHeat, "Normalised_Resistance_heater_elec": resHeaterElec, "UK_daily_average_OAT_[degrees_C]": temperature}, dataIndex) => ({
         index: dataIndex,
         time: new Date(index),
         temperature,
-        ASHPElec,
-        GSHPElec,
+        resHeaterHeat,
+        resHeaterElec,
     }));
 
     const formattedDataList = [
         {
-            id: 'Normalised ASHP elec',
+            id: 'Heat Production',
             color: 'hsl(181, 70%, 50%)',
             data: formatData.map((item) => ({
                 x: item.time,
-                y: item.ASHPElec * 100000,
+                y: item.resHeaterHeat* 100000,
             })),
         },
         {
-            id: 'Normalised GSHP elec',
+            id: 'Electricity Consumption',
             color: "hsl(5, 70%, 50%)",
             data: formatData.map((item) => ({
                 x: item.time,
-                y: item.GSHPElec * 100000,
+                y: item.resHeaterElec * 100000,
             })),
         },
         {
-            id: 'Temperature',
+            id: 'UK daily OAT',
             color: 'hsl(329, 70%, 50%)',
             data: formatData.map((item) => ({
                 x: item.time,
@@ -89,16 +92,41 @@ export default function ResistanceHeatersHeatProduced() {
         },
     ];
 
+    const handleshowHeatLineChange = () => {
+        setShowHeatLine(!showHeatLine);
+    }
+
+    const handleshowElecLineChange = () => {
+        setShowElecLine(!showElecLine);
+    }
+
+    const handleshowOATLineChange = () => {
+        setShowOATLine(!showOATLine);
+    }
+
+    const filterData = formattedDataList.filter((data) => {
+        if(data.id === "Heat Production") {
+            return showHeatLine;
+        }
+        if(data.id === "Electricity Consumption") {
+            return showElecLine;
+        }
+        if(data.id === "UK daily OAT") {
+            return showOATLine;
+        }
+    })
+
 
 
 
 
     return(
         <>
-            <h4>Half-hourly heat production by resistance heaters</h4>
             <div style={{ width: 'inherit', height: 400}}>
+
                 <ResponsiveLine
-                    data={formattedDataList.flat()}
+                    // data={formattedDataList.flat()}
+                    data={filterData}
                     // data={testData}
                     margin={{ top: 40, right: 100, bottom: 40, left: 100 }}
                     xScale={
@@ -159,6 +187,20 @@ export default function ResistanceHeatersHeatProduced() {
                             ]
                         }]}
                 />
+                <div>
+                    <label style={{ color: 'hsl(181, 70%, 50%)', fontWeight: 'bold'}}>
+                        <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showHeatLine} onChange={handleshowHeatLineChange} />
+                        Heat Production
+                    </label>
+                    <label style={{ color: 'hsl(5, 70%, 50%)', fontWeight: 'bold'}}>
+                        <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showElecLine} onChange={handleshowElecLineChange} />
+                        Electricity Consumption
+                    </label>
+                    <label style={{ color: 'hsl(329, 70%, 50%)', fontWeight: 'bold'}}>
+                        <input style={{ marginRight: '2px' , marginLeft: '15px'}} type="checkbox" checked={showOATLine} onChange={handleshowOATLineChange} />
+                        UK daily OAT
+                    </label>
+                </div>
             </div>
         </>
     )
