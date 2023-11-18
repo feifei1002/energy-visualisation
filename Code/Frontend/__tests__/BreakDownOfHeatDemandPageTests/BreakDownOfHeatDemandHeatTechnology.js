@@ -60,4 +60,17 @@ describe('BreakDownOfHeatDemandHeatTechnology', () => {
     const typeCell = screen.getByText('detached biomass boiler');
     expect(typeCell).toBeInTheDocument();
   });
+  
+  it('renders "All Authorities" view when data is available', () => {
+    render(<BreakDownOfHeatDemandHeatTechnology heatData={testData} localAuthority="All Authorities" />);
+  
+    // Check if the table is rendered by looking for table headers
+    const tableHeaders = screen.getAllByRole('columnheader');
+    expect(tableHeaders).toHaveLength(3); // Assuming there are three columns: "Colour", "Boiler Type" and "Heat Demand Percentage"
+  
+    // Check if individual table rows are rendered
+    const tableRows = screen.getAllByRole('row');
+    // Assuming the table has a header row and two data rows for boiler type
+    expect(tableRows).toHaveLength(3);
+  });
 });

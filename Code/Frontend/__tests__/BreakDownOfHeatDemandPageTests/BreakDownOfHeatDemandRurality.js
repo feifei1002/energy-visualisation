@@ -160,4 +160,17 @@ describe('BreakDownOfHeatDemandRurality', () => {
     const typeCell3 = screen.getByText('Village, Town and Fringe');
     expect(typeCell3).toBeInTheDocument();
   });
+
+  it('renders "All Authorities" view when data is available', () => {
+    render(<BreakDownOfHeatDemandRurality heatData={testData} localAuthority="All Authorities" />);
+  
+    // Check if the table is rendered by looking for table headers
+    const tableHeaders = screen.getAllByRole('columnheader');
+    expect(tableHeaders).toHaveLength(3); // Assuming there are three columns: "Colour", "Rurality Type" and "Heat Demand Percentage"
+  
+    // Check if individual table rows are rendered
+    const tableRows = screen.getAllByRole('row');
+    // Assuming the table has a header row and three data rows for rurality type
+    expect(tableRows).toHaveLength(4);
+  });
 });
