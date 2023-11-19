@@ -146,6 +146,7 @@ export default function ElectricityDemandForHeatPumps({data}) {
                     pointColor={{ theme: 'background' }}
                     pointBorderWidth={1}
                     pointBorderColor={{ from: 'serieColor' }}
+                    enableSlices={'x'}
                     useMesh={true}
                     legends={[
                         {

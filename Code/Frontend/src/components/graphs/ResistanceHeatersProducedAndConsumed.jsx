@@ -108,7 +108,7 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
 
     return(
         <>
-            <div style={{ width: 'inherit', height: 400}} id={"line-graph"}>
+            <div style={{ width: 'inherit', height: 400}}>
 
                 <ResponsiveLine
                     data={filterData}
@@ -146,6 +146,7 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
                     pointColor={{ theme: 'background' }}
                     pointBorderWidth={1}
                     pointBorderColor={{ from: 'serieColor' }}
+                    enableSlices={'x'}
                     useMesh={true}
                     legends={[
                         {
