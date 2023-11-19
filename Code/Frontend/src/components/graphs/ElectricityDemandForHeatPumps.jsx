@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {ResponsiveLine} from "@nivo/line";
 
 export default function ElectricityDemandForHeatPumps({data}) {
@@ -103,9 +103,6 @@ export default function ElectricityDemandForHeatPumps({data}) {
     })
 
 
-
-
-
     return(
         <>
             <div style={{ width: 'inherit', height: 400}}>
@@ -141,13 +138,31 @@ export default function ElectricityDemandForHeatPumps({data}) {
                         legendOffset: 40,
                     }}
                     enableGridX={false}
-                    colors={(d) => d.color}
+                    // colors={(d) => d.color}
+                    colors={{ scheme: 'set2' }}
                     pointSize={3}
                     pointColor={{ theme: 'background' }}
                     pointBorderWidth={1}
                     pointBorderColor={{ from: 'serieColor' }}
                     enableSlices={'x'}
                     useMesh={true}
+                    sliceTooltip={({ slice }) => (
+                        <div style={{background: 'white', padding: '10px', border: '1px solid #ccc'}}>
+                            {/*Style the box for showing the slice data*/}
+                            {/*Get the date value from the slice and display it*/}
+                            <strong>Date:</strong> {slice.points[0].data.xFormatted}<br></br>
+
+                            {/*For each slice where data value points to,
+                            display all the value from three lines in y-axis base on the line's id (name of the line)*/}
+                            {slice.points.map(point => (
+                                <div key={point.id}>
+                                    <strong>{point.serieId}:</strong> {point.data.yFormatted}
+                                </div>
+                            ))}
+                            {/*A customisation for enableSlices and useMesh*/}
+                            {/*Take a slice as an argument which contains all the data for the current slice*/}
+                        </div>
+                    )}
                     legends={[
                         {
                             anchor: 'top-right',
@@ -177,15 +192,15 @@ export default function ElectricityDemandForHeatPumps({data}) {
 
                 {/*actual checkboxes to check*/}
                 <div>
-                    <label style={{ color: 'hsl(181, 70%, 50%)', fontWeight: 'bold'}}>
+                    <label style={{ color: '#66c2a5', fontWeight: 'bold'}}>
                         <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showASHPElecLine} onChange={handleShowASHPElecLineChange} />
                         Electricity Consumption for ASHP
                     </label>
-                    <label style={{ color: 'hsl(5, 70%, 50%)', fontWeight: 'bold'}}>
+                    <label style={{ color: '#fc8d62', fontWeight: 'bold'}}>
                         <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showGSHPElecLine} onChange={handleShowGSHPElecLineChange} />
                         Electricity Consumption for GSHP
                     </label>
-                    <label style={{ color: 'hsl(329, 70%, 50%)', fontWeight: 'bold'}}>
+                    <label style={{ color: '#8da0cb', fontWeight: 'bold'}}>
                         <input style={{ marginRight: '2px' , marginLeft: '15px'}} type="checkbox" checked={showOATLine} onChange={handleShowOATLineChange} />
                         UK daily OAT
                     </label>
