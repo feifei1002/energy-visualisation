@@ -1,8 +1,7 @@
 import { ResponsiveLine } from '@nivo/line';
 import React, {useEffect, useState} from "react";
-export default function ResistanceHeatersProducedAndConsumed() {
+export default function ResistanceHeatersProducedAndConsumed({data}) {
 
-    const [heatData, setHeatData] = useState([]);
     const [showHeatLine, setShowHeatLine] = useState(true);
     const [showElecLine, setShowElecLine] = useState(true);
     const [showOATLine, setShowOATLine] = useState(true);
@@ -41,23 +40,9 @@ export default function ResistanceHeatersProducedAndConsumed() {
             ]},
     ]
 
-    //fetch all the data from the CSV
-    useEffect(() => {
-        const fetchHeatData = async () => {
-            try {
-                const fetchData = await fetch('http://localhost:8082/data/halfhourlyheatingprofile');
-                const fetchDataResponse = await fetchData.json();
-                setHeatData(fetchDataResponse);
-            } catch (error) {
-                console.error("Error occurs when fetching data", error);
-            }
-        };
-        fetchHeatData();
-        // console.log(heatData[0][ "UK_daily_average_OAT_[degrees_C]"]);
-    }, []);
 
-    //Extract the needed data and put it into a new list
-    const formatData = heatData.map(({index, "Normalised_Resistance_heater_heat": resHeaterHeat, "Normalised_Resistance_heater_elec": resHeaterElec, "UK_daily_average_OAT_[degrees_C]": temperature}, dataIndex) => ({
+    // Extract the needed data and put it into a new list
+    const formatData = (data || []).map(({index, "Normalised_Resistance_heater_heat": resHeaterHeat, "Normalised_Resistance_heater_elec": resHeaterElec, "UK_daily_average_OAT_[degrees_C]": temperature}, dataIndex) => ({
         index: dataIndex,
         time: new Date(index),
         temperature,
@@ -105,14 +90,14 @@ export default function ResistanceHeatersProducedAndConsumed() {
     }
 
     //To only the data line when the checkbox is checked
-    const filterData = formattedDataList.filter((data) => {
-        if(data.id === "Heat Production") {
+    const filterData = formattedDataList.filter((dataToFilter) => {
+        if(dataToFilter.id === "Heat Production") {
             return showHeatLine;
         }
-        if(data.id === "Electricity Consumption") {
+        if(dataToFilter.id === "Electricity Consumption") {
             return showElecLine;
         }
-        if(data.id === "UK daily OAT") {
+        if(dataToFilter.id === "UK daily OAT") {
             return showOATLine;
         }
     })

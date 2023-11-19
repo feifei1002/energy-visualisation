@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {ResponsiveLine} from "@nivo/line";
 
-export default function ElectricityDemandForHeatPumps() {
-    const [heatData, setHeatData] = useState([]);
+export default function ElectricityDemandForHeatPumps({data}) {
+
     const [showASHPElecLine, setShowASHPElecLine] = useState(true);
     const [showGSHPElecLine, setShowGSHPElecLine] = useState(true);
     const [showOATLine, setShowOATLine] = useState(true);
@@ -41,23 +41,8 @@ export default function ElectricityDemandForHeatPumps() {
             ]},
     ]
 
-    //fetch all the data from the CSV
-    useEffect(() => {
-        const fetchHeatData = async () => {
-            try {
-                const fetchData = await fetch('http://localhost:8082/data/halfhourlyheatingprofile');
-                const fetchDataResponse = await fetchData.json();
-                setHeatData(fetchDataResponse);
-            } catch (error) {
-                console.error("Error occurs when fetching data", error);
-            }
-        };
-        fetchHeatData();
-        // console.log(heatData[0][ "UK_daily_average_OAT_[degrees_C]"]);
-    }, []);
-
     //Extract the needed data and put it into a new list
-    const formatData = heatData.map(({index, "Normalised_ASHP_elec": ashpElec, "Normalised_GSHP_elec": gshpElec, "UK_daily_average_OAT_[degrees_C]": temperature}, dataIndex) => ({
+    const formatData = (data || []).map(({index, "Normalised_ASHP_elec": ashpElec, "Normalised_GSHP_elec": gshpElec, "UK_daily_average_OAT_[degrees_C]": temperature}, dataIndex) => ({
         index: dataIndex,
         time: new Date(index),
         temperature,
@@ -105,14 +90,14 @@ export default function ElectricityDemandForHeatPumps() {
     }
 
     //To only the data line when the checkbox is checked
-    const filterData = formattedDataList.filter((data) => {
-        if(data.id === "air-source heat pumps") {
+    const filterData = formattedDataList.filter((dataToFilter) => {
+        if(dataToFilter.id === "air-source heat pumps") {
             return showASHPElecLine;
         }
-        if(data.id === "ground-source heat pumps") {
+        if(dataToFilter.id === "ground-source heat pumps") {
             return showGSHPElecLine;
         }
-        if(data.id === "UK daily OAT") {
+        if(dataToFilter.id === "UK daily OAT") {
             return showOATLine;
         }
     })
