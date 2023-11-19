@@ -108,12 +108,11 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
 
     return(
         <>
-            <div style={{ width: 'inherit', height: 400}}>
+            <div style={{ width: 'inherit', height: 400}} id={"line-graph"}>
 
                 <ResponsiveLine
-                    // data={formattedDataList.flat()}
-                    // data={filterData}
-                    data={testData}
+                    data={filterData}
+                    // data={testData}
                     margin={{ top: 40, right: 100, bottom: 40, left: 100 }}
                     xScale={
                     { type: 'time',

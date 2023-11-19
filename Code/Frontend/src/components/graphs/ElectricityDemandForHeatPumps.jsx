@@ -111,7 +111,6 @@ export default function ElectricityDemandForHeatPumps({data}) {
             <div style={{ width: 'inherit', height: 400}}>
 
                 <ResponsiveLine
-                    // data={formattedDataList.flat()}
                     data={filterData}
                     // data={testData}
                     margin={{ top: 40, right: 100, bottom: 40, left: 100 }}
