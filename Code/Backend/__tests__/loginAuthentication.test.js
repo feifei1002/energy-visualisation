@@ -1,9 +1,9 @@
-import React from 'react';
-import { postLogin } from '../controllers/LoginController'
-import axios from 'axios';
-import * as jest from "node/test";
-import mockAxios from "express";
-import { fetchData } from '../request';
+// import React from 'react';
+// import { postLogin } from '../controllers/LoginController'
+// import axios from 'axios';
+// import * as jest from "node/test";
+// import mockAxios from "express";
+// import { fetchData } from '../request';
 
 // jest.mock('axios');
 
