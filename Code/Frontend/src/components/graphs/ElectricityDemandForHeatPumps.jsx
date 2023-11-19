@@ -10,7 +10,7 @@ export default function ElectricityDemandForHeatPumps({data}) {
     //a set of test data to use to generate the graph instead of the actual data (very slow)
     const testData = [
         {
-            "id": "ASHP",
+            "id": "air-source heat pumps",
             "color": "hsl(181, 70%, 50%)",
             "data": [
                 {"x": "2013-01-01T00:00:00" , "y": 0.0000894006878634641*100000},
@@ -20,7 +20,7 @@ export default function ElectricityDemandForHeatPumps({data}) {
                 {"x": "2013-05-09T20:00:00", "y": 0.00003897649693032608*100000},
             ]},
         {
-            "id": "Temperature",
+            "id": "ground-source heat pumps",
             "color": "hsl(329, 70%, 50%)",
             "data": [
                 {"x": "2013-01-01T00:00:00", "y": 7.3},
@@ -30,7 +30,7 @@ export default function ElectricityDemandForHeatPumps({data}) {
                 {"x": "2013-05-09T20:00:00", "y": 13},
             ]},
         {
-            "id": "GSHP",
+            "id": "UK daily OAT",
             "color": "hsl(5, 70%, 50%)",
             "data": [
                 {"x": "2013-01-01T00:00:00" , "y": 0.0000894006878634641*100000},
@@ -78,11 +78,11 @@ export default function ElectricityDemandForHeatPumps({data}) {
     ];
     //To handle if the checkboxes are being checked or not
     const handleShowASHPElecLineChange = () => {
-        setShowASHPElecLine(!setShowASHPElecLine);
+        setShowASHPElecLine(!showASHPElecLine);
     }
 
     const handleShowGSHPElecLineChange = () => {
-        setShowGSHPElecLine(!setShowGSHPElecLine);
+        setShowGSHPElecLine(!showGSHPElecLine);
     }
 
     const handleShowOATLineChange = () => {

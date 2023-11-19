@@ -9,7 +9,7 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
     //a set of test data to use to generate the graph instead of the actual data (very slow)
     const testData = [
         {
-            "id": "Data 1",
+            "id": "Heat Production",
             "color": "hsl(181, 70%, 50%)",
             "data": [
                 {"x": "2013-01-01T00:00:00" , "y": 0.0000894006878634641*100000},
@@ -19,7 +19,7 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
                 {"x": "2013-05-09T20:00:00", "y": 0.00003897649693032608*100000},
             ]},
         {
-            "id": "Temperature",
+            "id": "Electricity Consumption",
             "color": "hsl(329, 70%, 50%)",
             "data": [
                 {"x": "2013-01-01T00:00:00", "y": 7.3},
@@ -29,7 +29,7 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
                 {"x": "2013-05-09T20:00:00", "y": 13},
             ]},
         {
-            "id": "Data 2",
+            "id": "UK daily OAT",
             "color": "hsl(5, 70%, 50%)",
             "data": [
                 {"x": "2013-01-01T00:00:00" , "y": 0.0000894006878634641*100000},
@@ -112,8 +112,8 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
 
                 <ResponsiveLine
                     // data={formattedDataList.flat()}
-                    data={filterData}
-                    // data={testData}
+                    // data={filterData}
+                    data={testData}
                     margin={{ top: 40, right: 100, bottom: 40, left: 100 }}
                     xScale={
                     { type: 'time',
