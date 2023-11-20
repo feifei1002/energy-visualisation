@@ -1,6 +1,4 @@
 import PropTypes from "prop-types";
-import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import VisualisationPage from "./VisualisationPage.jsx";
 import { Link } from "react-router-dom";
 import './css/Header.css';
 
