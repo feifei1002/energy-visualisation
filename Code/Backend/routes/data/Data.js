@@ -25,6 +25,7 @@ const csvPaths = {
   annualHeat: path.join(rootPath, 'Data', 'Annual_heat_demand_LSOA_EnglandWales.csv'),
   quantification: path.join(rootPath, 'Data', 'Quantification_of_inherent_flexibility.csv'),
   residentialHeatDemand: path.join(rootPath, 'Data', 'Residential_heat_demand_LSOA_Scotland.csv'),
+  halfHourlyProfileHeating: path.join(rootPath, 'Data', 'Half-hourly_profiles_of_heating_technologies.csv'),
 };
 
 // Path to GeoJSON data for geographical shapes
@@ -132,6 +133,12 @@ router.get('/residentialheat', (req, res) => {
 router.get('/geojson', (req, res) => {
   res.set('Cache-Control', `public, max-age=${cacheTTL}`); // Set cache control headers
   handleGeoJSONRequest(req, res, geojsonPath); // Handle the GeoJSON request
+});
+
+// API endpoint for half-hourly profile heating data
+router.get('/halfhourlyheatingprofile', (req, res) => {
+  res.set('Cache-Control', `public, max-age=${cacheTTL}`); // Set cache control headers
+  handleCSVRequest(req, res, csvPaths.halfHourlyProfileHeating); // Handle the CSV request
 });
 
 // Export the router to be used in other parts of the application
