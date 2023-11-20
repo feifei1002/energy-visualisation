@@ -32,7 +32,52 @@ const registerNewUser = async (req, res, next) => {
     }
 };
 
+// const handleApprove = (userId) => {
+//     // Send a request to the server to approve the user
+//     // Replace '/api/approve-user' with your actual endpoint
+//     fetch(`/api/approve-user/${userId}`, {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({ approved: true }),
+//     })
+//         .then(response => response.json())
+//         .then(data => {
+//             console.log(data.message);
+//             toast.success('User approved successfully!');
+//             // Optionally, update the local state to remove the approved user from the list
+//         })
+//         .catch(error => {
+//             console.error('Error approving user:', error);
+//             toast.error('Error approving user. Please try again.');
+//         });
+// };
+//
+// const handleDeny = (userId) => {
+//     // Send a request to the server to deny the user
+//     // Replace '/api/approve-user' with your actual endpoint
+//     fetch(`/api/approve-user/${userId}`, {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({ approved: false }),
+//     })
+//         .then(response => response.json())
+//         .then(data => {
+//             console.log(data.message);
+//             toast.success('User denied successfully!');
+//             // Optionally, update the local state to remove the denied user from the list
+//         })
+//         .catch(error => {
+//             console.error('Error denying user:', error);
+//             toast.error('Error denying user. Please try again.');
+//         });
+// };
+
 // Export the registerNewUser function for use in other modules
 module.exports = { registerNewUser };
+
 
 

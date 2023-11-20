@@ -1,5 +1,8 @@
  import { useState} from 'react'; // Import useState for state management
  import axios from "axios";
+ //import RegisterRequest from "./RegisterRequest.jsx";
+ import { toast } from 'react-toastify';
+ import 'react-toastify/dist/ReactToastify.css';
 // import { useHistory } from 'react-router-dom';
 
  const RegistrationForm = () => {
@@ -27,8 +30,10 @@
                  email: '',
                  password: '',
              });
+             toast.success('User Registration Received!');
          } catch (error) {
              console.error('Axios Error:', error);
+             toast.error('Error Registering user. Please try again.');
          }
      };
 
@@ -85,5 +90,7 @@
          </div>
      );
  };
+
+
 
  export default RegistrationForm;

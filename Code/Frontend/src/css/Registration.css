@@ -48,3 +48,41 @@ label {
     line-height: normal;
 }
 
+/*/* Registration.css */
+
+.registration-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    background-color: #fff; /* Adjust the background color as needed */
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); /* Add box shadow for a subtle effect */
+    padding: 20px;
+    width: 350px; /* Adjust the width as needed */
+    z-index: 1000; /* Ensure it's on top of other elements */
+    overflow-y: auto; /* Enable vertical scrolling if content exceeds height */
+    transition: transform 0.3s ease-in-out;
+}
+
+.registration-container.hidden {
+    transform: translateX(100%);
+}
+
+.registration-item {
+    margin-bottom: 15px;
+    border: 1px solid #ddd; /* Add border style */
+    padding: 10px; /* Add padding for better appearance */
+    border-radius: 5px; /* Optional: Add border-radius for rounded corners */
+}
+
+.registration-item p {
+    margin: 0;
+}
+
+.registration-item button {
+    margin-right: 10px;
+    background-color: rgba(20, 72, 94, 0.99);
+    color: #ffffff;
+}
+
+

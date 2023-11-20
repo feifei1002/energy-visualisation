@@ -1,23 +1,26 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import './App.css'
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import BeforeAfterHeatDemandPage from './pages/BeforeAfterHeatDemandPage';
 import LandingPage from './pages/LandingPage'
 import VisualisationPage from './VisualisationPage'
 import Graph1 from './Graph1'
 import ProfileDashboardPage from "./ProfileDashboardPage.jsx";
-import RegistrationPage from "./RegistrationPage.jsx";
-
+import RegistrationPage from "./pages/RegistrationPage.jsx";
 export default function App() {
-  return (
-      <Router>
-          <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/visualisations/beforeafterheatdemand" element={<BeforeAfterHeatDemandPage/>} />
-              <Route path="/visualisations" element={<VisualisationPage />} />
-              <Route path="/visualisations/graph1" element={<Graph1 />}  />
-              <Route path="/profiledashboard" element={<ProfileDashboardPage />} />
-              <Route path="/register" element={<RegistrationPage />} />
-          </Routes>
-      </Router>
-  );
+
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/visualisations/beforeafterheatdemand" element={<BeforeAfterHeatDemandPage />} />
+                <Route path="/visualisations" element={<VisualisationPage />} />
+                <Route path="/visualisations/graph1" element={<Graph1 />} />
+                <Route path="/profiledashboard" element={<ProfileDashboardPage />} />
+                <Route path="/register" element={<RegistrationPage />} />
+            </Routes>
+            <ToastContainer />
+        </Router>
+    );
 }
+
