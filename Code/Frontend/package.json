@@ -66,5 +66,18 @@
     "plugins": [
       "@babel/plugin-transform-react-jsx"
     ]
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "!node_modules/"
+    ],
+    "testEnvironment": "jsdom",
+    "testTimeout": 150000,
+    "moduleNameMapper": {
+      "\\\\.css$": "<rootDir>/__mocks__/styleMock.js"
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.js"
+    ]
   }
 }
