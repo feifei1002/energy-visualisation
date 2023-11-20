@@ -1,8 +1,11 @@
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import '../css/ProfileOverview.css';
+import { NotificationContext } from '../contexts/NotificationContext';
 
 const ProfileOverview = () => {
+    const { showNotification } = useContext(NotificationContext);
+
     const [profile, setProfile] = useState({
         username: '',
         email: '',
@@ -43,8 +46,10 @@ const ProfileOverview = () => {
             const response = await axios.put('/api/profile', profile);
             setProfile(response.data);
             setIsEditing(false);
+            showNotification('Success! You updated your profile details.');
         } catch (error) {
             console.error('Error updating profile:', error);
+            showNotification('Failure! Your profile details were not updated.');
         }
     };
 
