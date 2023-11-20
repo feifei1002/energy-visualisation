@@ -6,7 +6,7 @@ const PendingUser = require("../models/PendingUser");
 const saltRounds = 10; //increasing this increases security to bruteforce but also time it takes to hash
 
 // Controller function for registering a new user
-const registerNewUser = async (req, res) => {
+const registerNewUser = async (req, res, next) => {
     try {
         // Destructure user data from the request body
         const { fullName, username, password, email } = req.body;
@@ -25,12 +25,10 @@ const registerNewUser = async (req, res) => {
         // Save the new user to the database
         await newUser.save();
 
-        // Respond with a success message
-        res.status(201).json({ message: 'Registration successful. Awaiting approval.' });
     } catch (error) {
         // Handle registration errors
         console.error('Error registering user:', error);
-        res.status(500).json({ message: 'Registration failed.' });
+        return res.status(500).json({ message: 'Registration failed.' });
     }
 };
 

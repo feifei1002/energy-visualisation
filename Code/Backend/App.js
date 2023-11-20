@@ -66,11 +66,10 @@ app.post('/api/register', async (req, res) => {
   try {
     // Await the promise returned by registerNewUser
     await RegisterController.registerNewUser(req, res);
-    // Respond to the client once the promise is resolved
     res.status(201).json({ message: 'Registration successful. Awaiting approval.' });
   } catch (error) {
     console.error('Error handling registration:', error);
-    res.status(500).json({ message: 'Registration failed.' });
+    return res.status(500).json({ message: 'Registration failed.' });
   }
 });
 
