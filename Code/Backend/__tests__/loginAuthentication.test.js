@@ -1,60 +1,76 @@
-// import React from 'react';
-// import { postLogin } from '../controllers/LoginController'
-// import axios from 'axios';
-// import * as jest from "node/test";
-// import mockAxios from "express";
-// import { fetchData } from '../request';
+const express = require("express");
+const request = require("supertest");
+const app = express();
 
-// jest.mock('axios');
+const router = require('../routes/api/Login');
+const { postLogin } = require('../controllers/LoginController');
+app.use(router);
+const httpMocks = require('node-mocks-http');
 
-// nothing passes here so commented out
+const axios = require("axios");
+const {response} = require("express");
+jest.mock("axios");
 
-// describe("Login Authentication", () => {
-//     // tests here
-//     // test("submitting correct username and password", () => {
-//     //     const inputs = [
-//     //         {username: "aliceadmin", password: "alice@123"}
-//     //     ];
-//     //     // const response = {accessToken};
-//     //
-//     //     // axios.get.mockResolvedValue(response);
-//     // })
-//
-//     it('Submitting an invalid password', async () => {
-//         const inputs = [
-//             {username: "aliceadmin", password: "PasswordToFail"}
-//         ];
-//
-//         const data = ['testtoken'];
-//
-//         const response: AxiosResponse<any> = {
-//             data,
-//             headers: {},
-//             config: { url: 'http://localhost:5173/login' },
-//             status: 200,
-//             statusText: 'OK',
-//         };
-//
-//
-//
-//
-//         postLogin(inputs, {}).then(response => {
-//             expect(response).toEqual({
-//                 data: {},
-//             });
-//         });
-//         // expect(mockAxios.request).toHaveBeenCalledWith({
-//         //     method: 'post',
-//         //     url: '/login'
-//         // });
-//         // expect(mockAxios.request).toHaveBeenCalledTimes(1);
-//         // done();
-//     });
-// });
+describe('api tests', () => {
+    // test('post /login', async () => {
+    //     const inputs = [
+    //         {username: "admin", password: "PasswordToFail"}
+    //     ];
+    //
+    //     // const response = await axios.post('/api/login', inputs);
+    //     // expect(response.data).toBeDefined();
+    //     // axios.post.mockResolvedValueOnce(inputs);
+    //     // let axiosPromise = axios.post('/login/', { data: inputs });
+    //     // expect(axios.post).toHaveBeenCalledWith(`/login`);
+    //
+    //     const res = { data: inputs };
+    //     axios.post.mockResolvedValueOnce(res);
+    //     // await postLogin();
+    //     await expect(postLogin()).resolves.toEqual(inputs);
+    // });
+
+    // test to show the login page returns 200 status
+    test('login page should return 200 Status', () => {
+        request(app)
+            .get('/login')
+            .expect(200);
+    });
+
+    // test('should send some stuff', async () => {
+    //     const request = httpMocks.createRequest({
+    //         method: 'POST',
+    //         url: '/login'
+    //     });
+    //
+    //     const response = httpMocks.createResponse();
+    //
+    //     // await postLogin(request, response);
+    //
+    //     // const { property } = JSON.parse(response._getHeaders("content-type"));
+    //
+    //     // await expect(postLogin()).resolves.toEqual(200);
+    // });
+
+    // test('y', () => {
+    //     fetch("localhost:5173/login", {
+    //         method: "POST",
+    //         body:JSON.stringify({
+    //             username: "username",
+    //             password: "password"
+    //         })
+    //     }).then(
+    //         response => response.json()
+    //     ).then(response => {
+    //         expect(Array.isArray(response)).toBe(true);
+    //     })
+    //
+    // })
+
+});
 
 // dummy test so this file doesn't fail test in pipeline
-describe('Dummy Test Suite', () => {
-    test('Dummy test should always pass', () => {
-        expect(true).toBe(true);
-    });
-});
+// describe('Dummy Test Suite', () => {
+//     test('Dummy test should always pass', () => {
+//         expect(true).toBe(true);
+//     });
+// });
