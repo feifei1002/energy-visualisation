@@ -20,8 +20,10 @@ const ProfileOverview = () => {
             try {
                 const response = await axios.get('/api/profile');
                 setProfile(response.data);
+                showNotification('Profile loaded successfully.');
             } catch (error) {
-                console.error('Error fetching profile data:', error);
+                console.error('Error fetching profile data:', error)
+                showNotification('Could not find your profile details.');
             }
         };
 
@@ -64,9 +66,10 @@ const ProfileOverview = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            //tell user was success
+            showNotification('Success! Your CSV was uploaded.');
         } catch (error) {
             console.error('Error uploading CSV:', error);
+            showNotification('Failure! Your CSV was not uploaded.');
         }
     };
 
