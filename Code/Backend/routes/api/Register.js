@@ -1,39 +1,35 @@
-const bodyParser = require('body-parser');
 const express = require('express');
 const router = express.Router();
 
-//routes for client dashboard
+// Remove the unused bodyParser import
+
+// Import the necessary controller
 const RegisterController = require("../../controllers/RegisterController");
 
-//update register
-router.post('/register', RegisterController.registerNewUser);
+// Middleware to parse JSON requests
+router.use(express.json());
 
-// Handle GET requests to /api/register
-router.get('/register', (req, res) => {
-    res.status(404).send('Not Found');
-});
+// Update the route to use express.json() instead of bodyParser
+// router.post('/register', async (req, res) => {
+//     console.log("Received POST request to /api/register");
+//
+//     try {
+//         // Await the promise returned by registerNewUser
+//         await RegisterController.registerNewUser(req, res);
+//
+//         // Respond to the client once the promise is resolved
+//         res.status(201).json({ message: 'Registration successful. Awaiting approval.' });
+//     } catch (error) {
+//         console.error('Error handling registration:', error);
+//         res.status(500).json({ message: 'Registration failed.' });
+//     }
+// });
+//
+// // Handle GET requests to /api/register
+// router.get('/register', (req, res) => {
+//     res.status(404).send('Not Found');
+// });
+
 module.exports = router;
-
-// const app = express();
-// app.use(bodyParser.json());
-//
-// const port = process.env.PORT || 8082;
-//
-// app.get('/api/register', (req, res) => {
-//     // Handle GET requests at /api/register
-//     res.send('GET request to /api/register');
-// });
-//
-// const axios = require('axios');
-// const {registerNewUser} = require("../../controllers/RegisterController");
-//
-// app.use(bodyParser.json());
-//
-// // Admin route to approve a user
-// app.put('/profile/approve', approveUser);
-//
-// app.listen(port, () => {
-//     console.log('Server is running on port', port);
-// });
 
 

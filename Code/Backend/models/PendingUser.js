@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const UnapprovedUserSchema = new mongoose.Schema({
+const pendingUserSchema = new mongoose.Schema({
     fullName: {
         type: String,
         required: true
@@ -25,6 +25,7 @@ const UnapprovedUserSchema = new mongoose.Schema({
     }
 });
 
-const UnapprovedUser = mongoose.model('UnapprovedUser', UnapprovedUserSchema, 'UnapprovedUser');
 
-module.exports = UnapprovedUser;
+const PendingUser = mongoose.model('pendingUser', pendingUserSchema, 'pendingUser');
+
+module.exports = PendingUser;

@@ -18,7 +18,7 @@
      const handleRegistration = async (e) => {
          e.preventDefault();
          try {
-             const response = await axios.post('http://localhost:8082/api/register', formData);
+             const response = await axios.post('/api/register', formData);
              console.log('Axios Response:', response);
 
              setFormData({

@@ -54,10 +54,25 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //Import and configure the API routes
 const apiRouter = require('./routes/api/Api');
 const dataRouter = require('./routes/data/Data');
-// const registerRouter = require('./routes/api/Register');
+const RegisterController = require("./controllers/RegisterController");
 app.use('/api', apiRouter);
 app.use('/data', dataRouter);
-// app.use('/register', registerRouter);
+
+app.get('/api/register', (req, res) => {
+  res.send('Server is running. /api/register endpoint is accessible.');
+});
+
+app.post('/api/register', async (req, res) => {
+  try {
+    // Await the promise returned by registerNewUser
+    await RegisterController.registerNewUser(req, res);
+    // Respond to the client once the promise is resolved
+    res.status(201).json({ message: 'Registration successful. Awaiting approval.' });
+  } catch (error) {
+    console.error('Error handling registration:', error);
+    res.status(500).json({ message: 'Registration failed.' });
+  }
+});
 
 
 
