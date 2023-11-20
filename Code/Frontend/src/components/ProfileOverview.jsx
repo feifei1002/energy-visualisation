@@ -9,7 +9,7 @@ const ProfileOverview = () => {
     const [profile, setProfile] = useState({
         username: '',
         email: '',
-        name: '',
+        fullName: '',
         newPassword: '',
     });
     const [file, setFile] = useState(null);
@@ -107,7 +107,7 @@ const ProfileOverview = () => {
                     id="name"
                     name="name"
                     className="form-control"
-                    value={profile.name}
+                    value={profile.fullName}
                     onChange={handleInputChange}
                     disabled={!isEditing}
                 />
