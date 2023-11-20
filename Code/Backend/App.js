@@ -5,7 +5,14 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
+// for login authentication
+const router = express.Router();
+// const bcrypt = require("bcryptjs");
+// const jwt = require(jsonwebtoken);
+const User = require("./models/User"); 
+
 // Define the root route for API
+// go to http://localhost:8082/ for backend
 app.get('/', (req, res) => res.send('index route!'));
 
 //Define port
@@ -41,6 +48,10 @@ const connectDB = async () => {
 //Connect to the MongoDB database
 connectDB();
 
+const Schema = mongoose.Schema;
+
+console.log(Schema)
+
 //Configure CORS and JSON parsing
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ extended: false }));
@@ -56,5 +67,11 @@ app.use('/api',csvRouter);
 app.use('/api',profileRouter);
 
 
+const loginRouter = require('./routes/api/Login');
+app.use('/api',loginRouter);
+
 //Start the server
 app.listen(port, () => console.log(`Server running on port ${port}`));
+
+
+
