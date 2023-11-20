@@ -1,21 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
+
 .notification {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: white;
+    background-color: rgba(29, 102, 134, 0.99);
     padding: 10px 20px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: opacity 0.5s, transform 0.5s;
-    opacity: 0;
     transform: scale(0.9);
+    width: 200px;
+    height: 200px;
+    color: white;
+    font-family: 'Raleway', sans-serif;
 }
 
 .notification:hover {
-    transform: scale(1);
-}
-
-.notification.visible {
-    opacity: 1;
     transform: scale(1);
 }
