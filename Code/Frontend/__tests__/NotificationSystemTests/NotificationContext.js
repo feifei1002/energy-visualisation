@@ -1,5 +1,5 @@
 import { render, fireEvent } from '@testing-library/react';
-import { NotificationProvider, useNotification } from '../contexts/NotificationContext.jsx';
+import { NotificationProvider, useNotification } from '../../src/contexts/NotificationContext.jsx';
 
 const TestComponent = () => {
     const { triggerNotification } = useNotification();
