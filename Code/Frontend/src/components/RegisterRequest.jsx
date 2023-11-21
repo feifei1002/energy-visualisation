@@ -21,6 +21,7 @@ const RegisterRequest = () => {
     }, []);
 
 
+
     const handleApprove = async (userId) => {
         // Send a request to the server to approve the user
         try {

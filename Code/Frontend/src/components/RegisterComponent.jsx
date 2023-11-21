@@ -36,11 +36,12 @@ const RegistrationForm = () => {
         }
     };
 
+
     return (
         <div>
             <form onSubmit={handleRegistration} className="register-form">
                 <h2>Registration Form</h2>
-                <div className="form-group">
+                <div className="form-group-register">
                     <label htmlFor="fullName">Full Name:</label>
                     <input
                         type="text"
@@ -51,7 +52,7 @@ const RegistrationForm = () => {
                         autoComplete="name"
                     />
                 </div>
-                <div className="form-group">
+                <div className="form-group-register">
                     <label htmlFor="username">Username:</label>
                     <input
                         type="text"
@@ -62,7 +63,7 @@ const RegistrationForm = () => {
                         autoComplete="username"
                     />
                 </div>
-                <div className="form-group">
+                <div className="form-group-register">
                     <label htmlFor="email">Email:</label>
                     <input
                         type="email"
@@ -73,7 +74,7 @@ const RegistrationForm = () => {
                         autoComplete="email"
                     />
                 </div>
-                <div className="form-group">
+                <div className="form-group-register">
                     <label htmlFor="password">Password:</label>
                     <input
                         type="password"
