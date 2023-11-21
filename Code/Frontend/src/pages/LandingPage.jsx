@@ -28,10 +28,18 @@ export default function LandingPage() {
         return <li>{name}</li>;
     }
 
+    const isLoggedIn = () => {
+        // Check if the user has a valid JWT token or any other criteria
+        // Return true if logged in, false otherwise
+        // For example, you can use localStorage or sessionStorage to store the token
+        const token = localStorage.getItem('jwtToken');
+        return !!token; // Convert to boolean
+    };
+
     return (
         <div className="landing-page">
             <Header />
-            <RegisterRequest />
+            {isLoggedIn() && <RegisterRequest />} {/* Render RegisterRequest only if user is logged in */}
             <main>
                 <div>
                     {logos.map((logo, index) => (

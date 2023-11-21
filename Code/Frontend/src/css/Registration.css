@@ -5,6 +5,14 @@
     grid-template-columns: 1fr;
     line-height: 60px;
     width: 700px;
+    /*display: flex;*/
+    /*align-items: center;*/
+}
+
+
+.password-toggle {
+    cursor: pointer;
+    color: #15495f;
 }
 
 .form-group-register label {
