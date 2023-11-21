@@ -29,11 +29,11 @@ describe('api tests', () => {
     //     await expect(postLogin()).resolves.toEqual(inputs);
     // });
 
-    // test to show the login page returns 200 status
-    test('login page should return 200 Status', async () => {
+    // test to show the GET login route returns 404 status because we only have a POST on the /login route
+    test('/login route should return 404 Status', async () => {
         await request(app)
             .get('/login')
-            .expect(200);
+            .expect(404);
     });
 
     // test('should send some stuff', async () => {
