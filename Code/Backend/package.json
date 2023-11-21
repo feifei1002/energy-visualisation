@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --max_old_space_size=4096",
     "start": "node app.js",
     "app": "nodemon app.js"
   },
