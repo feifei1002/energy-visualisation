@@ -11,15 +11,10 @@ const router = require('../routes/data/Data');
 // Use the imported router in the express application
 app.use(router);
 
-describe('Dummy Test Suite', () => {
-  test('Dummy test should always pass', () => {
-    expect(true).toBe(true);
-  });
-});
 
 // Describe the test suite for API endpoints
 describe('API endpoint tests', () => {
-    // Test case for the /annualheat endpoint
+    // Test case for the /annualheat endpoint;
     test('GET /annualheat should return CSV data', async () => {
       // Send a GET request to the /annualheat endpoint and store the response
       const response = await request(app).get('/annualheat');

@@ -78,6 +78,12 @@
     },
     "setupFilesAfterEnv": [
       "<rootDir>/jest.setup.js"
-    ]
+    ],
+    "maxWorkers": 1,
+    "globals": {
+        "ts-jest": {
+            "isolatedModules": true
+        }
+    }
   }
 }
