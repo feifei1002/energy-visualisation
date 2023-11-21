@@ -6,7 +6,10 @@ import TotalHeatEfficiency from '../components/graphs/TotalHeatEfficiency';
 import HeatEfficiencyBeforeHeatMap from '../components/graphs/HeatEfficiencyBeforeHeatMap';
 import HeatEfficiencyAfterHeatMap from '../components/graphs/HeatEfficiencyAfterHeatMap';
 import VisualisationsDropdownMenu from "../components/VisualisationsDropdownMenu";
+import TotalHeatDemandBeforeTable from "../components/tables/TotalHeatDemandBeforeTable"
+import TotalHeatDemandAfterTable from "../components/tables/TotalHeatDemandAfterTable"
 import Header from "../Header";
+import LoadingGif from "../assets/LoadingGif.gif";
 
 // The main component function that will be exported and used to display the page.
 export default function BeforeAfterHeatDemandPage() {
@@ -104,7 +107,7 @@ export default function BeforeAfterHeatDemandPage() {
           color: '#333'
         }}>Getting your data...</p>
         <img 
-          src="https://i.gifer.com/ZKZg.gif"
+          src={LoadingGif}
           alt="Loading..."
           style={{
             width: '50px',
@@ -139,8 +142,24 @@ export default function BeforeAfterHeatDemandPage() {
         </div>
         {/* Components that display total heat efficiency and a bar chart of heat demand */}
         <TotalHeatEfficiency heatData={heatData} />
+        <div style={{
+          display: 'flex', 
+          flexDirection: 'row', 
+          width: '100%', 
+          alignItems: 'stretch',
+          boxSizing: 'border-box',
+          flexWrap: 'wrap'
+        }}>
+            <div style={{ flex: 1, padding: '0', margin: '0.5em', boxSizing: 'border-box', minWidth: '500px' }}>
+             <TotalHeatDemandBeforeTable data={heatData} />
+            </div>
+            <div style={{ flex: 1, padding: '0', margin: '0.5em', boxSizing: 'border-box', minWidth: '500px' }}>
+             <TotalHeatDemandAfterTable data={heatData} />
+            </div>
+        </div>
         <BeforeAfterHeatDemandBar data={heatData} />
       </>
     );
   }
 }
+;

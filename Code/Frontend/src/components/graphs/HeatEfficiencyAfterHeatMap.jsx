@@ -2,9 +2,13 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css'; // Import Leaflet CSS for proper map styling
+import Chart from 'chart.js/auto';
 
 // Define the HeatEfficiencyAfterHeatMap component, which takes in heatData and geoJsonData as props
 export default function HeatEfficiencyAfterHeatMap({ heatData, geoJsonData }) {
+  const [selectedFeature, setSelectedFeature] = useState(null);
+  const [myChart, setMyChart] = useState(null);
+  const [chartInUse, setChartInUse] = useState(false);
 
   // Memoize the heat data map for optimization; it re-computes only when heatData changes
   const heatDataMap = useMemo(() => {
@@ -47,14 +51,139 @@ export default function HeatEfficiencyAfterHeatMap({ heatData, geoJsonData }) {
         const demandData = heatDataMap.get(feature.properties.LSOA11CD);
         // If there's demand data, create a popup with information about the feature
         if (demandData) {
-          const popupContent = `LSOA Code: ${feature.properties.LSOA11CD}<br>` +
-          `Local Authority: ${demandData['Local Authority (2019)']}<br>` +
-          `Total heat demand (after measures): ${demandData['Total heat demand after energy efficiency measures 2018 (kWh)'].toLocaleString()} kWh`;
+          const popupContent = `
+          LSOA Code: ${feature.properties.LSOA11CD}<br>
+          Local Authority: ${demandData['Local Authority (2019)']}<br>
+          Total heat demand (after measures): ${demandData['Total heat demand after energy efficiency measures 2018 (kWh)'].toLocaleString()} kWh<br>
+          Annual Heat Demand by Dwellings (after measures):
+          <ul>
+            <li>Detached: ${demandData['Average heat demand after energy efficiency measures for detached gas boiler (kWh)'].toLocaleString()} kWh</li>
+            <li>Flat: ${demandData['Average heat demand after energy efficiency measures for flat gas boiler (kWh)'].toLocaleString()} kWh</li>
+            <li>Semi-detached: ${demandData['Average heat demand after energy efficiency measures for semi-detached gas boiler (kWh)'].toLocaleString()} kWh</li>
+            <li>Terraced: ${demandData['Average heat demand after energy efficiency measures for terraced gas boiler (kWh)'].toLocaleString()} kWh</li>
+          </ul>
+        `;
+          setSelectedFeature(feature);
           layer.bindPopup(popupContent).openPopup();
         }
       });
     };
   }, [heatDataMap]);
+
+  
+  useEffect(() => {
+    if (chartInUse && selectedFeature) {
+      if (selectedFeature) {
+        const demandData = heatDataMap.get(selectedFeature.properties.LSOA11CD);
+        if (demandData) {
+          createOrUpdateStackedBarChart(demandData);
+        }
+      }
+    }
+  }, [chartInUse, selectedFeature, heatDataMap]);
+
+  const showBarChart = () => {
+    setChartInUse(true);
+  };
+  
+  const createOrUpdateStackedBarChart = () => {
+    if (!geoJsonData) {
+      return;
+    }
+
+    const mapContainer = document.querySelector('.leaflet-container');
+
+    if (!mapContainer) {
+      return;
+    }
+
+    // Destroy the previous chart instance
+    if (myChart) {
+      myChart.destroy();
+    }
+
+    if (selectedFeature) {
+      const demandData = heatDataMap.get(selectedFeature.properties.LSOA11CD);
+      if (demandData) {
+        const data = getChartData(demandData);
+        const ctx = document.getElementById('stackedBarChartAfter').getContext('2d');
+
+        setMyChart(new Chart(ctx, {
+          type: 'bar',
+          data: data,
+          options: {
+            scales: {
+              x: {
+                stacked: true,
+              },
+              y: {
+                stacked: true,
+              },
+            },
+            plugins: {
+              title: {
+                  display: true,
+                  text: `Heat demand for ${demandData['Local Authority (2019)']}(${selectedFeature.properties.LSOA11CD})`
+              }
+             
+            }
+          },
+        }));
+      }
+    }
+  };
+
+  
+  const getChartData = (demandData) => {
+    // Generate or fetch your chart data here
+    const data = {
+      labels: ['Detached', 'Flat', 'Semi-detached', 'Terraced'],
+      datasets: [
+        {
+          label: 'Biomass Boiler',
+          backgroundColor: '#FF5733',
+          data: [
+            demandData['Number of detached biomass boiler in 2018'],
+            demandData['Number of flat biomass boiler in 2018'],
+            demandData['Number of semi-detached biomass boiler in 2018'],
+            demandData['Number of terraced biomass boiler in 2018'],
+          ],
+        },
+        {
+          label: 'Gas Boiler',
+          backgroundColor: '#3399FF',
+          data: [
+            demandData['Number of detached gas boiler in 2018'],
+            demandData['Number of flat gas boiler in 2018'],
+            demandData['Number of semi-detached gas boiler in 2018'],
+            demandData['Number of terraced gas boiler in 2018'],
+          ],
+        },
+        {
+          label: 'Oil Boiler',
+          backgroundColor: '#FFFF66',
+          data: [
+            demandData['Number of detached oil boiler in 2018'],
+            demandData['Number of flat oil boiler in 2018'],
+            demandData['Number of semi-detached oil boiler in 2018'],
+            demandData['Number of terraced oil boiler in 2018'],
+          ],
+        },
+        {
+          label: 'Resistance Heating',
+          backgroundColor: '#440D31',
+          data: [
+            demandData['Number of detached resistance heating in 2018'],
+            demandData['Number of flat resistance heating in 2018'],
+            demandData['Number of semi-detached resistance heating in 201'],
+            demandData['Number of terraced resistance heating in 2018'],
+          ],
+        },
+      ],
+    };
+  
+    return data;
+  };
 
   // Render a loading state if geoJsonData is not yet available
   if (!geoJsonData) {
@@ -100,6 +229,28 @@ export default function HeatEfficiencyAfterHeatMap({ heatData, geoJsonData }) {
           />
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" /> // Base map layer from OpenStreetMap
         </MapContainer>
+        {chartInUse && (
+        <canvas id="stackedBarChartAfter" style={{ position: 'absolute', top: '37%', left: '51%', zIndex: 1000, background: '#fff'}}></canvas>
+        )
+        }
+        {selectedFeature && !myChart && (
+            <button onClick={() => showBarChart()} 
+            style={{ position: 'absolute', top: '80%', left: '51%', padding: '5px', background: '#000', zIndex: 1001, cursor: 'pointer', color: '#fff' }}
+            >
+            Show Bar Chart For Region(LSOA)</button>
+        )}
+        {myChart && (
+          <button
+            style={{ position: 'absolute', top: '37%', left: '51%', padding: '5px', background: '#000', zIndex: 1001, cursor: 'pointer', color: '#fff' }}
+            onClick={() =>  {if (myChart) {
+              myChart.destroy();
+              setChartInUse(false);
+              setMyChart(null);
+            }}}
+          >
+            Close
+          </button>
+        )}
       </div>
     </div>
   );

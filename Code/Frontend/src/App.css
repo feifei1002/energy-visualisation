@@ -17,3 +17,7 @@
     background-color: rgba(29, 102, 134, 0.99);
     border: none;
 }
+
+.dropdown-menu{
+  z-index: 2000;
+}

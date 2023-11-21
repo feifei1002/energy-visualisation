@@ -6,6 +6,16 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
+// for login authentication
+const router = express.Router();
+// const bcrypt = require("bcryptjs");
+// const jwt = require(jsonwebtoken);
+const User = require("./models/User"); 
+
+// Define the root route for API
+// go to http://localhost:8082/ for backend
+app.get('/', (req, res) => res.send('index route!'));
+
 //Define port
 const port = process.env.PORT || 8082;
 
@@ -39,6 +49,10 @@ const connectDB = async () => {
 //Connect to the MongoDB database
 connectDB();
 
+const Schema = mongoose.Schema;
+
+console.log(Schema)
+
 //Configure CORS and JSON parsing
 app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(express.json({ extended: false }));
@@ -48,13 +62,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //Import and configure the API routes
 const apiRouter = require('./routes/api/Api');
 const dataRouter = require('./routes/data/Data');
-const RegisterController = require("./controllers/RegisterController");
 const PendingUser = require("./models/PendingUser");
 const User = require("./models/User");
 const registerRouter = require("./routes/api/Register");
-app.use('/register', registerRouter)
+app.use('/register', registerRouter);
+const csvRouter = require('./routes/api/Csv');
+const profileRouter = require('./routes/api/Profile');
 app.use('/api', apiRouter);
 app.use('/data', dataRouter);
+app.use('/api',csvRouter);
+app.use('/api',profileRouter);
+
+
 
 // app.get('/api/register', (req, res) => {
 //   res.send('Server is running. /api/register endpoint is accessible.');
@@ -131,3 +150,6 @@ app.use('/data', dataRouter);
 
 //Start the server
 app.listen(port, () => console.log(`Server running on port ${port}`));
+
+
+
