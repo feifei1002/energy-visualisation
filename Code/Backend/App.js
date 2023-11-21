@@ -10,7 +10,6 @@ require('dotenv').config();
 const router = express.Router();
 // const bcrypt = require("bcryptjs");
 // const jwt = require(jsonwebtoken);
-const User = require("./models/User"); 
 
 // Define the root route for API
 // go to http://localhost:8082/ for backend
