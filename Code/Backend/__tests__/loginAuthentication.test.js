@@ -30,8 +30,8 @@ describe('api tests', () => {
     // });
 
     // test to show the login page returns 200 status
-    test('login page should return 200 Status', () => {
-        request(app)
+    test('login page should return 200 Status', async () => {
+        await request(app)
             .get('/login')
             .expect(200);
     });
