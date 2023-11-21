@@ -28,24 +28,21 @@ const postLogin = async (req, res) => {
             // https://stackabuse.com/authentication-and-authorization-with-jwts-in-express-js/ 16/11
             const accessToken = jwt.sign({username: data.username}, process.env.ACCESS_TOKEN, { expiresIn: '30m' });
 
-            // res.redirect('/profiledashboard');
-
             // send response of access token when correctly authenticated
             res.json({
                 accessToken
             });
 
-
         } else {
-
+            // when the password doesn't match the one in the database
+            console.error("password is incorrect")
             res.send('Password is incorrect');
         }
-
-
     } catch (error) {
-            console.error(error);
-            res.send('Username does not match any in the system');
-        }
+        // when cannot find a matching username in the database
+        console.error('Username does not match any in the system');
+        res.send('Username is incorrect');
+    }
 
 };
 

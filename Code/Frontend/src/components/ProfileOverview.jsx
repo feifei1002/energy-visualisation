@@ -1,12 +1,16 @@
+import React from 'react';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import '../css/ProfileOverview.css';
+import { NotificationContext } from '../contexts/NotificationContext';
 
 const ProfileOverview = () => {
+    const { showNotification } = useContext(NotificationContext);
+
     const [profile, setProfile] = useState({
         username: '',
         email: '',
-        name: '',
+        fullName: '',
         newPassword: '',
     });
     const [file, setFile] = useState(null);
@@ -17,8 +21,10 @@ const ProfileOverview = () => {
             try {
                 const response = await axios.get('/api/profile');
                 setProfile(response.data);
+                showNotification('Profile loaded successfully.');
             } catch (error) {
-                console.error('Error fetching profile data:', error);
+                console.error('Error fetching profile data:', error)
+                showNotification('Could not find your profile details.');
             }
         };
 
@@ -43,8 +49,10 @@ const ProfileOverview = () => {
             const response = await axios.put('/api/profile', profile);
             setProfile(response.data);
             setIsEditing(false);
+            showNotification('Success! You updated your profile details.');
         } catch (error) {
             console.error('Error updating profile:', error);
+            showNotification('Failure! Your profile details were not updated.');
         }
     };
 
@@ -59,9 +67,10 @@ const ProfileOverview = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            //tell user was success
+            showNotification('Success! Your CSV was uploaded.');
         } catch (error) {
             console.error('Error uploading CSV:', error);
+            showNotification('Failure! Your CSV was not uploaded.');
         }
     };
 
@@ -99,7 +108,7 @@ const ProfileOverview = () => {
                     id="name"
                     name="name"
                     className="form-control"
-                    value={profile.name}
+                    value={profile.fullName}
                     onChange={handleInputChange}
                     disabled={!isEditing}
                 />

@@ -34,5 +34,6 @@ test:
     - npm install
     - npm install dotenv
     - npm install --save-dev jest
+    - npm install identity-obj-proxy --save-dev
     - npm install to-fast-properties
     - npm run test
