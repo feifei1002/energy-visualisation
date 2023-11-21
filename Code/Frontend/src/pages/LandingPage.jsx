@@ -19,7 +19,7 @@ export default function LandingPage(){
         },
     ];
 
-    const researchers = ['Alexandre Canet', 'Ali Al-Wakeel', '_'];
+    const researchers = ['Alexandre Canet', 'Ali Al-Wakeel', '‎'];
     const academics = ['Meysam Qadrdan', 'Nick Jenkins', 'Jianzhong Wu'];
 
     // eslint-disable-next-line react/prop-types
