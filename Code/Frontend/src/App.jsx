@@ -3,9 +3,7 @@ import './App.css'
 import BeforeAfterHeatDemandPage from './pages/BeforeAfterHeatDemandPage';
 import LandingPage from './pages/LandingPage'
 import VisualisationPage from './VisualisationPage'
-
-// import Graph1 from './Graph1'
-// import Graph1 from "./Graph1.jsx";
+import GasBoilersPage from './pages/GasBoilersPage.jsx'
 import Login from './pages/Login.jsx';
 import ProfileDashboardPage from "./ProfileDashboardPage.jsx";
 import ResistanceHeatersPage from "./pages/ResistanceHeatersPage.jsx";
@@ -24,6 +22,7 @@ export default function App() {
                 <Route path="/visualisations/halfhourlyresistanceheaters" element={<ResistanceHeatersPage />}  />
                 <Route path="/profiledashboard" element={<ProfileDashboardPage />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/visualisations/halfhourlygasboilers" element={<GasBoilersPage />} />
             </Routes>
         </Router>
       </NotificationProvider>
