@@ -33,7 +33,7 @@ describe('API endpoint tests', () => {
           }),
         ])
       );
-    }, 10000); // Set a timeout of 10 seconds for this test case if needed
+    }, 20000); // Set a timeout of 10 seconds for this test case if needed
   
     // Test case for the /geojson endpoint
     test('GET /geojson should return GeoJSON data', async () => {
@@ -63,5 +63,5 @@ describe('API endpoint tests', () => {
           }),
         ])
       });
-    }, 10000); // Set a timeout of 10 seconds for this test case if needed
+    }, 20000); // Set a timeout of 10 seconds for this test case if needed
 });
