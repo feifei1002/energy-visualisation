@@ -1,30 +1,31 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import '../css/Registration.css';
+import axios from "axios";
 
 const RegisterRequest = () => {
     const [pendingUsers, setPendingUsers] = useState([]);
 
     useEffect(() => {
-        // Fetch pending users when the component mounts
-        fetch('/api/pending-users')
-            .then((response) => response.json())
-            .then((data) => {
-                setPendingUsers(data);
-            })
-            .catch((error) => {
-                console.error('Error fetching pending users:', error);
-                toast.error('Error fetching pending users. Please try again.');
-            });
+        const fetchPendingUserData = async () => {
+            try {
+                const response = await axios.get('/register/api/pending-users');
+                setPendingUsers(response.data);
+            } catch (error) {
+                console.error('Error fetching pending user data:', error);
+
+            }
+        };
+
+        fetchPendingUserData();
     }, []);
 
-    const handleApprove = async (userId, e) => {
-        // Send a request to the server to approve the user
-        e.preventDefault();
 
+    const handleApprove = async (userId) => {
+        // Send a request to the server to approve the user
         try {
             // Update the approval status in the PendingUser schema
-            const response = await fetch(`/api/approve-user/${userId}`, {
+            const response = await fetch(`/register/approve-user/${userId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -48,7 +49,7 @@ const RegisterRequest = () => {
     const handleDeny = async (userId) => {
         try {
             // Send a request to update the approval status in the PendingUser schema to deny the user
-            const denyUserResponse = await fetch(`/api/deny-user/${userId}`, {
+            const denyUserResponse = await fetch(`/register/deny-user/${userId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
