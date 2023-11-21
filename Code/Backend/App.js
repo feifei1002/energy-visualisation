@@ -64,7 +64,7 @@ const dataRouter = require('./routes/data/Data');
 const PendingUser = require("./models/PendingUser");
 const User = require("./models/User");
 const registerRouter = require("./routes/api/Register");
-app.use('/register', registerRouter);
+app.use('/api', registerRouter);
 const csvRouter = require('./routes/api/Csv');
 const profileRouter = require('./routes/api/Profile');
 app.use('/api', apiRouter);

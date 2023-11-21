@@ -28,7 +28,6 @@ function Header() {
                     <HeaderLink to="/" text="About" />
                     <HeaderLink to="/visualisations" text="Visualisations" />
                     <HeaderLink to="/login" text="Login" />
-                    <HeaderLink to="/register" text="Register" />
                 </ul>
             </nav>
             {/* Your Routes should typically be outside of the Header component, and not nested within */}

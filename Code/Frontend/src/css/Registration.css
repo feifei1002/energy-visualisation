@@ -1,51 +1,76 @@
-* {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-}
-
-.inputRow {
-    height: 100px;
-    line-height: 80px;
-    text-align: center;
+.register-form {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
     background-color: #ffffff;
-    border-color: #15495f;
-    border-radius: 0px;
-    color: black;
-    padding: 0px 50px;
-    /*width: 194px;*/
-}
-label {
-    display: inline-block;
-    border: solid #15495f;
-    border-radius: 0px;
-    width: 194px;
-    padding: 2px 2px 2px 2px;
-    background-color: rgba(20, 72, 94, 0.99);
+    border: 1px solid #ffffff;
+    border-radius: 8px;
     box-sizing: border-box;
-    font-family: "Raleway", sans-serif;
-    color: #ffffff;
-    text-align: center;
-    /*line-height: normal;*/
-    height: 83px;
-    line-height: 80px;
 }
 
-
-
-.btn save-btn{
-    display: inline-block;
+.register-form h2 {
     text-align: center;
-    background-color: #ffffff;
-    border-color: #15495f;
-    border-radius: 0px;
-    font-family: "Raleway", sans-serif;
     color: #000000;
-    border-width: 2px;
-    padding: 2px 2px 2px 2px;
-    width: 300px;
-    height: 50px;
-    line-height: normal;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: grid;
+    grid-template-columns: 1fr;
+    /*height: 100px;*/
+    line-height: 60px;
+    width: 700px;
+}
+
+.form-group label {
+    display: inline-block;
+    text-align: center;
+    background-color: #15495f;
+    border: solid #15495f;
+    border-radius: 0;
+    color: white;
+    padding: 10px;
+    margin-bottom: 0;
+    box-sizing: border-box;
+    width: 100%;
+    height: 83px;
+    vertical-align: top;
+}
+
+.register-form input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #15495f;
+    border-radius: 0;
+    box-sizing: border-box;
+    margin-top: 0;
+    margin-bottom: 0;
+    vertical-align: top;
+}
+
+.btn.register-btn {
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #15495f;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    color: white;
+    box-sizing: border-box;
+}
+
+
+.btn.register-btn:hover {
+    background-color: #0f3a4d;
+}
+
+/* Media Query for larger screens */
+@media screen and (min-width: 600px) {
+    .form-group {
+        grid-template-columns: 3fr 7fr; /* 30% for label, 70% for input */
+    }
 }
 
 /*/* Registration.css */
@@ -63,6 +88,7 @@ label {
     overflow-y: auto; /* Enable vertical scrolling if content exceeds height */
     transition: transform 0.3s ease-in-out;
 }
+
 
 .registration-container.hidden {
     transform: translateX(100%);
@@ -84,5 +110,6 @@ label {
     background-color: rgba(20, 72, 94, 0.99);
     color: #ffffff;
 }
+
 
 

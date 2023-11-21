@@ -9,7 +9,7 @@ const RegisterRequest = () => {
     useEffect(() => {
         const fetchPendingUserData = async () => {
             try {
-                const response = await axios.get('/register/api/pending-users');
+                const response = await axios.get('/api/pending-users');
                 setPendingUsers(response.data);
             } catch (error) {
                 console.error('Error fetching pending user data:', error);
@@ -25,7 +25,7 @@ const RegisterRequest = () => {
         // Send a request to the server to approve the user
         try {
             // Update the approval status in the PendingUser schema
-            const response = await fetch(`/register/approve-user/${userId}`, {
+            const response = await fetch(`/api/approve-user/${userId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ const RegisterRequest = () => {
     const handleDeny = async (userId) => {
         try {
             // Send a request to update the approval status in the PendingUser schema to deny the user
-            const denyUserResponse = await fetch(`/register/deny-user/${userId}`, {
+            const denyUserResponse = await fetch(`/api/deny-user/${userId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
