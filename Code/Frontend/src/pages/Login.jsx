@@ -74,27 +74,27 @@ function Login() {
 
             <main>
                 <div className="login-container">
-                <form onSubmit={handleSubmit}>
-                    <div className="inputRow">
-                    <label>User Name</label>
-                    {/* sets max length for username and password as 15 values, and both have to be a value */}
-                    <input type="text" name="username" value={uname} onChange={handleChange} {...{ required: true, maxLength: 15 }} />
-                    </div>
-                    <div className="inputRow">
-                    <label>Password</label>
-                    <input type="password" name="password" value={pass} onChange={handleChange} {...{ required: true }} />
-                    </div>
-                    <div className="inputRow">
-                    <input type="submit" value="Login" />
-                    {/*    <button onClick={() => loginWithRedirect()} value="Login"></button>*/}
-                    {/* https://stackoverflow.com/questions/2825856/html-button-to-not-submit-form  on 04/11*/}
-                    <button type="button" onClick={routeChange}>Register</button>
-                    {/* end */}
-                    {/*allows unique error messages from error handling*/}
-                        {status?.type === 'success' && <p>Successful Login!</p>}
-                        {status?.type === 'error' && <p>Incorrect username or password, try again!</p>}
-                    </div>
-                </form>
+                    <form onSubmit={handleSubmit}>
+                        <div className="inputRow">
+                            <label>User Name</label>
+                            {/* sets max length for username and password as 15 values, and both have to be a value */}
+                            <input type="text" name="username" value={uname} onChange={handleChange} {...{ required: true, maxLength: 15 }} />
+                        </div>
+                        <div className="inputRow">
+                            <label>Password</label>
+                            <input type="password" name="password" value={pass} onChange={handleChange} {...{ required: true }} />
+                        </div>
+                        <div className="inputRow">
+                            <input type="submit" value="Login" />
+                            {/*    <button onClick={() => loginWithRedirect()} value="Login"></button>*/}
+                            {/* https://stackoverflow.com/questions/2825856/html-button-to-not-submit-form  on 04/11*/}
+                            <button type="button" onClick={routeChange}>Register</button>
+                            {/* end */}
+                            {/*allows unique error messages from error handling*/}
+                            {status?.type === 'success' && <p>Successful Login!</p>}
+                            {status?.type === 'error' && <p>Incorrect username or password, try again!</p>}
+                        </div>
+                    </form>
                 </div>
             </main>
 

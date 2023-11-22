@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+const pendingUserSchema = new mongoose.Schema({
     fullName: {
         type: String,
         required: true
@@ -25,6 +25,7 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-const User = mongoose.model('User', userSchema, 'User');
 
-module.exports = User;
+const PendingUser = mongoose.model('pendingUser', pendingUserSchema, 'pendingUser');
+
+module.exports = PendingUser;

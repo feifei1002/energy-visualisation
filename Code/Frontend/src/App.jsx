@@ -1,15 +1,15 @@
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css'
 import BeforeAfterHeatDemandPage from './pages/BeforeAfterHeatDemandPage';
 import LandingPage from './pages/LandingPage'
 import VisualisationPage from './VisualisationPage'
-
-// import Graph1 from './Graph1'
-// import Graph1 from "./Graph1.jsx";
 import Login from './pages/Login.jsx';
 import ProfileDashboardPage from "./ProfileDashboardPage.jsx";
 import ResistanceHeatersPage from "./pages/ResistanceHeatersPage.jsx";
 import BreakDownOfHeatDemandPage from "./pages/BreakDownOfHeatDemandPage.jsx";
+import RegistrationPage from "./pages/RegistrationPage";
 import { NotificationProvider } from './contexts/NotificationContext';
 
 export default function App() {
@@ -24,8 +24,11 @@ export default function App() {
                 <Route path="/visualisations/halfhourlyresistanceheaters" element={<ResistanceHeatersPage />}  />
                 <Route path="/profiledashboard" element={<ProfileDashboardPage />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<RegistrationPage />} />
             </Routes>
+            <ToastContainer />
         </Router>
       </NotificationProvider>
   )
 }
+
