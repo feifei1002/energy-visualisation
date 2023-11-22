@@ -1,68 +1,64 @@
-// Import necessary React hooks and components from the 'react' library and React Leaflet for map rendering
+// Import React hooks and components for the HeatEfficiencyAfterHeatMap component
 import React, { useEffect, useState, useMemo } from 'react';
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css'; // Import Leaflet CSS for proper map styling
+import 'leaflet/dist/leaflet.css'; // Import Leaflet CSS for map styling
 import Chart from 'chart.js/auto';
 
-// Define the HeatEfficiencyAfterHeatMap component, which takes in heatData and geoJsonData as props
+// HeatEfficiencyAfterHeatMap component receives heatData and geoJsonData as props
 export default function HeatEfficiencyAfterHeatMap({ heatData, geoJsonData }) {
+  // State hooks for selected feature, chart instance, and chart usage
   const [selectedFeature, setSelectedFeature] = useState(null);
   const [myChart, setMyChart] = useState(null);
   const [chartInUse, setChartInUse] = useState(false);
 
-  // Memoize the heat data map for optimization; it re-computes only when heatData changes
+  // Memoize heat data map for optimized mapping
   const heatDataMap = useMemo(() => {
     const map = new Map();
-    // For each item in heatData, set a map entry with LSOA11CD as the key and the item as the value
     heatData.forEach(item => map.set(item.LSOA11CD, item));
     return map;
   }, [heatData]);
 
   // Function to determine color based on total heat demand
   const getColor = (demand) => {
-    // Conditional color rendering based on the demand thresholds
     if (demand > 20000000) return '#800026';
     if (demand > 15000000) return '#E05E42';
     if (demand > 10000000) return "#FFEDA0";
     if (demand > 5000000) return "#ADF007";
-    return '#ADF007'; // Default color if none of the conditions are met
+    return '#ADF007'; // Default color
   };
 
-  // Memoize the style function, which determines the style of each feature on the map
+  // Memoized style function for GeoJSON features
   const style = useMemo(() => {
     return (feature) => {
       const demandData = heatDataMap.get(feature.properties.LSOA11CD);
-      // If there's demand data, return a style object with specific properties
       return demandData ? {
         fillColor: getColor(demandData['Total heat demand after energy efficiency measures 2018 (kWh)']),
-        weight: 2, // Border weight
-        opacity: 1, // Border opacity
-        color: 'white', // Border color
-        fillOpacity: 0.7 // Fill opacity
-      } : {}; // If no data, return an empty object
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        fillOpacity: 0.7,
+      } : {};
     };
   }, [heatDataMap]);
 
-  // Memoize the onEachFeature function, which defines interactive behavior for each feature
+  // Memoized function to handle click events on GeoJSON features
   const onEachFeature = useMemo(() => {
     return (feature, layer) => {
-      // Attach a click event to each feature
       layer.on('click', () => {
         const demandData = heatDataMap.get(feature.properties.LSOA11CD);
-        // If there's demand data, create a popup with information about the feature
         if (demandData) {
           const popupContent = `
-          LSOA Code: ${feature.properties.LSOA11CD}<br>
-          Local Authority: ${demandData['Local Authority (2019)']}<br>
-          Total heat demand (after measures): ${demandData['Total heat demand after energy efficiency measures 2018 (kWh)'].toLocaleString()} kWh<br>
-          Annual Heat Demand by Dwellings (after measures):
-          <ul>
-            <li>Detached: ${demandData['Average heat demand after energy efficiency measures for detached gas boiler (kWh)'].toLocaleString()} kWh</li>
-            <li>Flat: ${demandData['Average heat demand after energy efficiency measures for flat gas boiler (kWh)'].toLocaleString()} kWh</li>
-            <li>Semi-detached: ${demandData['Average heat demand after energy efficiency measures for semi-detached gas boiler (kWh)'].toLocaleString()} kWh</li>
-            <li>Terraced: ${demandData['Average heat demand after energy efficiency measures for terraced gas boiler (kWh)'].toLocaleString()} kWh</li>
-          </ul>
-        `;
+            LSOA Code: ${feature.properties.LSOA11CD}<br>
+            Local Authority: ${demandData['Local Authority (2019)']}<br>
+            Total heat demand (after measures): ${demandData['Total heat demand after energy efficiency measures 2018 (kWh)'].toLocaleString()} kWh<br>
+            Annual Heat Demand by Dwellings (after measures):
+            <ul>
+              <li>Detached: ${demandData['Average heat demand after energy efficiency measures for detached gas boiler (kWh)'].toLocaleString()} kWh</li>
+              <li>Flat: ${demandData['Average heat demand after energy efficiency measures for flat gas boiler (kWh)'].toLocaleString()} kWh</li>
+              <li>Semi-detached: ${demandData['Average heat demand after energy efficiency measures for semi-detached gas boiler (kWh)'].toLocaleString()} kWh</li>
+              <li>Terraced: ${demandData['Average heat demand after energy efficiency measures for terraced gas boiler (kWh)'].toLocaleString()} kWh</li>
+            </ul>
+          `;
           setSelectedFeature(feature);
           layer.bindPopup(popupContent).openPopup();
         }
@@ -70,22 +66,22 @@ export default function HeatEfficiencyAfterHeatMap({ heatData, geoJsonData }) {
     };
   }, [heatDataMap]);
 
-  
+  // Effect to create or update the bar chart when chartInUse or selectedFeature changes
   useEffect(() => {
     if (chartInUse && selectedFeature) {
-      if (selectedFeature) {
-        const demandData = heatDataMap.get(selectedFeature.properties.LSOA11CD);
-        if (demandData) {
-          createOrUpdateStackedBarChart(demandData);
-        }
+      const demandData = heatDataMap.get(selectedFeature.properties.LSOA11CD);
+      if (demandData) {
+        createOrUpdateStackedBarChart(demandData);
       }
     }
   }, [chartInUse, selectedFeature, heatDataMap]);
 
+  // Function to set chartInUse to true
   const showBarChart = () => {
     setChartInUse(true);
   };
-  
+
+  // Function to create or update the stacked bar chart
   const createOrUpdateStackedBarChart = () => {
     if (!geoJsonData) {
       return;
@@ -125,7 +121,6 @@ export default function HeatEfficiencyAfterHeatMap({ heatData, geoJsonData }) {
                   display: true,
                   text: `Heat demand for ${demandData['Local Authority (2019)']}(${selectedFeature.properties.LSOA11CD})`
               }
-             
             }
           },
         }));
@@ -133,9 +128,8 @@ export default function HeatEfficiencyAfterHeatMap({ heatData, geoJsonData }) {
     }
   };
 
-  
+  // Function to format chart data
   const getChartData = (demandData) => {
-    // Generate or fetch your chart data here
     const data = {
       labels: ['Detached', 'Flat', 'Semi-detached', 'Terraced'],
       datasets: [
@@ -181,7 +175,7 @@ export default function HeatEfficiencyAfterHeatMap({ heatData, geoJsonData }) {
         },
       ],
     };
-  
+
     return data;
   };
 
@@ -214,7 +208,7 @@ export default function HeatEfficiencyAfterHeatMap({ heatData, geoJsonData }) {
     );
   }
 
-  // Render the map with GeoJSON and TileLayer components from React Leaflet
+  // Render the map with GeoJSON and TileLayer components, along with chart elements
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'right'}}>
       <h3 style={{textAlign: 'left'}}>

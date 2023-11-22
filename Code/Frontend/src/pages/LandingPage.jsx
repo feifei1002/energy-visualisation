@@ -20,7 +20,7 @@ export default function LandingPage() {
         { src: Zero2025, alt: 'Zero 2050 Logo', href: 'https://connecteddata.nationalgrid.co.uk/dataset/net-zero-south-wales-2050'},
     ];
 
-    const researchers = ['Alexandre Canet', 'Ali Al-Wakeel', '_'];
+    const researchers = ['Alexandre Canet', 'Ali Al-Wakeel', '‎'];
     const academics = ['Meysam Qadrdan', 'Nick Jenkins', 'Jianzhong Wu'];
 
     // eslint-disable-next-line react/prop-types
