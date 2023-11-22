@@ -9,6 +9,11 @@
     /*align-items: center;*/
 }
 
+.register-form h2 {
+    text-align: center;
+    color: #000000;
+    margin-bottom: 20px;
+}
 
 .password-toggle {
     cursor: pointer;

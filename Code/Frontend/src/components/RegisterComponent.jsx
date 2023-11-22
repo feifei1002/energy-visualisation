@@ -69,7 +69,7 @@ const RegistrationForm = () => {
     return (
         <div>
             <form onSubmit={handleRegistration} className="register-form">
-                {/* Your other form fields here */}
+                <h2>Registration Form</h2>
                 <div className="form-group-register">
                     <label htmlFor="fullName">Full Name:</label>
                     <input
