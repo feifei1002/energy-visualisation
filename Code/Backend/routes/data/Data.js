@@ -101,20 +101,24 @@ async function parseAndCacheCSV(filePath) {
 // Function to handle requests for CSV data
 async function handleCSVRequest(req, res, filePath) {
   const cacheFilePath = path.join(cacheDirPath, path.basename(filePath) + '.cache');
-  const jsonDataFilePath = path.join(jsonFilePathDir, path.basename(filePath) + '.json');
-
+  const jsonDataFilePath = path.join(jsonFilePathDir, path.basename(filePath));
+  
   try {
     let cachedData = await getCachedData(cacheFilePath); // Attempt to get cached data
-    let localData = await getLocalData(jsonDataFilePath);
+    let localData = await getLocalData(jsonDataFilePath); // Attempt to get local json data
 
     if (cachedData) {
       data = JSON.parse(cachedData); // Parse the data from the cache
+      console.log("Using cache")
     } else if(localData) {
-      data = JSON.parse(localData); // Parse the server json data if not cached
+      data = JSON.parse(localData)
+      console.log("Using local")
     } else {
+      console.log("Parsing json")
       data = await parseAndCacheCSV(filePath); // Parse and cache data if data not stored as json on the server
     }
-    
+
+    res.type('application/json'); // Set response type to JSON
     res.json(data); // Send the data as a JSON response
   } catch (error) {
     console.error(error);
