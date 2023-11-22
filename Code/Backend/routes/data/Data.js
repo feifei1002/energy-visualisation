@@ -101,7 +101,7 @@ async function parseAndCacheCSV(filePath) {
 // Function to handle requests for CSV data
 async function handleCSVRequest(req, res, filePath) {
   const cacheFilePath = path.join(cacheDirPath, path.basename(filePath) + '.cache');
-  const jsonDataFilePath = path.join(jsonFilePathDir, path.basename(filePath));
+  const jsonDataFilePath = path.join(jsonFilePathDir, path.basename(filePath) + '.json');
   
   try {
     let cachedData = await getCachedData(cacheFilePath); // Attempt to get cached data
