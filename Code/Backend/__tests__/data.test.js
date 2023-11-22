@@ -13,7 +13,7 @@ app.use(router);
 
 // Describe the test suite for API endpoints
 describe('API endpoint tests', () => {
-    // Test case for the /annualheat endpoint
+    // Test case for the /annualheat endpoint;
     test('GET /annualheat should return CSV data', async () => {
       // Send a GET request to the /annualheat endpoint and store the response
       const response = await request(app).get('/annualheat');
