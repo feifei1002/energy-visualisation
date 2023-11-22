@@ -10,6 +10,33 @@ export default function HeatEfficiencyAfterHeatMap({ heatData, geoJsonData }) {
   const [selectedFeature, setSelectedFeature] = useState(null);
   const [myChart, setMyChart] = useState(null);
   const [chartInUse, setChartInUse] = useState(false);
+ 
+  // CSS classes for styling
+  const mapContainerStyle = {
+    height: '50vh',
+    width: '100%',
+    position: 'relative'
+  };
+
+  const chartStyle = {
+    position: 'absolute',
+    left: '1%',
+    top: '1%',
+    zIndex: 2000,
+    background: '#fff',
+    backgroundColor: '#fff'
+  };
+
+  const buttonStyle = {
+    position: 'absolute',
+    top: '90%',
+    left: '1%',
+    padding: '5px',
+    background: '#000',
+    zIndex: 3000,
+    cursor: 'pointer',
+    color: '#fff'
+  };
 
   // Memoize heat data map for optimized mapping
   const heatDataMap = useMemo(() => {
@@ -214,7 +241,7 @@ export default function HeatEfficiencyAfterHeatMap({ heatData, geoJsonData }) {
       <h3 style={{textAlign: 'left'}}>
         Total heat demand after energy efficiency measures 2018 (kWh)
       </h3>
-      <div style={{height: '50vh', width: '100%' }}>
+      <div style={mapContainerStyle}>
         <MapContainer center={[55.3781, -3.4360]} maxZoom={12} minZoom={6} zoom={6} style={{ height: '100%', width: '100%' }} preferCanvas={true}>
           <GeoJSON
             data={geoJsonData.features} // GeoJSON data for the map
@@ -224,18 +251,18 @@ export default function HeatEfficiencyAfterHeatMap({ heatData, geoJsonData }) {
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" /> // Base map layer from OpenStreetMap
         </MapContainer>
         {chartInUse && (
-        <canvas id="stackedBarChartAfter" style={{ position: 'absolute', top: '37%', left: '51%', zIndex: 1000, background: '#fff'}}></canvas>
+        <canvas id="stackedBarChartAfter" style={chartStyle}></canvas>
         )
         }
         {selectedFeature && !myChart && (
             <button onClick={() => showBarChart()} 
-            style={{ position: 'absolute', top: '80%', left: '51%', padding: '5px', background: '#000', zIndex: 1001, cursor: 'pointer', color: '#fff' }}
+            style={buttonStyle}
             >
             Show Bar Chart For Region(LSOA)</button>
         )}
         {myChart && (
           <button
-            style={{ position: 'absolute', top: '37%', left: '51%', padding: '5px', background: '#000', zIndex: 1001, cursor: 'pointer', color: '#fff' }}
+            style={buttonStyle}
             onClick={() =>  {if (myChart) {
               myChart.destroy();
               setChartInUse(false);
