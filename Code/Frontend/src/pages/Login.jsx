@@ -5,6 +5,7 @@ import '../css/Login.css'
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Header from "../Header.jsx";
+import {WebAdminLogin} from "../loginFunctions/WebAdminLogin"
 
 // frontend login page to allow the user to input their username and password and then submit it for authentication in the backend
 function Login() {
@@ -32,7 +33,7 @@ function Login() {
             // attempt to post the data using axios api
             const response = await axios.post('/api/login', inputs);
             console.log(response)
-
+            
             // if auth token was sent back
             try {
                 const contentType = response.headers.get("content-type");
@@ -45,17 +46,26 @@ function Login() {
                     navigate('/profiledashboard');
 
                 } else {
-                    // The response wasn't a JSON object
-                    // data inputted was not authenticated
-                    console.log("attempt login again");
-                    setStatus({ type: 'error'});
+                    // attempt to post the data using axios api for web admin
+                    const webAdminResponse = await axios.post('/api/loginwebadmin', inputs);
 
+                    // Try login as a web admin here from my web admin login function file before continuing
+                    // Call WebAdminLogin logic first
+                    const webAdminStatus = await WebAdminLogin(setStatus, navigate, webAdminResponse);
+
+                    // Continue login logic if WebAdminLogin failed
+                    if (webAdminStatus === 'error') {
+                        console.log("attempt login again");
+                        setStatus({ type: 'error'});
+                    }
                 }
             } catch (e) {
                 // when error with getting header
-                console.log("Cannot get the header for the form response")
+                setStatus({ type: 'error'});
+                console.log("Cannot get the header for the form response");
             }
         } catch (error) {
+            setStatus({ type: 'error'});
             console.error("Error with posting login details");
         }
     }
