@@ -10,6 +10,7 @@ import ProfileDashboardPage from "./ProfileDashboardPage.jsx";
 import ResistanceHeatersPage from "./pages/ResistanceHeatersPage.jsx";
 import BreakDownOfHeatDemandPage from "./pages/BreakDownOfHeatDemandPage.jsx";
 import RegistrationPage from "./pages/RegistrationPage";
+import WebAdminDashboard from "./pages/WebAdminDashboard"
 import { NotificationProvider } from './contexts/NotificationContext';
 
 export default function App() {
@@ -23,6 +24,7 @@ export default function App() {
                 <Route path="/visualisations" element={<VisualisationPage />} />
                 <Route path="/visualisations/halfhourlyresistanceheaters" element={<ResistanceHeatersPage />}  />
                 <Route path="/profiledashboard" element={<ProfileDashboardPage />} />
+                <Route path="/webadmindashboard" element={<WebAdminDashboard />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<RegistrationPage />} />
             </Routes>
