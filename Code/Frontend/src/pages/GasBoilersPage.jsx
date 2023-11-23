@@ -2,6 +2,8 @@ import React, {useEffect, useState} from "react";
 import Header from "../Header.jsx";
 import VisualisationsDropdownMenu from "../components/VisualisationsDropdownMenu.jsx";
 import LoadingGif from "../assets/LoadingGif.gif";
+import GasConsumedByGasBoilers from "../components/graphs/GasConsumedByGasBoilers.jsx";
+import HeatProducedByGasBoilers from "../components/graphs/HeatProducedByGasBoilers.jsx";
 
 
 export default function GasBoilersPage() {
@@ -51,7 +53,16 @@ export default function GasBoilersPage() {
                 <Header />
                 <VisualisationsDropdownMenu></VisualisationsDropdownMenu>
 
-                <p>Graphs go here!</p>
+                <h3>Heat produced by gas boilers before and after energy efficiency measures</h3>
+                {/* heat produced graphs here*/}
+                <HeatProducedByGasBoilers data={heatData}></HeatProducedByGasBoilers>
+
+                <br></br><br></br><br></br><br></br>
+
+                <h3>Gas consumed by gas boilers before and after energy efficiency measures</h3>
+                {/*  gas consumed graphs here  */}
+                <GasConsumedByGasBoilers data={heatData}></GasConsumedByGasBoilers>
+
             </>
         )
     }
