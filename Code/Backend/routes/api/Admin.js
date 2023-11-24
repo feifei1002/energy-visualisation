@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const AdminUser = require('../../models/AdminUser');
+const User = require('../../models/User');
 const WebAdminController = require('../../controllers/WebAdminController');
 const bodyParser = require("body-parser");
 
-// Fetch all web admin user details
+// Fetch all web admin user details, reminder this needs to be protected using JWT token IMPORTANT!
 router.get('/webadmin', async (req, res) => { 
     try {
         const webAdminUser = await AdminUser.find();
@@ -15,7 +16,7 @@ router.get('/webadmin', async (req, res) => {
     }
 });
 
-// Fetch the specific webAdmin user 
+// Fetch the specific webAdmin user, ditto
 router.get('/webadmin/:id', async (req, res) => {
     let webAdminUserId;
 
@@ -39,7 +40,7 @@ router.get('/webadmin/:id', async (req, res) => {
     }
 });
 
-//Get web admin by username
+//Get web admin by username, ditto
 router.get('/webadmin/user/:username', async (req, res) => {
     try {
         const webAdminUser = await AdminUser.findOne({ username: req.params.username });
@@ -51,6 +52,17 @@ router.get('/webadmin/user/:username', async (req, res) => {
         }
 
         res.json(webAdminUser);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching web admin user data.' });
+    }
+});
+
+// Fetch all user details, reminder this needs to be protected using JWT token IMPORTANT!
+router.get('/getallusers', async (req, res) => { 
+    try {
+        const users = await User.find();
+        res.json(users);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error fetching web admin user data.' });

@@ -8,32 +8,7 @@ const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-
-const getWebAdminDetails = async (req, res) => {
-    try {
-      let webAdminId;
-  
-      if (req.params.id === '1') {
-          webAdminId = '655e6a05e0757371ad10394d';
-      } else {
-          webAdminId = req.params.id;
-      }
-  
-      const webAdmin = await AdminUser.findById(webAdminId);
-  
-      if (!webAdmin) {
-          return res.status(404).json({ message: 'Web Admin user not found.' });
-      }
-  
-      res.status(200).json(webAdmin);
-  
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  };
-
-  const postWebAdminLogin = async (req, res) => {
+const postWebAdminLogin = async (req, res) => {
     const data = req.body;
     console.log(data)
 
@@ -64,4 +39,4 @@ const getWebAdminDetails = async (req, res) => {
 
 
 
-module.exports = { getWebAdminDetails, postWebAdminLogin };
+module.exports = { postWebAdminLogin };
