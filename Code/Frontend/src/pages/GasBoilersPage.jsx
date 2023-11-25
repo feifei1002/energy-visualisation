@@ -4,6 +4,7 @@ import VisualisationsDropdownMenu from "../components/VisualisationsDropdownMenu
 import LoadingGif from "../assets/LoadingGif.gif";
 import GasConsumedByGasBoilers from "../components/graphs/GasConsumedByGasBoilers.jsx";
 import HeatProducedByGasBoilers from "../components/graphs/HeatProducedByGasBoilers.jsx";
+import GasConsumedAndElectricityDemand from "../components/graphs/GasConsumedAndElectricityDemand.jsx"
 
 
 export default function GasBoilersPage() {
@@ -62,14 +63,7 @@ export default function GasBoilersPage() {
 
                 {/*<h3>Heat produced by gas boilers before and after energy efficiency measures</h3>*/}
                 {/* heat produced graphs here*/}
-                <HeatProducedByGasBoilers data={heatData} />
-
-                <br></br><br></br><br></br><br></br>
-
-                {/*<h3>Gas consumed by gas boilers before and after energy efficiency measures</h3>*/}
-                {/*  gas consumed graphs here  */}
-                <GasConsumedByGasBoilers data={heatData}></GasConsumedByGasBoilers>
-
+                <GasConsumedAndElectricityDemand data={heatData} />
             </>
         )
     }
