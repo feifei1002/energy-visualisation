@@ -24,8 +24,7 @@ export default function WebAdminDashboard() {
         /**
          * Fetch Web Admin Details
          * 
-         * This function fetches web admin details from the backend based on the username. need to implement
-         * with token later.
+         * This function fetches web admin details from the backend based on the username, with authorization using the provided token.
          */
         const fetchWebAdminDetails = async () => {
             if (username && token) {
@@ -46,33 +45,38 @@ export default function WebAdminDashboard() {
             }
         };
 
+           /**
+         * Fetch All Users Details
+         * 
+         * This function fetches all user details from the backend, with authorization using the provided token.
+         */
         const fetchAllUserDetails =  async () => {
-            if (username) {
+            if (username && token) {
                 try {
-                    // Fetch web admin details from the backend using token to authorize
+                    // Fetch all user details from the backend using token to authorize
                     const response = await axios.get(`/api/getallusers`, {
                         headers: {
                           Authorization: `Bearer ${token}`,
                         },
                       });
                  
-                    // Set the webAdminDetails state with the fetched data
+                    // Set the allUserDetails state with the fetched data
                     setAllUserDetails(response.data);
                     console.log(allUserDetails)
                 } catch (error) {
-                    // Handle errors related to fetching web admin details
-                    console.error('Error fetching web admin details:', error);
+                    // Handle errors related to fetching all user details
+                    console.error('Error fetching all user details:', error);
                 }
             }
         };
 
         // Check authorization
         if (token) {
-            // Call the fetchWebAdminDetails and fetchAllUserDetails function when the component mounts if the user has token
+            // Call the fetchWebAdminDetails and fetchAllUserDetails functions when the component mounts if the user has a token
             fetchWebAdminDetails();
             fetchAllUserDetails();
         } else {
-            // Else navigate back to login page for login.
+            // Else navigate back to the login page for login.
             navigate('/login');
         }
 
@@ -81,7 +85,7 @@ export default function WebAdminDashboard() {
     return (
         <div>
             <header>
-            <Header />
+                <Header />
             </header>
             <div className="admin-container">
                 {webAdminDetails && (
@@ -106,9 +110,9 @@ export default function WebAdminDashboard() {
                                 </h3>
                         </div>
                         <div className="admin-container-table-group">
-
+                            {/* Additional UI elements for displaying user details to be added */}
                         </div>
-                </div>
+                    </div>
                 )}
             </div>
         </div>

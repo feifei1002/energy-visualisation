@@ -7,13 +7,11 @@ export const WebAdminLogin = async (setStatus, navigate, response, webAdminToken
         // Check if the authentication token was sent back in the response header
         try {
             const contentType = response.headers.get("content-type");
-            
+
             // If the response is a JSON object (with an access token)
             if (contentType && contentType.indexOf("application/json") !== -1) {
                 // Set the status to success
                 setStatus({ type: 'success' });
-
-                console.log("web admin token: " + webAdminToken);
 
                 // Data has an access token and is authenticated
                 // Navigate the web admin to the web admin dashboard with the extracted username and token
