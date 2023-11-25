@@ -57,6 +57,8 @@ export default function HeatProducedByGasBoilers({data}) {
 
     ];
 
+    const filteredData = formattedDataList.filter(dataToFilter.id = "Gas boiler heat");
+
 
 
     return(
@@ -65,7 +67,8 @@ export default function HeatProducedByGasBoilers({data}) {
 
             <div style={{ width: '100vw', height: 400}}>
                 <ResponsiveLine
-                    data={formattedDataList.flat()}
+                    // data={formattedDataList.flat()}
+                    data={filteredData}
                     margin={{ top: 40, right: 100, bottom: 40, left: 100 }}
                     xScale={
                         { type: 'time',

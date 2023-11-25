@@ -16,6 +16,7 @@ const path = require('path');
 const annualHeatCache = new NodeCache({ stdTTL: cacheTTL });
 const quantificationCache = new NodeCache({ stdTTL: cacheTTL });
 const residentialHeatDemandCache = new NodeCache({ stdTTL: cacheTTL });
+// const halfHourlyProfileHeatingCache = new NodeCache({ stdTTL: cacheTTL });
 
 // Define the root path for the project relative to the current file
 const rootPath = path.join(__dirname, '../../../');

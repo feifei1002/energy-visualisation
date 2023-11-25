@@ -14,9 +14,14 @@ export default function GasBoilersPage() {
     useEffect(() => {
         const fetchHeatData = async () => {
             // error handling for fetching csv data
+            console.log("fetching data");
             try {
                 // fetch from the backend
-                const fetchDataResonse = await fetch('http://localhost:8082/data/halfhourlyheatingprofile');
+                const fetchDataResonse = await fetch('http://localhost:8082/data/halfhourlyheatingprofile', { cache: "force-cache" });
+
+                if (!fetchDataResonse.ok) {
+                    throw new Error(`HTTP error, status: ${fetchDataResonse.status}`);
+                }
                 // set the response to json
                 const jsonResponse = await fetchDataResonse.json();
                 setHeatData(jsonResponse);
@@ -24,6 +29,8 @@ export default function GasBoilersPage() {
                 console.error("Error fetching data: ", e);
             }
         };
+
+        // trigger data fetching functions
         fetchHeatData();
     }, []);
 
@@ -53,13 +60,13 @@ export default function GasBoilersPage() {
                 <Header />
                 <VisualisationsDropdownMenu></VisualisationsDropdownMenu>
 
-                <h3>Heat produced by gas boilers before and after energy efficiency measures</h3>
+                {/*<h3>Heat produced by gas boilers before and after energy efficiency measures</h3>*/}
                 {/* heat produced graphs here*/}
-                <HeatProducedByGasBoilers data={heatData}></HeatProducedByGasBoilers>
+                <HeatProducedByGasBoilers data={heatData} />
 
                 <br></br><br></br><br></br><br></br>
 
-                <h3>Gas consumed by gas boilers before and after energy efficiency measures</h3>
+                {/*<h3>Gas consumed by gas boilers before and after energy efficiency measures</h3>*/}
                 {/*  gas consumed graphs here  */}
                 <GasConsumedByGasBoilers data={heatData}></GasConsumedByGasBoilers>
 
