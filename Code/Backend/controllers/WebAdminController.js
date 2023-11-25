@@ -10,12 +10,9 @@ require('dotenv').config();
 
 const postWebAdminLogin = async (req, res) => {
     const data = req.body;
-    console.log(data)
 
     try {
         const webAdmin = await AdminUser.findOne({ username: data.username });
-
-        console.log("Web Admin Is: " + webAdmin)
 
         if (!webAdmin) {
             console.error('Username does not match any in the system');
@@ -26,7 +23,7 @@ const postWebAdminLogin = async (req, res) => {
 
         if (comparison) {
             const accessToken = jwt.sign({ username: data.username }, process.env.ACCESS_TOKEN, { expiresIn: '30m' });
-            res.json({ accessToken });
+            res.json({ user: data.username, token: accessToken });
         } else {
             console.error('Password is incorrect');
             res.status(401).send('Password is incorrect');
@@ -35,6 +32,7 @@ const postWebAdminLogin = async (req, res) => {
         console.error('Error during login:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
+    
 };
 
 

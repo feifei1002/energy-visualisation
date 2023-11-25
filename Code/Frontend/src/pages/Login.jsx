@@ -49,9 +49,12 @@ function Login() {
                     // attempt to post the data using axios api for web admin
                     const webAdminResponse = await axios.post('/api/loginwebadmin', inputs);
 
+                    // Extract the username from the token
+                    const { user, token } = webAdminResponse.data;
+
                     // Try login as a web admin here from my web admin login function file before continuing
-                    // Call WebAdminLogin logic first
-                    const webAdminStatus = await WebAdminLogin(setStatus, navigate, webAdminResponse);
+                    // Call WebAdminLogin logic first send token across to protect backend routes from explotation
+                    const webAdminStatus = await WebAdminLogin(setStatus, navigate, webAdminResponse, token, user);
 
                     // Continue login logic if WebAdminLogin failed
                     if (webAdminStatus === 'error') {

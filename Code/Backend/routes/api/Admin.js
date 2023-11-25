@@ -4,9 +4,28 @@ const AdminUser = require('../../models/AdminUser');
 const User = require('../../models/User');
 const WebAdminController = require('../../controllers/WebAdminController');
 const bodyParser = require("body-parser");
+const {expressjwt} = require("express-jwt");
+const jwt = require('jsonwebtoken');
 
-// Fetch all web admin user details, reminder this needs to be protected using JWT token IMPORTANT!
-router.get('/webadmin', async (req, res) => { 
+//The key for the jwt token to prevent unauthorised access
+const secretKey = process.env.ACCESS_TOKEN;
+
+// Middleware to check JWT token of user for accessing protected routes 
+const checkToken = expressjwt({
+    secret: secretKey,
+    algorithms: ['HS256'],
+    getToken: function (req) {
+        if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+            return req.headers.authorization.split(' ')[1];
+          } else if (req.query && req.query.token) {
+            return req.query.token;
+          }
+          return null;
+    },
+  });
+
+// Fetch all web admin user details, protected using JWT token
+router.get('/webadmin', checkToken, async (req, res) => { 
     try {
         const webAdminUser = await AdminUser.find();
         res.json(webAdminUser);
@@ -16,8 +35,8 @@ router.get('/webadmin', async (req, res) => {
     }
 });
 
-// Fetch the specific webAdmin user, ditto
-router.get('/webadmin/:id', async (req, res) => {
+// Fetch the specific webAdmin user, protected using JWT token
+router.get('/webadmin/:id', checkToken, async (req, res) => {
     let webAdminUserId;
 
     if (req.params.id === '1') {
@@ -40,8 +59,8 @@ router.get('/webadmin/:id', async (req, res) => {
     }
 });
 
-//Get web admin by username, ditto
-router.get('/webadmin/user/:username', async (req, res) => {
+//Get web admin by username, protected using JWT token
+router.get('/webadmin/user/:username', checkToken, async (req, res) => {
     try {
         const webAdminUser = await AdminUser.findOne({ username: req.params.username });
 
@@ -58,8 +77,8 @@ router.get('/webadmin/user/:username', async (req, res) => {
     }
 });
 
-// Fetch all user details, reminder this needs to be protected using JWT token IMPORTANT!
-router.get('/getallusers', async (req, res) => { 
+// Fetch all user details, protected using JWT token
+router.get('/getallusers', checkToken, async (req, res) => { 
     try {
         const users = await User.find();
         res.json(users);
