@@ -32,17 +32,6 @@ export default function WebAdminDashboard() {
         Header: 'Email',
         accessor: 'email',
         },
-        {
-          Header: 'Forgot Pasword?',
-          Cell: ({ row }) => (
-            <Button variant="primary" style={{
-                backgroundColor: 'cadetblue',
-                color: 'black',
-                padding: '1vw'}}>
-              Reset Password
-            </Button>
-          ),
-        }
     ];
 
     useEffect(() => {
