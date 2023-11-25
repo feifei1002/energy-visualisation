@@ -48,10 +48,6 @@ const connectDB = async () => {
 //Connect to the MongoDB database
 connectDB();
 
-const Schema = mongoose.Schema;
-
-console.log(Schema)
-
 //Configure CORS and JSON parsing
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ extended: false }));

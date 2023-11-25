@@ -4,6 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Header from "../Header.jsx";
 import '../css/WebAdminDashboard.css';
+import WebAdminUsersTable from '../components/tables/WebAdminUsersTable';
+import { Table, Button  } from 'react-bootstrap';
 
 /**
  * WebAdminDashboard Component
@@ -19,6 +21,29 @@ export default function WebAdminDashboard() {
     const [webAdminDetails, setWebAdminDetails] = useState(null);
     const [allUserDetails, setAllUserDetails] = useState(null);
     const navigate = useNavigate();
+
+    // Define table columns
+    const columns = [
+        {
+        Header: 'User Name',
+        accessor: 'username', 
+        },
+        {
+        Header: 'Email',
+        accessor: 'email',
+        },
+        {
+          Header: 'Forgot Pasword?',
+          Cell: ({ row }) => (
+            <Button variant="primary" style={{
+                backgroundColor: 'cadetblue',
+                color: 'black',
+                padding: '1vw'}}>
+              Reset Password
+            </Button>
+          ),
+        }
+    ];
 
     useEffect(() => {
         /**
@@ -62,7 +87,6 @@ export default function WebAdminDashboard() {
                  
                     // Set the allUserDetails state with the fetched data
                     setAllUserDetails(response.data);
-                    console.log(allUserDetails)
                 } catch (error) {
                     // Handle errors related to fetching all user details
                     console.error('Error fetching all user details:', error);
@@ -113,6 +137,12 @@ export default function WebAdminDashboard() {
                             {/* Additional UI elements for displaying user details to be added */}
                         </div>
                     </div>
+                )}
+                {allUserDetails && (
+                     // Render the WebAdminTable component with columns and data
+                     <div style={{margin: '0.5em'}}>
+                     <WebAdminUsersTable columns={columns} data={allUserDetails} />
+                     </div>
                 )}
             </div>
         </div>
