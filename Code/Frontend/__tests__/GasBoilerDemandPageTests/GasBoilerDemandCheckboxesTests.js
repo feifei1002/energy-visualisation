@@ -1,8 +1,9 @@
-import {render, screen} from "@testing-library/react";
+import {fireEvent, render, screen} from "@testing-library/react";
 import GasConsumedAndElectricityDemand from "../../src/components/graphs/GasConsumedAndElectricityDemand.jsx";
 import React from "react";
 import '@testing-library/jest-dom';
 
+// test data to use when rendering the graph
 const testData = [
     {
         "id": "electricity consumption for air-source heat pumps",
@@ -24,16 +25,9 @@ const testData = [
         ]},
 ]
 
-describe('tests for the page at /visualisations/halfhourlygasboilers', () => {
-    // testing the graph renders without the page crashing
-    test('component renders without crashing', () => {
-
-        // if the component renders without crashing, the test will pass
-        render(<GasConsumedAndElectricityDemand data={testData}></GasConsumedAndElectricityDemand>);
-    });
-
+describe('tests for rendering the checkboxes for the graph', () => {
     // tests checkboxes are automatically ticked
-    test('renders the page and checks the checkboxes are already checked', () => {
+    it('renders the page and checks the checkboxes are already checked', () => {
 
         // fetching the test data
         render(<GasConsumedAndElectricityDemand data={testData}></GasConsumedAndElectricityDemand>);
@@ -48,4 +42,30 @@ describe('tests for the page at /visualisations/halfhourlygasboilers', () => {
         expect(GSHPElectricityCheckbox).toBeChecked();
         expect(gasConsumptionCheckbox).toBeChecked();
     })
+
+    // unchecking a checkbox makes the graph change
+    it('when checkbox state changes the graph should update accordingly', () => {
+
+        // renders page
+        const { getByText } = render(<GasConsumedAndElectricityDemand data={testData}></GasConsumedAndElectricityDemand>);
+
+        // the checkbox should be checked vwhen the page is loaded
+        const gasConsumptionCheckbox = getByText('Gas consumption of gas boilers').closest('label').querySelector('input');
+        expect(gasConsumptionCheckbox).toBeChecked();
+
+        // clicks the checkbox to change its state
+        fireEvent.click(gasConsumptionCheckbox);
+
+        // The checkbox should not be checked now
+        expect(gasConsumptionCheckbox).not.toBeChecked();
+    });
+
+    // checks three checkboxes are present on the page
+    it('checks the correct number of checkboxes are rendered', () => {
+        render(<GasConsumedAndElectricityDemand data={testData}></GasConsumedAndElectricityDemand>);
+
+        // checks if 3 checkboxes are rendered
+        const checkboxes = screen.getAllByRole('checkbox');
+        expect(checkboxes).toHaveLength(3);
+    });
 });
