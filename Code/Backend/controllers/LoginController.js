@@ -32,7 +32,8 @@ const postLogin = async (req, res) => {
 
             // send response of access token when correctly authenticated
             res.json({
-                accessToken
+                user: data.username,
+                token: accessToken
             });
 
 
@@ -49,6 +50,21 @@ const postLogin = async (req, res) => {
 
 };
 
+const logout = async (req, res, next) => {
+    try {
+        req.session.destroy();
+        return res.status(200).send({
+            message: "You've been signed out!"
+        });
+    }catch(err) {
+        console.error(err);
+        res.status(500).send({
+            message: "Internal Server Error",
+        });
+    }
+}
+
 module.exports = {
-    postLogin
+    postLogin,
+    logout
 };

@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useState, useEffect, useContext } from 'react';
 import '../css/ProfileOverview.css';
 import { NotificationContext } from '../contexts/NotificationContext';
+import {useLocation} from "react-router-dom";
+import {access} from "@babel/core/lib/config/validation/option-assertions.js";
 
 const ProfileOverview = () => {
     const { showNotification } = useContext(NotificationContext);
@@ -15,21 +17,36 @@ const ProfileOverview = () => {
     });
     const [file, setFile] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
+    const { state } = useLocation();
+    const username = state ? state.username : null;
+    const token = state ? state.token : null;
+    console.log("token: ", token)
+
+    console.log('Username:', username);
+
 
     useEffect(() => {
+        // console.log("access token: ", token)
         const fetchProfileData = async () => {
-            try {
-                const response = await axios.get('/api/profile');
-                setProfile(response.data);
-                showNotification('Profile loaded successfully.');
-            } catch (error) {
-                console.error('Error fetching profile data:', error)
-                showNotification('Could not find your profile details.');
+            if(username && token) {
+
+                try {
+                    const response = await axios.get('/api/profile', {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                    setProfile(response.data);
+                    showNotification('Profile loaded successfully.');
+                } catch (error) {
+                    console.error('Error fetching profile data:', error)
+                    showNotification('Could not find your profile details.');
+                }
             }
         };
 
         fetchProfileData();
-    }, []);
+    }, [token, username]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;

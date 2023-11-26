@@ -5,7 +5,6 @@ import '../css/Login.css'
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Header from "../Header.jsx";
-import {useAuth0} from "@auth0/auth0-react";
 
 function Login() {
 
@@ -31,6 +30,9 @@ function Login() {
             const response = await axios.post('/api/login', inputs);
             console.log(response)
             setInputs(response.data)
+           const {  user, token } = response.data;
+            // console.log('Received user:', user);
+
 
             // if auth token sent
             const contentType = response.headers.get("content-type");
@@ -40,7 +42,7 @@ function Login() {
                 setStatus({ type: 'success'});
 
                 // data has access token
-                navigate('/profiledashboard');
+                navigate('/profiledashboard', { state: { token, username: user } });
 
             } else {
                 // The response wasn't a JSON object
