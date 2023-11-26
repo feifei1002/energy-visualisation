@@ -245,3 +245,7 @@
 .dropdown-menu{
   z-index: 2000;
 }
+
+.graph-checkboxes {
+  background-color: rgba(255, 255, 255, 0.99);
+}

@@ -1,6 +1,6 @@
 import {ResponsiveLine} from "@nivo/line";
 import React, {useState} from "react";
-
+import '../../App.css';
 
 export default function GasConsumedAndElectricityDemand({data}) {
 
@@ -25,7 +25,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
         {
             // for air source heat pumps
             id: 'electricity consumption for air-source heat pumps',
-            color: 'hsl(214,100%,67%)',
+            color: 'hsl(219,95%,33%)',
             data: formatData.map((item) => ({
                 x: item.time,
                 y: item.ASHeatPumpsElec
@@ -34,7 +34,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
         {
             // for grouns source heat pumps
             id: 'electricity consumption for ground source heat pumps',
-            color: 'hsl(0,97%,41%)',
+            color: 'hsl(0,90%,34%)',
             data: formatData.map((item) => ({
                 x: item.time,
                 y: item.GSHeatPumpsElec
@@ -43,7 +43,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
         {
             // gas consumption
             id: 'gas consumption of gas boilers',
-            color: 'hsl(155,90%,53%)',
+            color: 'hsl(276,91%,38%)',
             data: formatData.map((item) => ({
                 x: item.time,
                 y: item.boilerGasConsumption
@@ -88,7 +88,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
     return(
         <>
 
-            <div style={{ width: '100vw', height: 400}}>
+            <div style={{ width: '100vw', height: 700}}>
                 <ResponsiveLine
                     // data={formattedDataList.flat()}
                     data={filteredData}
@@ -102,7 +102,14 @@ export default function GasConsumedAndElectricityDemand({data}) {
                             max: new Date("2013-12-31T23:30:00"),
                         }
                     }
-                    yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
+                    yScale={{
+                        type: 'linear',
+                        // min: 'auto',
+                        // max: 'auto',
+                        min: 0,
+                        max: 'auto',
+                        stacked: true,
+                        reverse: false }}
                     axisBottom={{
                         format: '%b %Y',
                         tickValues: 'every 1 month',
@@ -129,19 +136,19 @@ export default function GasConsumedAndElectricityDemand({data}) {
                     pointBorderWidth={3}
                     pointBorderColor={{ from: 'serieColor' }}
                 />
-            </div>
+            </div><br/><br/>
 
             {/*  checkboxes  */}
-            <div>
-                <label style={{ color: '#589fff', fontWeight: 'bold'}}>
+            <div className="graph-checkboxes">
+                <label style={{ backgroundColor: '#043ca4', color: '#ffffff', fontWeight: 'bold'}}>
                     <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showASHPElecLine} onChange={handleShowASHPElecLine} />
                     Electricity consumption for air-source heat pumps
                 </label>
-                <label style={{ color: '#d00303', fontWeight: 'bold'}}>
+                <label style={{ backgroundColor: '#a60909', color: '#ffffff', fontWeight: 'bold'}}>
                     <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showGSHPElecLine} onChange={handleShowGSHPElecLine} />
                     Electricity Consumption for ground source heat pumps
                 </label>
-                <label style={{ color: '#1cf399', fontWeight: 'bold'}}>
+                <label style={{ backgroundColor: '#7309b9', color: '#ffffff', fontWeight: 'bold'}}>
                     <input style={{ marginRight: '2px' , marginLeft: '15px'}} type="checkbox" checked={showGasConsLine} onChange={handleShowGasConsLine} />
                     Gas consumption of gas boilers
                 </label>

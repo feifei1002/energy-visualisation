@@ -2,8 +2,6 @@ import React, {useEffect, useState} from "react";
 import Header from "../Header.jsx";
 import VisualisationsDropdownMenu from "../components/VisualisationsDropdownMenu.jsx";
 import LoadingGif from "../assets/LoadingGif.gif";
-import GasConsumedByGasBoilers from "../components/graphs/GasConsumedByGasBoilers.jsx";
-import HeatProducedByGasBoilers from "../components/graphs/HeatProducedByGasBoilers.jsx";
 import GasConsumedAndElectricityDemand from "../components/graphs/GasConsumedAndElectricityDemand.jsx"
 
 
