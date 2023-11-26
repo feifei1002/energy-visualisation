@@ -3,12 +3,13 @@ import React from 'react';
 import { useTable } from 'react-table';
 import { Table, Button, Modal, Form} from 'react-bootstrap';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 // Define table component
-export default function WebAdminUsersTable({ columns, data}) {
+export default function WebAdminUsersTable({ columns, data, authToken}) {
     //Variables for resetting passwords
     const [showModal, setShowModal] = useState(false);
-    const [password, setPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
     const [selectedUser, setSelectedUser] = useState(null);
 
     const openModal = (user) => {
@@ -18,16 +19,31 @@ export default function WebAdminUsersTable({ columns, data}) {
   
     const closeModal = () => {
       setShowModal(false);
-      setPassword(''); // Clear password field when closing the modal
+      setNewPassword(''); // Clear password field when closing the modal
     };
   
-    const applyPasswordReset = () => {
-      // Implement your password reset logic using selectedUser and password
-      console.log('Resetting password for:', selectedUser.username, 'with password:', password);
+    const applyPasswordReset = async () => {
+      // Make an API call to reset the password
+
+      console.log(authToken)
+
+      const response = await axios.post('/api/resetpassword',
+        {
+          username: selectedUser.username,
+          newPassword: newPassword,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+     );
+
+      console.log("Password reset response: " + response.data); 
       closeModal();
     };
 
-    // Use the useTable hook to create an instance of your table
+    // Use the useTable hook to create an instance of the table
     const {
       getTableProps,
       getTableBodyProps,
@@ -74,7 +90,7 @@ export default function WebAdminUsersTable({ columns, data}) {
       </Table>
       
       {/* Reset Password Modal */}
-      <Modal show={showModal} onHide={closeModal}>
+     {selectedUser && ( <Modal show={showModal} onHide={closeModal}>
         <Modal.Header closeButton>
           <Modal.Title>Reset Password For {selectedUser.username}</Modal.Title>
         </Modal.Header>
@@ -84,8 +100,8 @@ export default function WebAdminUsersTable({ columns, data}) {
             <Form.Control
               type="password"
               placeholder="Enter new password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
             />
           </Form.Group>
         </Modal.Body>
@@ -98,6 +114,7 @@ export default function WebAdminUsersTable({ columns, data}) {
           </Button>
         </Modal.Footer>
       </Modal>
+     )}
     </>
     );
 }

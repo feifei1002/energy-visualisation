@@ -26,8 +26,8 @@ const postWebAdminLogin = async (req, res) => {
 
         // If the user is not found, return an error response
         if (!webAdmin) {
-            console.error('Username does not match any in the system');
-            return res.status(401).send('Username is incorrect');
+            console.error('Username or password does not match any in the system');
+            return res.status(401).send('Username or password is incorrect');
         }
 
         // Compare the provided password with the hashed password in the database
@@ -39,8 +39,8 @@ const postWebAdminLogin = async (req, res) => {
             res.json({ user: data.username, token: accessToken });
         } else {
             // If the password is incorrect, return an error response
-            console.error('Password is incorrect');
-            res.status(401).send('Password is incorrect');
+            console.error('Username or password does not match any in the system');
+            res.status(401).send('Username or password is incorrect');
         }
     } catch (error) {
         // Handle errors that may occur during the login process

@@ -122,15 +122,12 @@ export default function WebAdminDashboard() {
                                     {webAdminDetails.fullName}
                                 </h3>
                         </div>
-                        <div className="admin-container-table-group">
-                            {/* Additional UI elements for displaying user details to be added */}
-                        </div>
                     </div>
                 )}
                 {allUserDetails && (
                      // Render the WebAdminTable component with columns and data
                      <div style={{margin: '0.5em'}}>
-                     <WebAdminUsersTable columns={columns} data={allUserDetails} />
+                     <WebAdminUsersTable columns={columns} data={allUserDetails} authToken={token} />
                      </div>
                 )}
             </div>
