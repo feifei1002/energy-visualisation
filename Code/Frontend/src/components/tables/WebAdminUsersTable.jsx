@@ -4,6 +4,7 @@ import { useTable } from 'react-table';
 import { Table, Button, Modal, Form} from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 // Define table component
 export default function WebAdminUsersTable({ columns, data, authToken}) {
@@ -24,18 +25,26 @@ export default function WebAdminUsersTable({ columns, data, authToken}) {
   
     const applyPasswordReset = async () => {
       // Make an API call to reset the password
-      const response = await axios.post('/api/resetpassword',
-        {
-          username: selectedUser.username,
-          newPassword: newPassword,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-     );
+      try{
+          const response = await axios.post('/api/resetpassword',
+            {
+              username: selectedUser.username,
+              newPassword: newPassword,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${authToken}`,
+              },
+            }
+        );
 
+        // Alert user of reset password success
+        toast.success('Reset password successful!');
+      } catch(e){
+        // Alert use of reset password error
+        toast.error('Error resetting password');
+      }
+     
       closeModal();
     };
 
