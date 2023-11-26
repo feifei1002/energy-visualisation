@@ -6,7 +6,7 @@
     flex-direction: row;
     align-items: stretch;
     flex-basis: calc(33.33% - 2vh); 
-    flex-shrink: 1; /* You may or may not need this, depending on your layout */
+    flex-shrink: 1; 
     width: -webkit-fill-available;
 }
 

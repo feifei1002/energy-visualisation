@@ -8,6 +8,16 @@ const bodyParser = require("body-parser");
 const { expressjwt } = require("express-jwt");
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
+const rateLimit = require('express-rate-limit');
+
+
+// Define the rate limit configuration to stop attempts after 20 for an hour
+const loginLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour window
+    max: 20, // maximum of 20 requests per windowMs
+    message: 'Too many login attempts from this IP, please try again after an hour',
+});
+
 
 // The key for the jwt token to prevent unauthorized access
 const secretKey = process.env.ACCESS_TOKEN;
@@ -124,7 +134,7 @@ router.post('/resetpassword', checkToken, async (req, res) => {
 });
 
 // Route for web admin login
-router.post('/loginwebadmin', WebAdminController.postWebAdminLogin);
+router.post('/loginwebadmin', loginLimiter, WebAdminController.postWebAdminLogin);
 
 // Export the router for use in other modules
 module.exports = router;

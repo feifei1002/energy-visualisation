@@ -14,7 +14,7 @@ export default function WebAdminUsersTable({ columns, data, authToken}) {
 
     const openModal = (user) => {
       setSelectedUser(user);
-      setShowModal(true);
+      setShowModal(true); //Open modal to reset password for selected user
     };
   
     const closeModal = () => {
@@ -24,9 +24,6 @@ export default function WebAdminUsersTable({ columns, data, authToken}) {
   
     const applyPasswordReset = async () => {
       // Make an API call to reset the password
-
-      console.log(authToken)
-
       const response = await axios.post('/api/resetpassword',
         {
           username: selectedUser.username,
@@ -39,7 +36,6 @@ export default function WebAdminUsersTable({ columns, data, authToken}) {
         }
      );
 
-      console.log("Password reset response: " + response.data); 
       closeModal();
     };
 

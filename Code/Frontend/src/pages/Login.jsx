@@ -9,6 +9,7 @@ import { WebAdminLogin } from "../loginFunctions/WebAdminLogin";
 // Frontend login page to allow users to input their username and password for authentication in the backend
 function Login() {
 
+    // https://stackoverflow.com/questions/71536244/check-username-password-login-form-using-react-hooks
     // State to manage input values and status messages
     const [inputs, setInputs] = useState({
         username: '',
@@ -72,6 +73,7 @@ function Login() {
         }
     }
 
+    // from https://stackoverflow.com/questions/50644976/react-button-onclick-redirect-page 06/11
     // Navigate function from react-router-dom
     let navigate = useNavigate();
 
@@ -100,10 +102,14 @@ function Login() {
                         </div>
                         <div className="inputRow">
                             <input type="submit" value="Login" />
+                             {/* https://stackoverflow.com/questions/2825856/html-button-to-not-submit-form  on 04/11*/}
                             <button type="button" onClick={routeChange}>Register</button>
                             {/* Display unique error messages from error handling */}
                             {status?.type === 'success' && <p>Successful Login!</p>}
                             {status?.type === 'error' && <p>Incorrect username or password, try again!</p>}
+                        </div>
+                        <div className="ForgotPasswordContainer">
+                            <h4>Forgot password? contact webadmin@climatedata.com</h4>
                         </div>
                     </form>
                 </div>
