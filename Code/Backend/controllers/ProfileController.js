@@ -21,14 +21,11 @@ const key = process.env.ACCESS_TOKEN;
 // });
 
 const getProfile = async (request, response) => {
-    console.log("Request user ", request.user)
     try {
-        // console.log('Request User:', request.user);
-        if(!request.user){
-            return response.status(401).json({ message: 'Authentication required' });
-        }
+        console.log("Request user ", request.user)
+        const userId = request.user ? request.user._id : null;
         //placeholder until alex merges how he will be handling logged in users
-        const userId = request.user._id;
+        // const userId = request.auth._id;
         // const userId = "6547a45b34f0a29c8b36978f"; //this is temporary until login functionality and session ids get added
         const user = await User.findById(userId).select('fullName username email');//to exclude the password field
         if(!user) {

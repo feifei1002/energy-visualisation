@@ -20,7 +20,6 @@ const ProfileOverview = () => {
     const { state } = useLocation();
     const username = state ? state.username : null;
     const token = state ? state.token : null;
-    console.log("token: ", token)
 
     console.log('Username:', username);
 
@@ -45,8 +44,10 @@ const ProfileOverview = () => {
             }
         };
 
+
+
         fetchProfileData();
-    }, [token, username]);
+    }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
