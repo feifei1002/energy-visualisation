@@ -1,11 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { ResponsivePie } from '@nivo/pie';
+import  graphToPdf  from '../../helperFunctions/graphToPdf';
+import { toast } from 'react-toastify';
 
 export default function BreakDownOfHeatDemandHeatTechnology ({ heatData, localAuthority }) {
   // States for managing loading, error, and technology data
   const [loading, setLoading] = useState(false); // Manages loading state
   const [error, setError] = useState(null); // Stores potential error messages
   const [technologyData, setTechnologyData] = useState([]); // Stores processed technology data
+
+  const handleGeneratePDF = () => {
+    try{
+      graphToPdf('breakDownOfHeatDemandHeatTechnology', 
+      `Most common type of boilers used in ${localAuthority.toString()} by percent - 2018`);
+      toast.success('Graph converted to pdf and downloaded');
+    } catch(e){
+      toast.error('Error converting graph to pdf');
+    }
+  };
  
   // Function to obtain a color for each table row based on index
   const getColor = (index) => {
@@ -71,7 +83,8 @@ export default function BreakDownOfHeatDemandHeatTechnology ({ heatData, localAu
         ) : error ? ( // Displays an error message, if exists
           <p>Error: {error.message}</p>
         ) : technologyData.length ? ( // Displays the pie chart and table data if available
-          <div>
+          <>
+          <div id="breakDownOfHeatDemandHeatTechnology">
             <div>
               <div style={{ width: '100vw', height: 400 }}>
                 <ResponsivePie
@@ -114,6 +127,13 @@ export default function BreakDownOfHeatDemandHeatTechnology ({ heatData, localAu
               </div>
             </div>
           </div>
+          <div>
+           {/* Button to generate PDF */}
+           <button onClick={handleGeneratePDF} style={{margin: '1vh', backgroundColor: 'rgba(20, 72, 94, 0.99)', color: 'white'}}>
+             Generate PDF
+            </button>
+         </div>
+         </>
         ) : (
           <p>No data found for the selected Local Authority.</p> // Displays a message when no data is found
         )}
