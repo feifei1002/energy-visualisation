@@ -79,7 +79,7 @@ export default function WebAdminUsersTable({ columns, data, authToken}) {
                   <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 ))}
                  <td>
-                  <Button variant="primary" 
+                  <Button variant="primary"  data-testid="ResetPasswordButton" 
                     style={{
                     backgroundColor: 'cadetblue',
                     color: 'black',

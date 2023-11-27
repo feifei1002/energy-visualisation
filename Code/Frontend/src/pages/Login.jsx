@@ -107,9 +107,9 @@ function Login() {
                             {/* Display unique error messages from error handling */}
                             {status?.type === 'success' && <p>Successful Login!</p>}
                             {status?.type === 'error' && <p>Incorrect username or password, try again!</p>}
-                        </div>
-                        <div className="ForgotPasswordContainer">
-                            <h4>Forgot password? contact webadmin@climatedata.com</h4>
+                            <div className="ForgotPasswordContainer">
+                             <h4>Forgot password? contact webadmin@climatedata.com</h4>
+                            </div>
                         </div>
                     </form>
                 </div>

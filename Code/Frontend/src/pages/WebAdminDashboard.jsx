@@ -100,7 +100,7 @@ export default function WebAdminDashboard() {
             <header>
                 <Header />
             </header>
-            <div className="admin-container">
+            <div className="admin-container" data-testid="webadmincontainer">
                 {webAdminDetails && (
                     // If webAdminDetails is available, display the profile form
                     <div className="admin-container-profile">
