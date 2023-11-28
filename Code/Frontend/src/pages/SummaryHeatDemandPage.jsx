@@ -3,7 +3,9 @@ import HeatDemandPieChart from '../components/graphs/HeatDemandPieChart.jsx';
 import HeatDemandSummaryChart from '../components/graphs/HeatDemandSummaryChart';
 import VisualisationsDropdownMenu from "../components/VisualisationsDropdownMenu.jsx";
 import Header from "../Header.jsx";
-import Switch from 'react-switch'; 
+import Switch from 'react-switch';
+import HeatDemandPieChartAverage from "../components/graphs/HeatDemandPieChartAverage.jsx";
+import HeatDemandSummaryChartAverage from "../components/graphs/HeatDemandSummaryChartAverage.jsx";
 
 export default function SummaryOfHeatDemandPage() {
     const [heatDemandData, setHeatDemandData] = useState(null);
@@ -63,9 +65,15 @@ export default function SummaryOfHeatDemandPage() {
                 <span style={{ marginLeft: '10px' }}>Pie Chart</span>
             </div>
             {showPieChart ? (
-                <HeatDemandPieChart data={heatDemandData} geoJsonData={geoJsonData} />
+                <>
+                    <HeatDemandPieChart data={heatDemandData} />
+                    <HeatDemandPieChartAverage data={heatDemandData} />
+                </>
             ) : (
-                <HeatDemandSummaryChart data={heatDemandData} />
+                <>
+                    <HeatDemandSummaryChart data={heatDemandData} />
+                    <HeatDemandSummaryChartAverage data={heatDemandData} />
+                </>
             )}
         </div>
     );
