@@ -59,12 +59,14 @@ const csvRouter = require('./routes/api/Csv');
 const profileRouter = require('./routes/api/Profile');
 const registerRouter = require("./routes/api/Register");
 const webAdminRouter = require("./routes/api/Admin");
+const contactUsRouter = require("./routes/api/ContactUs");
 app.use('/api', registerRouter);
 app.use('/api', apiRouter);
 app.use('/data', dataRouter);
 app.use('/api',csvRouter);
 app.use('/api',profileRouter);
 app.use('/api',webAdminRouter);
+app.use('/api', contactUsRouter);
 
 
 const loginRouter = require('./routes/api/Login');

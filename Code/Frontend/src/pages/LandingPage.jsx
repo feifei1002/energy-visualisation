@@ -9,6 +9,7 @@ import Header from '../Header';
 import Footer from '../Footer';
 import '../css/LandingPage.css';
 import 'react-toastify/dist/ReactToastify.css';
+import ContactUsForm from '../components/ContactUsForm';
 
 
 export default function LandingPage() {
@@ -89,6 +90,7 @@ export default function LandingPage() {
                         </div>
                     </div>
                 </div>
+                <ContactUsForm />
             </main>
             <Footer />
         </div>
