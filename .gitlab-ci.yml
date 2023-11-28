@@ -27,6 +27,8 @@ test:
     - cd /builds/c21054715/energy_visualization_team2/Code/Backend
     - npm install
     - npm install dotenv
+    - apt-get update && apt-get install -y tree # for debugging
+    - tree
     - npm install --save-dev jest
     - npm install to-fast-properties
     - set NODE_OPTIONS=--max_old_space_size=4096
