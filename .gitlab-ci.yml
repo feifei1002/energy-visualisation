@@ -28,7 +28,6 @@ test:
     - npm install
     - npm install dotenv
     - npm install --save-dev jest
-    - jest --clearCache
     - npm install to-fast-properties
     - set NODE_OPTIONS=--max_old_space_size=4096
     - npm run test
