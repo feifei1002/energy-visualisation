@@ -17,7 +17,7 @@ const HeatDemandPieChartAverage = ({ data }) => {
     return (
         <div style={{ display: 'flex', height: 400 }}>
             <div style={{ flex: 1 }}>
-                <h3>Average Heat Demand Before Measures</h3>
+                <h3>Average Heat Demand per Km² Before Measures</h3>
                 <ResponsivePie
                     data={beforeData}
                     margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
@@ -48,7 +48,7 @@ const HeatDemandPieChartAverage = ({ data }) => {
                 />
             </div>
             <div style={{ flex: 1 }}>
-                <h3>Average Heat Demand After Measures</h3>
+                <h3>Average Heat Demand per Km² After Measures</h3>
                 <ResponsivePie
                     data={afterData}
                     margin={{ top: 40, right: 80, bottom: 80, left: 80 }}

@@ -4,11 +4,12 @@ import { ResponsiveBar } from '@nivo/bar';
 const HeatDemandSummaryChartAverage = ({ data }) => {
     return (
         <div style={{ height: 400 }}>
+            <h3>Average Heat Demand Before & After Measures</h3>
             <ResponsiveBar
                 data={data}
-                keys={['totalBefore', 'totalAfter']}
+                keys={['averagePerSqKmBefore', 'averagePerSqKmAfter']} // Updated keys
                 indexBy="region"
-                margin={{ top: 50, right: 50, bottom: 50, left: 120 }}
+                margin={{ top: 40, right: 50, bottom: 50, left: 120 }}
                 padding={0.3}
                 colors={{ scheme: 'blues' }}
                 borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
@@ -24,7 +25,7 @@ const HeatDemandSummaryChartAverage = ({ data }) => {
                     tickSize: 0,
                     tickPadding: -60,
                     tickRotation: 0,
-                    legend: 'Heat Demand (kWh)',
+                    legend: 'Heat Demand per Km² (kWh/sqkm)',
                     legendPosition: 'middle',
                     legendOffset: -40
                 }}

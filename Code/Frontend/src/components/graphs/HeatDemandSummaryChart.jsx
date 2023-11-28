@@ -4,11 +4,12 @@ import { ResponsiveBar } from '@nivo/bar';
 const HeatDemandSummaryChart = ({ data }) => {
     return (
         <div style={{ height: 400 }}>
+            <h3>Total Heat Demand Before & After Measures</h3>
             <ResponsiveBar
                 data={data}
                 keys={['totalBefore', 'totalAfter']}
                 indexBy="region"
-                margin={{ top: 50, right: 50, bottom: 50, left: 120 }}
+                margin={{ top: 40, right: 50, bottom: 90, left: 120 }}
                 padding={0.3}
                 colors={{ scheme: 'blues' }}
                 borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
