@@ -8,7 +8,7 @@ const HeatDemandSummaryChart = ({ data }) => {
                 data={data}
                 keys={['totalBefore', 'totalAfter']}
                 indexBy="region"
-                margin={{ top: 50, right: 50, bottom: 50, left: 80 }}
+                margin={{ top: 50, right: 50, bottom: 50, left: 120 }}
                 padding={0.3}
                 colors={{ scheme: 'blues' }}
                 borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}

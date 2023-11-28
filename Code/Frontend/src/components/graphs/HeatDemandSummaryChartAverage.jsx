@@ -22,7 +22,7 @@ const HeatDemandSummaryChartAverage = ({ data }) => {
                 }}
                 axisLeft={{
                     tickSize: 0,
-                    tickPadding: 5,
+                    tickPadding: -60,
                     tickRotation: 0,
                     legend: 'Heat Demand (kWh)',
                     legendPosition: 'middle',
