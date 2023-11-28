@@ -16,8 +16,12 @@ const postContactUs = async (req, res) => {
 
         const { fullName, email, subject, message } = req.body;
 
+        console.log(req.body)
+
         // Create new Contact Us data
         const newContactUs = new ContactUs({fullName, email, subject, message});
+
+        console.log(newContactUs)
 
         // Save the new Contact Us data
         await newContactUs.save();
