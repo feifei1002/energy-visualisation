@@ -11,6 +11,7 @@ const cacheTTL = 24 * 60 * 60;
 
 // Import the path library to work with file system paths
 const path = require('path');
+const {processHeatDemandData} = require("../../utils/heatdemandProcessor");
 
 // Create caches for different types of CSV data with a standard TTL
 const annualHeatCache = new NodeCache({ stdTTL: cacheTTL });
@@ -169,6 +170,17 @@ router.get('/geojson', (req, res) => {
 router.get('/halfhourlyheatingprofile', (req, res) => {
   res.set('Cache-Control', `public, max-age=${cacheTTL}`); // Set cache control headers
   handleCSVRequest(req, res, csvPaths.halfHourlyProfileHeating); // Handle the CSV request
+});
+
+//API ENDPOINT FOR SUMMARY OF HEAT DEMAND FOR ENGLAND,SCOTLAND,WALES
+router.get('/summary', async (req, res) => {
+  try {
+    const data = await processHeatDemandData();
+    res.json(data);
+  } catch (error) {
+    res.status(500).send('Server error');
+    console.log(error);
+  }
 });
 
 // Export the router to be used in other parts of the application

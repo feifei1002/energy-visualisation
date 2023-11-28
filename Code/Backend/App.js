@@ -70,9 +70,6 @@ app.use('/api',webAdminRouter);
 const loginRouter = require('./routes/api/Login');
 app.use('/api',loginRouter);
 
-const heatDemandRouter = require("./routes/data/heatDemand");
-app.use('/data', heatDemandRouter);
-
 //Start the server
 app.listen(port, () => console.log(`Server running on port ${port}`));
 
