@@ -7,6 +7,7 @@ const HeatDemandSummaryChart = ({ data }) => {
             <h3>Total Heat Demand Before & After Measures</h3>
             <ResponsiveBar
                 data={data}
+                data-testid="bar-chart"
                 keys={['totalBefore', 'totalAfter']}
                 indexBy="region"
                 margin={{ top: 40, right: 50, bottom: 90, left: 120 }}
