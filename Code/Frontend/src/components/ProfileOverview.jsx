@@ -18,10 +18,10 @@ const ProfileOverview = () => {
     const [file, setFile] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const { state } = useLocation();
-    const username = state ? state.username : null;
+    const userID = state ? state.userID : null;
     const token = state ? state.token : null;
 
-    console.log('Username:', username);
+    console.log('User ID:', userID);
 
 
     useEffect(() => {
@@ -30,7 +30,7 @@ const ProfileOverview = () => {
             if(username && token) {
 
                 try {
-                    const response = await axios.get('/api/profile', {
+                    const response = await axios.get(`/api/profile/${userID}`, {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },

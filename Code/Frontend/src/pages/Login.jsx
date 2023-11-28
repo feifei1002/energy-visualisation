@@ -30,8 +30,8 @@ function Login() {
             const response = await axios.post('/api/login', inputs);
             console.log(response)
             setInputs(response.data)
-           const {  user, token } = response.data;
-            // console.log('Received user:', user);
+            const {user,  token} = response.data;
+            console.log('Received user:', user._id, 'Recieved token: ', token);
 
 
             // if auth token sent
@@ -42,7 +42,7 @@ function Login() {
                 setStatus({ type: 'success'});
 
                 // data has access token
-                navigate('/profiledashboard', { state: { token, username: user } });
+                navigate('/profiledashboard', { state: { token, userID: user._id } });
 
             } else {
                 // The response wasn't a JSON object
