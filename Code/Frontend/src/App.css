@@ -249,3 +249,9 @@
 .graph-checkboxes {
   background-color: rgba(255, 255, 255, 0.99);
 }
+
+.wrapper {
+  position: relative;
+  height: 600px;
+  margin: auto;
+}

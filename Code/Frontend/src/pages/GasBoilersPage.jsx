@@ -18,6 +18,7 @@ export default function GasBoilersPage() {
                 // fetch from the backend
                 const fetchDataResonse = await fetch('http://localhost:8082/data/halfhourlyheatingprofile', { cache: "force-cache" });
 
+                console.log("fetched graph data")
                 if (!fetchDataResonse.ok) {
                     throw new Error(`HTTP error, status: ${fetchDataResonse.status}`);
                 }
