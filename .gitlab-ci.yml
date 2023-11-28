@@ -25,6 +25,7 @@ test:
   script:
     - apt-get update -qq && apt-get install -y libssl1.1
     - cd /builds/c21054715/energy_visualization_team2/Code/Backend
+    - jest --clearCache
     - npm install
     - npm install dotenv
     - npm install --save-dev jest
