@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import Header from "../Header.jsx";
 import '../css/WebAdminDashboard.css';
 import WebAdminUsersTable from '../components/tables/WebAdminUsersTable';
+import WebAdminFeedbackTable from '../components/tables/WebAdminFeedbackTable'
 import { Table, Button  } from 'react-bootstrap';
 
 /**
@@ -20,10 +21,11 @@ export default function WebAdminDashboard() {
     const token = state ? state.token : null;
     const [webAdminDetails, setWebAdminDetails] = useState(null);
     const [allUserDetails, setAllUserDetails] = useState(null);
+    const [allFeedback, setAllFeedback] = useState(null);
     const navigate = useNavigate();
 
-    // Define table columns
-    const columns = [
+    // Define table columns for user table
+    const columnsUsers = [
         {
         Header: 'User Name',
         accessor: 'username', 
@@ -32,6 +34,26 @@ export default function WebAdminDashboard() {
         Header: 'Email',
         accessor: 'email',
         },
+    ];
+
+    // Define table columns for feedback table
+    const columnsFeedback = [
+        {
+        Header: 'Full Name',
+        accessor: 'fullName', 
+        },
+        {
+        Header: 'Email',
+        accessor: 'email',
+        },
+        {
+        Header: 'Subject',
+        accessor: 'subject',
+        },
+        {
+        Header: 'Message',
+        accessor: 'message',
+        },   
     ];
 
     useEffect(() => {
@@ -83,11 +105,36 @@ export default function WebAdminDashboard() {
             }
         };
 
+        /**
+         * Fetch All Feedback 
+         * 
+         * This function fetches all contact us feedback from the backend, with authorization using the provided token.
+         */
+         const fetchAllFeedback =  async () => {
+                if (username && token) {
+                    try {
+                        // Fetch all feedback from the backend using token to authorize
+                        const response = await axios.get(`/api/getallfeedback`, {
+                            headers: {
+                              Authorization: `Bearer ${token}`,
+                            },
+                          });
+                     
+                        // Set the all feedback state with the fetched data
+                        setAllFeedback(response.data);
+                    } catch (error) {
+                        // Handle errors related to fetching all feedback
+                        console.error('Error fetching all feedback details:', error);
+                    }
+                }
+         };
+
         // Check authorization
         if (token) {
             // Call the fetchWebAdminDetails and fetchAllUserDetails functions when the component mounts if the user has a token
             fetchWebAdminDetails();
             fetchAllUserDetails();
+            fetchAllFeedback();
         } else {
             // Else navigate back to the login page for login.
             navigate('/login');
@@ -127,7 +174,15 @@ export default function WebAdminDashboard() {
                 {allUserDetails && (
                      // Render the WebAdminTable component with columns and data
                      <div style={{margin: '0.5em'}}>
-                     <WebAdminUsersTable columns={columns} data={allUserDetails} authToken={token} />
+                     <h3>Reset Password For User</h3>
+                     <WebAdminUsersTable columns={columnsUsers} data={allUserDetails} authToken={token} />
+                     </div>
+                )}
+                {allFeedback && (
+                     // See the feedback from the contact us form
+                     <div style={{margin: '0.5em'}}>
+                     <h3>See Feedback From Contact Us</h3>
+                     <WebAdminFeedbackTable columns={columnsFeedback} data={allFeedback} authToken={token} />
                      </div>
                 )}
             </div>
