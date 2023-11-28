@@ -1,4 +1,4 @@
-const { processHeatDemandData } = require('../utils/heatDemandProcessor');
+const { processHeatDemandData } = require('/utils/heatDemandProcessor');
 
 describe('processHeatDemandData', () => {
     it('should return the processed data with the correct fields', async () => {
