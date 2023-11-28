@@ -11,7 +11,7 @@ const cacheTTL = 24 * 60 * 60;
 
 // Import the path library to work with file system paths
 const path = require('path');
-const {processHeatDemandData} = require("../../utils/heatdemandProcessor");
+const {processHeatDemandData} = require("../../utils/heatDemandProcessor");
 
 // Create caches for different types of CSV data with a standard TTL
 const annualHeatCache = new NodeCache({ stdTTL: cacheTTL });
