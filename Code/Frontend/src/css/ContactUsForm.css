@@ -1,0 +1,9 @@
+.buttonDiv{
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+    padding-bottom: 1vh !important;
+}
+
+.contactTitle{
+    color: white !important;
+}
