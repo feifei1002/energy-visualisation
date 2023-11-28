@@ -38,13 +38,13 @@ describe('tests to check the page and graph renders correctly', () => {
         render(<GasConsumedAndElectricityDemand data={testData} />);
 
         // check each checkbox option is shown
-        const checkboxOne = screen.getByText('Electricity consumption for air-source heat pumps');
+        const checkboxOne = screen.getByText('Electricity Consumption for Air Source Heat Pumps');
         expect(checkboxOne).toBeInTheDocument();
 
-        const checkboxTwo = screen.getByText('Electricity Consumption for ground source heat pumps');
+        const checkboxTwo = screen.getByText('Electricity Consumption for Ground Source Heat Pumps');
         expect(checkboxTwo).toBeInTheDocument();
 
-        const checkboxThree = screen.getByText('Gas consumption of gas boilers');
+        const checkboxThree = screen.getByText('Gas Consumption of Gas Boilers');
         expect(checkboxThree).toBeInTheDocument();
     });
 });

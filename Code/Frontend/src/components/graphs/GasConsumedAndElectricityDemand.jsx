@@ -4,58 +4,12 @@ import '../../App.css';
 
 export default function GasConsumedAndElectricityDemand({data}) {
 
-    const testData = [
-        {
-            "id": "Electricity Consumption for Air-Source Heat Pumps",
-            "color": "hsl(181, 70%, 50%)",
-            "data": [
-                {"x": "2013-01-01T00:00:00" , "y": 0.0000894006878634641*100000},
-                {"x": "2013-02-12T14:00:00", "y": 0.00007365896427030812*100000},
-                {"x": "2013-03-08T00:00:00", "y": 0.000044381285702676944*100000},
-                {"x": "2013-04-05T01:00:00", "y": 0.00011170909712761813*100000},
-                {"x": "2013-05-09T20:00:00", "y": 0.00003897649693032608*100000},
-
-            ]},
-        {
-            "id": "Electricity Consumption for Ground Source Heat Pumps",
-            "color": "hsl(329, 70%, 50%)",
-            "data": [
-                {"x": "2013-01-01T00:00:00", "y": 7.3},
-                {"x": "2013-02-12T14:00:00", "y": 2.2},
-                {"x": "2013-03-08T00:00:00", "y": 7.2},
-                {"x": "2013-04-05T01:00:00", "y": 4},
-                {"x": "2013-05-09T20:00:00", "y": 13},
-            ]},
-        {
-            "id": "Gas Consumption of Gas Boilers",
-            "color": "hsl(5, 70%, 50%)",
-            "data": [
-                {"x": "2013-01-01T00:00:00" , "y": 0.0000894006878634641*100000},
-                {"x": "2013-02-12T14:00:00", "y": 0.00007365896427030812*100000},
-                {"x": "2013-03-08T00:00:00", "y": 0.000044381285702676944*100000},
-                {"x": "2013-04-05T01:00:00", "y": 0.00011170909712761813*100000},
-                {"x": "2013-05-09T20:00:00", "y": 0.00003897649693032608*100000},
-            ]},
-        {
-            "id": "Outside Temperature",
-            "color": "hsl(5, 70%, 50%)",
-            "data": [
-                {"x": "2013-01-01T00:00:00" , "y": 0.0000894006878634641*100000},
-                {"x": "2013-02-12T14:00:00", "y": 0.00007365896427030812*100000},
-                {"x": "2013-03-08T00:00:00", "y": 0.000044381285702676944*100000},
-                {"x": "2013-04-05T01:00:00", "y": 0.00011170909712761813*100000},
-                {"x": "2013-05-09T20:00:00", "y": 0.00003897649693032608*100000},
-            ]},
-
-    ]
-
     // set each line on the graph as separate, so they can be selected
     const [showASHPElecLine, setShowASHPElecLine] = useState(true);
     const [showGSHPElecLine, setShowGSHPElecLine] = useState(true);
     const [showGasConsLine, setShowGasConsLine] = useState(true);
-    const [showTempLine, setShowTempLine] = useState(true);
+    // const [showTempLine, setShowTempLine] = useState(true);
 
-    console.log("formatting data")
     // put data into a new list
     const formatData = (data || []).map(({index, "Normalised_ASHP_elec": ASHeatPumpsElec, "Normalised_GSHP_elec": GSHeatPumpsElec, "Normalised_Gas_boiler_gas": boilerGasConsumption, "UK_daily_average_OAT_[degrees_C]": temperature}, dataIndex) => ({
         index: dataIndex,
@@ -67,16 +21,16 @@ export default function GasConsumedAndElectricityDemand({data}) {
         temperature
     }));
 
-    console.log("formatting to colours")
     // format data from list
     const formattedDataList = [
+
         {
             // for air source heat pumps
             id: 'Electricity Consumption for Air Source Heat Pumps',
             // color: 'hsl(21,99%,39%)',
             data: formatData.map((item) => ({
                 x: item.time,
-                y: item.ASHeatPumpsElec * 100000
+                y: item.ASHeatPumpsElec * 579280
             })),
         },
         {
@@ -85,7 +39,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
             // color: 'hsl(221,78%,75%)',
             data: formatData.map((item) => ({
                 x: item.time,
-                y: item.GSHeatPumpsElec * 100000
+                y: item.GSHeatPumpsElec * 579280
             })),
         },
         {
@@ -94,9 +48,9 @@ export default function GasConsumedAndElectricityDemand({data}) {
             // color: 'hsl(215,95%,37%)',
             data: formatData.map((item) => ({
                 x: item.time,
-                y: item.boilerGasConsumption * 100000
+                y: item.boilerGasConsumption * 579280
             })),
-        },
+        }
         // {
         //     id: 'Outside Temperature',
         //     // color: 'hsl(0,91%,31%)',
@@ -131,9 +85,9 @@ export default function GasConsumedAndElectricityDemand({data}) {
         setShowGasConsLine(!showGasConsLine);
     }
 
-    const handleShowTempLine = () => {
-        setShowTempLine(!showTempLine);
-    }
+    // const handleShowTempLine = () => {
+    //     setShowTempLine(!showTempLine);
+    // }
 
     const filteredData = formattedDataList.filter((dataToFilter) => {
         if(dataToFilter.id === "Electricity Consumption for Air Source Heat Pumps") {
@@ -145,9 +99,9 @@ export default function GasConsumedAndElectricityDemand({data}) {
         if(dataToFilter.id === "Gas Consumption of Gas Boilers") {
             return showGasConsLine;
         }
-        if(dataToFilter.id === "Outside Temperature") {
-            return showTempLine;
-        }
+        // if(dataToFilter.id === "Outside Temperature") {
+        //     return showTempLine;
+        // }
     })
 
     console.log("loading graph")
@@ -156,14 +110,61 @@ export default function GasConsumedAndElectricityDemand({data}) {
     return(
         <>
             <div className="wrapper">
-                <div style={{ width: '95vw', height: "600px", margin: 'auto', position: "absolute"}}>
-                    <br/><br/>
+
+                <div style={{ width: '95vw', height: "600px", position: "absolute"}}>
+                    <ResponsiveLine
+                        data={formattedTemp}
+                        // layers={["grid", "axes", "lines", "markers", "legends"]}
+                        margin={{ top: 120, right: 100, bottom: 20, left: 100 }}
+                        yScale={{
+                            type: 'linear',
+                            min: "auto",
+                            max: 'auto',
+                            stacked: true,
+                            reverse: false }}
+                        axisBottom={null}
+                        axisLeft={null}
+                        axisTop={null}
+                        axisRight={{
+                            legend: "Temperature",
+                            legendPosition:"middle",
+                            legendOffset: 50,
+                            // null
+                        }}
+                        enableGridX={false}
+                        enableGridY={false}
+                        // colors={(d) => d.color}
+                        colors={"grey"}
+                        // colors={["rgba(255, 255, 255, 0"]}
+                        pointSize={0}
+                        pointColor={{ from: 'paired' }}
+                        pointBorderColor={{ from: 'paired' }}
+                        legends={[
+                            {
+                                anchor: 'top-left',
+                                direction: 'column',
+                                justify: false,
+                                translateX: 0,
+                                translateY: -90,
+                                itemsSpacing: 0,
+                                itemDirection: 'left-to-right',
+                                itemWidth: 200,
+                                itemHeight: 12,
+                                itemOpacity: 1,
+                                symbolSize: 8,
+                                symbolShape: 'circle',
+                                symbolBorderColor: 'rgba(0, 0, 0, .5)'
+                            }]}
+
+                    /> </div>
+
+                <div style={{ width: '95vw', height: "600px", position: "absolute"}}>
                     <ResponsiveLine
                         // data={formattedDataList.flat()}
                         // data={formattedDataList}
                         data={filteredData}
                         // data = {testData}
-                        layers={["grid", "axes", "lines", "markers", "legends"]}
+                        // layers={["grid", "axes", "lines", "markers", "legends"]}
                         margin={{ top: 60, right: 100, bottom: 40, left: 100 }}
                         xScale={
                             { type: 'time',
@@ -206,6 +207,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
                         enableGridX={true}
                         enableGridY={true}
                         // colors={(d) => d.color}
+                        // colors={["rgba(178, 223, 138)", "rgba(31, 120, 180)", "rgba(166, 206, 227)", "rgba(255, 255, 255, 0"]}
                         colors={{ scheme: 'paired' }}
                         pointSize={0}
                         pointColor={{ from: 'paired' }}
@@ -241,44 +243,9 @@ export default function GasConsumedAndElectricityDemand({data}) {
 
                     />
                 </div>
-
-                <div style={{ width: '95vw', height: "600px", margin: 'auto', position: "absolute"}}>
-                    <ResponsiveLine
-                        data={formattedTemp}
-                        layers={["grid", "axes", "lines", "markers", "legends"]}
-                        margin={{ top: 120, right: 100, bottom: 0, left: 100 }}
-                        yScale={{
-                            type: 'linear',
-                            min: "auto",
-                            max: 'auto',
-                            stacked: true,
-                            reverse: false }}
-                        axisBottom={null}
-                        axisLeft={null}
-                        axisTop={null}
-                        axisRight={{
-                            legend: "Temperature",
-                            legendPosition:"middle",
-                            legendOffset: 50,
-                            // null
-                        }}
-                        enableGridX={false}
-                        enableGridY={false}
-                        // colors={(d) => d.color}
-                        colors={"grey"}
-                        // colors={["rgba(255, 255, 255, 0"]}
-                        pointSize={0}
-                        pointColor={{ from: 'paired' }}
-                        pointBorderColor={{ from: 'paired' }}
-
-                    /> </div>
-
-
             </div>
 
-
-
-            <br/><br/><br/><br/>
+            <br/>
 
             {/*  checkboxes  */}
             <div className="graph-checkboxes">

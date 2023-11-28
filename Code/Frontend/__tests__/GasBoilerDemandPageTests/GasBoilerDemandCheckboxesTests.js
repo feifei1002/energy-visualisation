@@ -33,9 +33,9 @@ describe('tests for rendering the checkboxes for the graph', () => {
         render(<GasConsumedAndElectricityDemand data={testData}></GasConsumedAndElectricityDemand>);
 
         // gets the checkboxes as separate variables
-        const ASHPElectricityCheckbox = screen.getByLabelText("Electricity consumption for air-source heat pumps");
-        const GSHPElectricityCheckbox = screen.getByLabelText("Electricity Consumption for ground source heat pumps");
-        const gasConsumptionCheckbox = screen.getByLabelText("Gas consumption of gas boilers");
+        const ASHPElectricityCheckbox = screen.getByLabelText("Electricity Consumption for Air Source Heat Pumps");
+        const GSHPElectricityCheckbox = screen.getByLabelText("Electricity Consumption for Ground Source Heat Pumps");
+        const gasConsumptionCheckbox = screen.getByLabelText("Gas Consumption of Gas Boilers");
 
         // expects checkboxes to be ticked
         expect(ASHPElectricityCheckbox).toBeChecked();
@@ -50,7 +50,7 @@ describe('tests for rendering the checkboxes for the graph', () => {
         const { getByText } = render(<GasConsumedAndElectricityDemand data={testData}></GasConsumedAndElectricityDemand>);
 
         // the checkbox should be checked vwhen the page is loaded
-        const gasConsumptionCheckbox = getByText('Gas consumption of gas boilers').closest('label').querySelector('input');
+        const gasConsumptionCheckbox = getByText('Gas Consumption of Gas Boilers').closest('label').querySelector('input');
         expect(gasConsumptionCheckbox).toBeChecked();
 
         // clicks the checkbox to change its state
