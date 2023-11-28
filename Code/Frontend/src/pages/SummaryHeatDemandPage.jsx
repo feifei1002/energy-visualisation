@@ -1,32 +1,31 @@
 import React, { useState, useEffect } from 'react';
-//import visualisation components
 import HeatDemandPieChart from '../components/graphs/HeatDemandPieChart.jsx';
 import HeatDemandSummaryChart from '../components/graphs/HeatDemandSummaryChart';
 import VisualisationsDropdownMenu from "../components/VisualisationsDropdownMenu.jsx";
 import Header from "../Header.jsx";
+import Switch from 'react-switch'; 
 
 export default function SummaryOfHeatDemandPage() {
     const [heatDemandData, setHeatDemandData] = useState(null);
     const [geoJsonData, setGeoJsonData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [showPieChart, setShowPieChart] = useState(true); // State to toggle between pie and bar charts
 
     useEffect(() => {
         async function fetchData() {
             try {
                 const heatDemandResponse = await fetch('http://localhost:8082/data/summary');
-                const geoJsonResponse = await fetch('http://localhost:8082/data/geojson'); // Replace with your GeoJSON endpoint
+                const geoJsonResponse = await fetch('http://localhost:8082/data/geojson');
 
                 if (!heatDemandResponse.ok || !geoJsonResponse.ok) throw new Error('Data fetch failed');
 
                 const heatData = await heatDemandResponse.json();
                 const geoData = await geoJsonResponse.json();
 
-
                 setHeatDemandData(heatData);
                 setGeoJsonData(geoData);
             } catch (error) {
                 console.error("Error fetching data:", error);
-                //handle errors next
             } finally {
                 setLoading(false);
             }
@@ -34,6 +33,10 @@ export default function SummaryOfHeatDemandPage() {
 
         fetchData();
     }, []);
+
+    const toggleChartType = () => {
+        setShowPieChart(!showPieChart);
+    };
 
     if (loading) {
         return <div>Loading...</div>;
@@ -47,8 +50,23 @@ export default function SummaryOfHeatDemandPage() {
         <div>
             <Header />
             <VisualisationsDropdownMenu></VisualisationsDropdownMenu>
-            <HeatDemandPieChart data={heatDemandData} geoJsonData={geoJsonData} />
-            <HeatDemandSummaryChart data={heatDemandData} />
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '20px' }}>
+                <span style={{ marginRight: '10px' }}>Bar Chart</span>
+                <Switch
+                    onChange={toggleChartType}
+                    checked={showPieChart}
+                    onColor="#007BFF"
+                    offColor="#333"
+                    checkedIcon={false}
+                    uncheckedIcon={false}
+                />
+                <span style={{ marginLeft: '10px' }}>Pie Chart</span>
+            </div>
+            {showPieChart ? (
+                <HeatDemandPieChart data={heatDemandData} geoJsonData={geoJsonData} />
+            ) : (
+                <HeatDemandSummaryChart data={heatDemandData} />
+            )}
         </div>
     );
 }

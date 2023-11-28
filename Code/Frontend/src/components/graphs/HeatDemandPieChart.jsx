@@ -1,5 +1,6 @@
 import React from 'react';
 import { ResponsivePie } from '@nivo/pie';
+
 const HeatDemandPieChart = ({ data }) => {
     const beforeData = data.map(region => ({
         id: region.region,
@@ -31,6 +32,8 @@ const HeatDemandPieChart = ({ data }) => {
                     radialLabelsLinkColor={{ from: 'color' }}
                     sliceLabelsSkipAngle={10}
                     sliceLabelsTextColor="#333333"
+                    enableRadialLabels={false} // Disable radial labels
+                    enableSliceLabels={false} // Disable slice labels
                     tooltip={({ datum }) => (
                         <div style={{
                             background: 'steelblue',
@@ -60,6 +63,8 @@ const HeatDemandPieChart = ({ data }) => {
                     radialLabelsLinkColor={{ from: 'color' }}
                     sliceLabelsSkipAngle={10}
                     sliceLabelsTextColor="#333333"
+                    enableRadialLabels={false} // Disable radial labels
+                    enableSliceLabels={false} // Disable slice labels
                     tooltip={({ datum }) => (
                         <div style={{
                             background: 'steelblue',

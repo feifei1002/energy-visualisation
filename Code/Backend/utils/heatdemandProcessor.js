@@ -44,9 +44,9 @@ function determineRegionFromLSOA(LSOA11CD) {
 function aggregateData(annualHeatData, residentialHeatData) {
     //aggregate and process the data
     const aggregatedData = {
-        England: { totalBefore: 0, totalAfter: 0, area: 0 },
-        Wales: { totalBefore: 0, totalAfter: 0, area: 0 },
-        Scotland: { totalBefore: 0, totalAfter: 0, area: 0 }
+        England: { totalBefore: 0, totalAfter: 0, area: 0, averagePerSqKmBefore: 0, averagePerSqKmAfter: 0 },
+        Wales: { totalBefore: 0, totalAfter: 0, area: 0, averagePerSqKmBefore: 0, averagePerSqKmAfter: 0 },
+        Scotland: { totalBefore: 0, totalAfter: 0, area: 0, averagePerSqKmBefore: 0, averagePerSqKmAfter: 0 }
     };
 
     //process the annual heat data for england and wales
@@ -80,7 +80,8 @@ function aggregateDataTransform(aggregatedData) {
         totalBefore: aggregatedData[region].totalBefore,
         totalAfter: aggregatedData[region].totalAfter,
         area: aggregatedData[region].area,
-        averagePerSqKm: aggregatedData[region].averagePerSqKm
+        averagePerSqKmBefore: aggregatedData[region].averagePerSqKmBefore,
+        averagePerSqKmAfter: aggregatedData[region].averagePerSqKmAfter
     }));
 }
 
