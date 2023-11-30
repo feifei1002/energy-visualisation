@@ -1,8 +1,21 @@
 // Import necessary React components
 import React from 'react';
+import  graphToPdf  from '../../helperFunctions/graphToPdf';
+import { toast } from 'react-toastify';
 
 // Define the table component
 export default function TotalHeatDemandBeforeTable({ data }) {
+
+  const handleGeneratePDF = () => {
+    try{
+      graphToPdf('totalHeatDemandBeforeTable', 
+      `Total heat demand before energy efficiency measures 2018 (GWh) - Table`);
+      toast.success('Table converted to pdf and downloaded');
+    } catch(e){
+      toast.error('Error converting table to pdf');
+    }
+  };
+
   // Set a fixed height, width, and styles for the table to make it scrollable and visually appealing
   const tableStyle = {
     maxHeight: '300px',
@@ -53,7 +66,8 @@ export default function TotalHeatDemandBeforeTable({ data }) {
   };
 
   return (
-    <div style={tableStyle}>
+    <div>
+    <div style={tableStyle} id="totalHeatDemandBeforeTable">
       <table>
         <thead>
           <tr style={headerStyle}>
@@ -71,7 +85,9 @@ export default function TotalHeatDemandBeforeTable({ data }) {
             const rowStyle = {
               backgroundColor: color,
               border: '1px solid white',
-              color: 'black', // Set text color for better visibility
+              color: 'black',
+              fontWeight: 'bolder',
+              fontSize: 'large' 
             };
 
             return (
@@ -83,6 +99,13 @@ export default function TotalHeatDemandBeforeTable({ data }) {
           })}
         </tbody>
       </table>
+    </div>
+    <div>
+      {/* Button to generate PDF */}
+      <button onClick={handleGeneratePDF} style={{margin: '1vh', backgroundColor: 'rgba(20, 72, 94, 0.99)', color: 'white'}}>
+        Generate PDF
+      </button>
+    </div>
     </div>
   );
 };

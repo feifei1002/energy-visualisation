@@ -10,7 +10,7 @@ require('dotenv').config();
 const router = express.Router();
 // const bcrypt = require("bcryptjs");
 // const jwt = require(jsonwebtoken);
-const User = require("./models/User"); 
+const User = require("./models/User");
 
 // Define the root route for API
 // go to http://localhost:8082/ for backend
@@ -49,10 +49,6 @@ const connectDB = async () => {
 //Connect to the MongoDB database
 connectDB();
 
-const Schema = mongoose.Schema;
-
-console.log(Schema)
-
 //Configure CORS and JSON parsing
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ extended: false }));
@@ -62,10 +58,16 @@ const apiRouter = require('./routes/api/Api');
 const dataRouter = require('./routes/data/Data');
 const csvRouter = require('./routes/api/Csv');
 const profileRouter = require('./routes/api/Profile');
+const registerRouter = require("./routes/api/Register");
+const webAdminRouter = require("./routes/api/Admin");
+const contactUsRouter = require("./routes/api/ContactUs");
+app.use('/api', registerRouter);
 app.use('/api', apiRouter);
 app.use('/data', dataRouter);
 app.use('/api',csvRouter);
 app.use('/api',profileRouter);
+app.use('/api',webAdminRouter);
+app.use('/api', contactUsRouter);
 
 
 const loginRouter = require('./routes/api/Login');
@@ -73,6 +75,5 @@ app.use('/api',loginRouter);
 
 //Start the server
 app.listen(port, () => console.log(`Server running on port ${port}`));
-
 
 

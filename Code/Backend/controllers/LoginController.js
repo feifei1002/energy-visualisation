@@ -6,9 +6,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
-const {response} = require("express");
 require('dotenv').config();
-let refreshTokens = [];
 
 // post login for authentication
 const postLogin = async (req, res) => {
@@ -28,21 +26,13 @@ const postLogin = async (req, res) => {
 
             // generate access token
             // https://stackabuse.com/authentication-and-authorization-with-jwts-in-express-js/ 16/11
-            const accessToken = jwt.sign({username: user.username,userId: user._id}, process.env.ACCESS_TOKEN, { expiresIn: '30m' });
-            const refreshToken = jwt.sign({username: user.username,userId: user._id}, process.env.REFRESH_TOKEN);
+            const accessToken = jwt.sign({username: data.username}, process.env.ACCESS_TOKEN, { expiresIn: '30m' });
 
-            refreshTokens.push(refreshToken);
             // res.redirect('/profiledashboard');
 
             // send response of access token when correctly authenticated
             res.json({
-                user: {
-                    _id: user._id,
-                    username: user.username,
-                    // Add other user details as needed
-                },
-                token: accessToken,
-                refreshToken
+                accessToken
             });
 
 
