@@ -22,7 +22,7 @@ export default function LogoutButton() {
 
     return (
         <>
-            <button onClick={handleLogout}>Logout</button>
+            <button style={{ background: "#206887", borderColor: "#206887", color: "white" }} onClick={handleLogout}>Logout</button>
         </>
     )
 }
