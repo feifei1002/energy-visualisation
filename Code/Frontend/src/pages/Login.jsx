@@ -44,7 +44,7 @@ function Login() {
                     setStatus({ type: 'success' });
 
                 // data has access token
-                navigate('/profiledashboard');
+                navigate('/profiledashboard', { state: { token, userID: user._id } });
 
             } else {
                 // The response wasn't a JSON object
