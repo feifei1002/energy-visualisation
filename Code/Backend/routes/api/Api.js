@@ -70,6 +70,6 @@ const ProfileController = require('../../controllers/ProfileController');
 //get profile
 // router.get('/profile',verifyToken, ProfileController.getProfile);
 //update profile
-router.put('/profile',verifyToken, ProfileController.updateProfile);
+// router.put('/profile',verifyToken, ProfileController.updateProfile);
 
 module.exports = router;

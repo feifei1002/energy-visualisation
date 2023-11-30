@@ -60,8 +60,13 @@ const ProfileOverview = () => {
 
     const handleProfileSubmit = async (e) => {
         e.preventDefault();
+        if (token) {
         try {
-            const response = await axios.put('/api/profile', profile);
+            const response = await axios.put(`/api/profile/${userID}`, profile, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             setProfile(response.data);
             setIsEditing(false);
             showNotification('Success! You updated your profile details.');
@@ -69,6 +74,7 @@ const ProfileOverview = () => {
             console.error('Error updating profile:', error);
             showNotification('Failure! Your profile details were not updated.');
         }
+    }
     };
 
     const handleCSVSubmit = async (e) => {
