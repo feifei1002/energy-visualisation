@@ -4,7 +4,7 @@ import VisualisationsDropdownMenu from "../components/VisualisationsDropdownMenu
 import LoadingGif from "../assets/LoadingGif.gif";
 import GasConsumedAndElectricityDemand from "../components/graphs/GasConsumedAndElectricityDemand.jsx"
 
-
+// page which loads the half-hourly data and then outputs a graph
 export default function GasBoilersPage() {
     // set variables for heat data
     const [heatData, setHeatData] = useState(null);
@@ -39,28 +39,29 @@ export default function GasBoilersPage() {
         // when no heat profile data loaded yet
         return (
             <>
-                {/*add default header and dropdown menu for visualisation graphs*/}
+                {/* default header and dropdown menu for visualisation graphs */}
                 <Header />
                 <VisualisationsDropdownMenu></VisualisationsDropdownMenu>
-                {/*uses the same styling as other graph pages, to keep it consistent*/}
+                {/* uses the same styling as other graph pages, to keep it consistent */}
                 <div style={{display: 'flex', flexDirection: 'row', width: '100%', alignItems: 'stretch', boxSizing: 'border-box'}}>
                     <div style={{flex: 1, padding: '0', margin: '0.5em', boxSizing: 'border-box' }}>
                         <p style={{fontSize: '24px', fontWeight: 'bold', margin: '0 0 20px 0', color: '#333'}}>Getting your data...</p>
-                        {/*gif to show data is loading*/}
+                        {/* gif to show data is loading */}
                         <img src={LoadingGif} alt="Loading..." style={{width: '50px', height: '50px'}}/>
                     </div>
                 </div>
             </>
         )
     } else {
-        // there is heat data
+        // when there is heat data
         return (
             <>
-                {/*default header and dropdown menu for graphs*/}
+                {/* default header and dropdown menu for graphs */}
                 <Header />
-                <VisualisationsDropdownMenu></VisualisationsDropdownMenu>
+                <VisualisationsDropdownMenu></VisualisationsDropdownMenu><br/><br/>
 
-                {/*<h3>Heat produced by gas boilers before and after energy efficiency measures</h3>*/}
+                {/* title for graph */}
+                <h3>Half-Hourly Temperature, Electricity Demand for Heat Pumps, and Gas Demand for Boilers</h3>
                 {/* heat produced graphs here*/}
                 <GasConsumedAndElectricityDemand data={heatData} />
             </>
