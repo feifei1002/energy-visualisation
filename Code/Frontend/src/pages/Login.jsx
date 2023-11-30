@@ -1,38 +1,40 @@
 import React from "react";
 import { useState } from "react";
-import '../css/Login.css';  // Import CSS for the Login component
+// import '../App.css'
+import '../css/Login.css'
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Header from "../Header.jsx";
-import { WebAdminLogin } from "../loginFunctions/WebAdminLogin";
+import {useAuth0} from "@auth0/auth0-react";
 
-// Frontend login page to allow users to input their username and password for authentication in the backend
 function Login() {
 
     // https://stackoverflow.com/questions/71536244/check-username-password-login-form-using-react-hooks
-    // State to manage input values and status messages
     const [inputs, setInputs] = useState({
         username: '',
         password: ''
     });
     const [status, setStatus] = useState(undefined);
 
-    const { uname, pass } = inputs;
+    const {uname, pass} = inputs;
 
-    // Handle input changes
     const handleChange = (e) => {
-        setInputs({ ...inputs, [e.target.name]: [e.target.value] });
+        setInputs({...inputs, [e.target.name]:[e.target.value]})
     }
 
-    // Handle form submission
     const handleSubmit = async (event) => {
-        event.preventDefault();  // Prevent default form submission behavior
+        event.preventDefault();
         console.log(event);
 
-        // Backend section
+        // backend section
         try {
-            // Attempt to post user data to the login endpoint
             const response = await axios.post('/api/login', inputs);
+            localStorage.setItem('accessToken', response.data.token);
+            console.log(response)
+            setInputs(response.data)
+            const {user,  token} = response.data;
+            console.log('Received user:', user._id, 'Recieved token: ', token);
+
 
             // If an auth token was sent back
             try {
@@ -41,16 +43,11 @@ function Login() {
                     // The response was a JSON object (with an access token)
                     setStatus({ type: 'success' });
 
-                    // Add authentication for normal user login here, look at web admin login authentication
+                // data has access token
+                navigate('/profiledashboard', { state: { token, userID: user._id } });
 
-                    // Navigate the user to the profile dashboard
-                    navigate('/profiledashboard');
-                } else {
-                    // Attempt to post user data to the web admin login endpoint
-                    const webAdminResponse = await axios.post('/api/loginwebadmin', inputs);
-
-                    // Extract the username and token from the web admin response if successful
-                    const { user, token } = webAdminResponse.data;
+            } else {
+                // The response wasn't a JSON object
 
                     // Try login as a web admin using the WebAdminLogin logic
                     const webAdminStatus = await WebAdminLogin(setStatus, navigate, webAdminResponse, token, user);
@@ -72,6 +69,7 @@ function Login() {
             console.error("Error with posting login details");
         }
     }
+    // end of code
 
     // from https://stackoverflow.com/questions/50644976/react-button-onclick-redirect-page 06/11
     // Navigate function from react-router-dom
@@ -82,8 +80,8 @@ function Login() {
         let path = '/register';
         navigate(path);
     }
+    // end of code
 
-    // Render the Login component
     return (
         <>
             <Header />  {/* Display the header component */}
@@ -114,6 +112,7 @@ function Login() {
                     </form>
                 </div>
             </main>
+
         </>
     );
 }
