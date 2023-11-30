@@ -21,13 +21,10 @@ const ProfileOverview = () => {
     const userID = state ? state.userID : null;
     const token = state ? state.token : null;
 
-    console.log('User ID:', userID);
-
 
     useEffect(() => {
-        // console.log("access token: ", token)
         const fetchProfileData = async () => {
-            if(username && token) {
+            if(token) {
 
                 try {
                     const response = await axios.get(`/api/profile/${userID}`, {

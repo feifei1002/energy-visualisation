@@ -68,7 +68,7 @@ router.get('/', (req, res) => res.send('route testing!'));
 //routes for client dashboard
 const ProfileController = require('../../controllers/ProfileController');
 //get profile
-router.get('/profile',verifyToken, ProfileController.getProfile);
+// router.get('/profile',verifyToken, ProfileController.getProfile);
 //update profile
 router.put('/profile',verifyToken, ProfileController.updateProfile);
 

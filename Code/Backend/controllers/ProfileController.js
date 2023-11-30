@@ -5,20 +5,6 @@ const jwt = require('jsonwebtoken');
 const {expressjwt} = require("express-jwt");
 const key = process.env.ACCESS_TOKEN;
 
-// const verifyToken = expressjwt({
-//     secret: key,
-//     algorithms: ['HS256'],
-//     getToken: function (request) {
-//         const token = request.headers.authorization;
-//         console.log('Decoded Token:', jwt.decode(token, { complete: true }));
-//         if (request.headers.authorization && request.headers.authorization.split(' ')[0] === 'Bearer') {
-//             return request.headers.authorization.split(' ')[1];
-//         } else if (request.query && request.query.token) {
-//             return request.query.token;
-//         }
-//         return null;
-//     },
-// });
 
 // Moved this logic to the api/profile file as that is where it works see the file
 
@@ -62,7 +48,7 @@ const updateProfile = async (request, response) => {
 };
 
 module.exports = {
-    getProfile,
+    // getProfile,
     updateProfile,
     // verifyToken
 };

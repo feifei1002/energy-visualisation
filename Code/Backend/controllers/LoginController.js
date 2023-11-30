@@ -6,7 +6,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
+const {response} = require("express");
 require('dotenv').config();
+let refreshTokens = [];
 
 // post login for authentication
 const postLogin = async (req, res) => {
@@ -27,7 +29,9 @@ const postLogin = async (req, res) => {
             // generate access token
             // https://stackabuse.com/authentication-and-authorization-with-jwts-in-express-js/ 16/11
             const accessToken = jwt.sign({username: user.username,userId: user._id}, process.env.ACCESS_TOKEN, { expiresIn: '30m' });
+            const refreshToken = jwt.sign({username: user.username,userId: user._id}, process.env.REFRESH_TOKEN);
 
+            refreshTokens.push(refreshToken);
             // res.redirect('/profiledashboard');
 
             // send response of access token when correctly authenticated
@@ -38,6 +42,7 @@ const postLogin = async (req, res) => {
                     // Add other user details as needed
                 },
                 token: accessToken,
+                refreshToken
             });
 
 
@@ -54,21 +59,6 @@ const postLogin = async (req, res) => {
 
 };
 
-const logout = async (req, res, next) => {
-    try {
-        req.session.destroy();
-        return res.status(200).send({
-            message: "You've been signed out!"
-        });
-    }catch(err) {
-        console.error(err);
-        res.status(500).send({
-            message: "Internal Server Error",
-        });
-    }
-}
-
 module.exports = {
-    postLogin,
-    logout
+    postLogin
 };
