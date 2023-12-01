@@ -3,6 +3,23 @@ const router = express.Router();
 const PendingUser = require('../../models/PendingUser');
 const RegisterController = require('../../controllers/RegisterController');
 const User = require("../../models/User");
+const {expressjwt} = require("express-jwt");
+
+// The key for the jwt token to prevent unauthorized access
+const secretKey = process.env.ACCESS_TOKEN;
+
+const checkToken = expressjwt({
+    secret: secretKey,
+    algorithms: ['HS256'],
+    getToken: function (req) {
+        if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+            return req.headers.authorization.split(' ')[1];
+        } else if (req.query && req.query.token) {
+            return req.query.token;
+        }
+        return null;
+    },
+});
 
 router.get('/register', (req, res) => {
     res.send('Server is running. /api/register endpoint is accessible.');
@@ -10,8 +27,7 @@ router.get('/register', (req, res) => {
 
 router.post('/register', RegisterController.registerNewUser);
 
-//, RegisterController.verifyToken
-router.get('/pending-users', async (req, res) => {
+router.get('/pending-users', checkToken, async (req, res) => {
     try {
         const pendingUsers = await PendingUser.find({ approved: false });
         res.json(pendingUsers);
@@ -21,7 +37,7 @@ router.get('/pending-users', async (req, res) => {
     }
 });
 
-router.post('/approve-user/:userId', async (req, res) => {
+router.post('/approve-user/:userId', checkToken, async (req, res) => {
     const { userId } = req.params;
     const { approved } = req.body;
 
@@ -56,7 +72,7 @@ router.post('/approve-user/:userId', async (req, res) => {
         res.status(500).json({ message: 'Error approving user. Please try again.' });
     }
 });
-router.post('/deny-user/:userId', async (req, res) => {
+router.post('/deny-user/:userId', checkToken, async (req, res) => {
     const { userId } = req.params;
     const { approved } = req.body;
 

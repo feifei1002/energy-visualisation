@@ -1,23 +1,43 @@
 import { useEffect, useState } from 'react';
+
 import { toast } from 'react-toastify';
 import '../css/Registration.css';
 import axios from "axios";
+import {useLocation, useNavigate} from "react-router-dom";
 
 const RegisterRequest = () => {
     const [pendingUsers, setPendingUsers] = useState([]);
+    const { state } = useLocation();
+    const token = state ? state.token : null;
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchPendingUserData = async () => {
-            try {
-                const response = await axios.get('/api/pending-users');
-                setPendingUsers(response.data);
-            } catch (error) {
-                console.error('Error fetching pending user data:', error);
+            if (token) {
+                try {
+                    const response = await axios.get('/api/pending-users', {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                    setPendingUsers(response.data);
+                } catch (error) {
+                    console.error('Error fetching pending user data:', error);
 
+                }
             }
         };
 
         fetchPendingUserData();
+
+            // Check authorization
+            if (token) {
+                // Call the fetchWebAdminDetails and fetchAllUserDetails functions when the component mounts if the user has a token
+                fetchPendingUserData();
+            } else {
+                // Else navigate back to the login page for login.
+                navigate('/login');
+            }
     }, []);
 
 
@@ -84,7 +104,7 @@ const RegisterRequest = () => {
     return (
         <div className="Register-Request-Button">
             <button onClick={togglePanel}>Show Register Requests</button>
-            {isPanelVisible && (
+            {isPanelVisible && pendingUsers &&(
                 <div className="registration-container">
                     <p className="title"> Pending Users </p>
                     {pendingUsers.map((user) => (
