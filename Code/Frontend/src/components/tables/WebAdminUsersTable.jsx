@@ -67,6 +67,7 @@ export default function WebAdminUsersTable({ columns, data, authToken}) {
               {headerGroup.headers.map(column => (
                 <th {...column.getHeaderProps()}>{column.render('Header')}</th>
               ))}
+              <th>Reset Password</th>
             </tr>
           ))}
         </thead>
