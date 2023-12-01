@@ -30,6 +30,7 @@ const RegisterRequest = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({ approved: true }),
             });
@@ -54,6 +55,7 @@ const RegisterRequest = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                     Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({ approved: false }),
             });
