@@ -1,5 +1,6 @@
 import { ResponsiveLine } from '@nivo/line';
 import React, {useState} from "react";
+import downloadCSV from "../../helperFunctions/downloadCSV.js";
 export default function ResistanceHeatersProducedAndConsumed({data}) {
 
     const [showHeatLine, setShowHeatLine] = useState(true);
@@ -101,6 +102,10 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
             return showOATLine;
         }
     })
+
+    const handleDownloadCSV = () => {
+        downloadCSV(formatData, "resistance_heater_produced_and_consumed.csv");
+    }
 
 
     return(
@@ -204,6 +209,9 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
                         <input style={{ marginRight: '2px' , marginLeft: '15px'}} type="checkbox" checked={showOATLine} onChange={handleShowOATLineChange} />
                         UK daily OAT
                     </label>
+                </div>
+                <div>
+                    <button style={{ background: "#206887", borderColor: "#206887", color: "white", padding: "10px" }} onClick={handleDownloadCSV}>Download CSV</button>
                 </div>
             </div><br></br>
         </>
