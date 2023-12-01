@@ -82,10 +82,11 @@ const RegisterRequest = () => {
     };
 
     return (
-        <div>
+        <div className="Register-Request-Button">
             <button onClick={togglePanel}>Show Register Requests</button>
             {isPanelVisible && (
                 <div className="registration-container">
+                    <p className="title"> Pending Users </p>
                     {pendingUsers.map((user) => (
                         <div key={user._id} className="registration-item">
                             <p>{user.fullName}, {user.email}</p>

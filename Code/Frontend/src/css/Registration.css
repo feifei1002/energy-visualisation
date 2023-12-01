@@ -5,8 +5,6 @@
     grid-template-columns: 1fr;
     line-height: 60px;
     width: 700px;
-    /*display: flex;*/
-    /*align-items: center;*/
 }
 
 .register-form h2 {
@@ -31,13 +29,13 @@
     margin-top: 0;
     margin-bottom: 5px;
     box-sizing: border-box;
-    width: 100%; /* Adjust the width for label */
+    width: 100%;
     height: 83px;
     vertical-align: top;
 }
 
 .form-group-register input {
-    width: 100%; /* Adjust the width for input */
+    width: 100%;
     padding: 10px;
     border: 1px solid #15495f;
     border-radius: 0;
@@ -77,12 +75,12 @@
     top: 0;
     right: 0;
     height: 100%;
-    background-color: #fff; /* Adjust the background color as needed */
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); /* Add box shadow for a subtle effect */
+    background-color: #fff;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    width: 350px; /* Adjust the width as needed */
-    z-index: 1000; /* Ensure it's on top of other elements */
-    overflow-y: auto; /* Enable vertical scrolling if content exceeds height */
+    width: 350px;
+    z-index: 1000;
+    overflow-y: auto;
     transition: transform 0.3s ease-in-out;
 }
 
@@ -90,11 +88,16 @@
     transform: translateX(100%);
 }
 
+.registration-container p.title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
 .registration-item {
     margin-bottom: 15px;
-    border: 1px solid #ddd; /* Add border style */
-    padding: 10px; /* Add padding for better appearance */
-    border-radius: 5px; /* Optional: Add border-radius for rounded corners */
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
 }
 
 .registration-item p {
@@ -107,3 +110,7 @@
     color: #ffffff;
 }
 
+.Register-Request-Button button {
+    margin-right: 10px;
+    border: 3px solid rgba(20, 72, 94, 0.99);
+}
