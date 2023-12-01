@@ -103,6 +103,7 @@ export default function ElectricityDemandForHeatPumps({data}) {
         }
     })
 
+    //handle the download CSV file when the download button is clicked
     const handleDownloadCSV = () => {
         downloadCSV(formatData, "electricity_demand_for_heat_pumps.csv");
     }

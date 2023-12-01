@@ -103,6 +103,7 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
         }
     })
 
+    //handle the download CSV file when the download button is clicked
     const handleDownloadCSV = () => {
         downloadCSV(formatData, "resistance_heater_produced_and_consumed.csv");
     }
