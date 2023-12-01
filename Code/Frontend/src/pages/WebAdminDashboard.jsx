@@ -6,6 +6,7 @@ import Header from "../Header.jsx";
 import '../css/WebAdminDashboard.css';
 import WebAdminUsersTable from '../components/tables/WebAdminUsersTable';
 import WebAdminFeedbackTable from '../components/tables/WebAdminFeedbackTable'
+import RegisterRequest from "../components/RegisterRequest.jsx";
 import { Table, Button  } from 'react-bootstrap';
 
 /**
@@ -169,6 +170,7 @@ export default function WebAdminDashboard() {
                                     {webAdminDetails.fullName}
                                 </h3>
                         </div>
+                        <RegisterRequest />
                     </div>
                 )}
                 {allUserDetails && (

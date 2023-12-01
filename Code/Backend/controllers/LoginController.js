@@ -49,9 +49,9 @@ const postLogin = async (req, res) => {
 
 
     } catch (error) {
-            console.error(error);
-            res.send('Username does not match any in the system');
-        }
+        console.error(error);
+        res.send('Username does not match any in the system');
+    }
 
 };
 

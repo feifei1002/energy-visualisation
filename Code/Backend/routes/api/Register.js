@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const PendingUser = require('../../models/PendingUser');
 const RegisterController = require('../../controllers/RegisterController');
+const User = require("../../models/User");
 
 router.get('/register', (req, res) => {
     res.send('Server is running. /api/register endpoint is accessible.');
@@ -9,7 +10,8 @@ router.get('/register', (req, res) => {
 
 router.post('/register', RegisterController.registerNewUser);
 
-router.get('/pending-users', RegisterController.verifyToken, async (req, res) => {
+//, RegisterController.verifyToken
+router.get('/pending-users', async (req, res) => {
     try {
         const pendingUsers = await PendingUser.find({ approved: false });
         res.json(pendingUsers);
