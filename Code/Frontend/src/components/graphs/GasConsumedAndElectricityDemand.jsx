@@ -3,12 +3,21 @@ import React, {useState} from "react";
 import '../../App.css';
 
 // outputs electricity and gas demand data to a graph
-export default function GasConsumedAndElectricityDemand({data}) {
+export default function GasConsumedAndElectricityDemand({data, demandData}) {
 
     // set each line on the graph as separate, so they can be selected
     const [showASHPElecLine, setShowASHPElecLine] = useState(true);
     const [showGSHPElecLine, setShowGSHPElecLine] = useState(true);
     const [showGasConsLine, setShowGasConsLine] = useState(true);
+
+    // user inputs value to times by y-axis
+    // initial value is 1 so data of the graph is not set to 0
+    const [newVal, setNewVal] = useState(1);
+
+    const handleChange = (e) => {
+        setNewVal(e.target.value)
+        console.log(e.target.value)
+    }
 
     // put data into a new list
     const formatData = (data || []).map(({index, "Normalised_ASHP_elec": ASHeatPumpsElec, "Normalised_GSHP_elec": GSHeatPumpsElec, "Normalised_Gas_boiler_gas": boilerGasConsumption, "UK_daily_average_OAT_[degrees_C]": temperature}, dataIndex) => ({
@@ -31,8 +40,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
             data: formatData.map((item) => ({
                 x: item.time,
                 // example data used to find '579280', which represents 'annual heat supplied by the gas boilers'
-                // which is used to find the half-hourly gas and electricity demand
-                y: item.ASHeatPumpsElec * 579280
+                y: item.ASHeatPumpsElec * 579280 * newVal
             })),
         },
         {
@@ -40,7 +48,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
             id: 'Electricity Consumption for Ground Source Heat Pumps',
             data: formatData.map((item) => ({
                 x: item.time,
-                y: item.GSHeatPumpsElec * 579280
+                y: item.GSHeatPumpsElec * 579280 * newVal
             })),
         },
         {
@@ -48,7 +56,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
             id: 'Gas Consumption of Gas Boilers',
             data: formatData.map((item) => ({
                 x: item.time,
-                y: item.boilerGasConsumption * 579280
+                y: item.boilerGasConsumption * 579280 * newVal
             })),
         }
     ];
@@ -234,6 +242,13 @@ export default function GasConsumedAndElectricityDemand({data}) {
                     <input style={{ marginRight: '2px' , marginLeft: '15px'}} type="checkbox" checked={showGasConsLine} onChange={handleShowGasConsLine} />
                     Gas Consumption of Gas Boilers
                 </label>
+            </div>
+
+            <div>
+                {/* user can type in a value to times by the graph data */}
+                <label>Input data to times by y-axis</label>
+                <input type="number" name="newValue" value={newVal} onChange={handleChange} />
+                {/*<button type="button" onClick={handleChange}>Register</button>*/}
             </div>
         </>
     )

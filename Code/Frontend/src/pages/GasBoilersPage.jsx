@@ -8,6 +8,8 @@ import GasConsumedAndElectricityDemand from "../components/graphs/GasConsumedAnd
 export default function GasBoilersPage() {
     // set variables for heat data
     const [heatData, setHeatData] = useState(null);
+    const [heatDemandData, setHeatDemandData] = useState(null);
+
 
     // fetch data from the half-hourly profiles csv
     useEffect(() => {
@@ -63,7 +65,7 @@ export default function GasBoilersPage() {
                 {/* title for graph */}
                 <h3>Half-Hourly Temperature, Electricity Demand for Heat Pumps, and Gas Demand for Boilers</h3>
                 {/* heat produced graphs here*/}
-                <GasConsumedAndElectricityDemand data={heatData} />
+                <GasConsumedAndElectricityDemand data={heatData}/>
             </>
         )
     }
