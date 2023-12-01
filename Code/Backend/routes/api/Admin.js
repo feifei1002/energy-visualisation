@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const AdminUser = require('../../models/AdminUser');
 const User = require('../../models/User');
+const ContactUs = require('../../models/ContactUs');
 const WebAdminController = require('../../controllers/WebAdminController');
 const bodyParser = require("body-parser");
 const { expressjwt } = require("express-jwt");
@@ -130,6 +131,33 @@ router.post('/resetpassword', checkToken, async (req, res) => {
         // Handle any errors that may occur during the password reset process
         console.error(error);
         res.status(500).json({ message: 'Error resetting password.' });
+    }
+});
+
+
+
+
+// Route to delete feedback
+router.post('/deletefeedback/:id', checkToken, async (req, res) => {
+    // Extract feedback id from params
+    const feedbackReturn  =  req.params.id;
+
+    try {
+        // Find the feedback in the database by id
+        const feedback = await ContactUs.findById(feedbackReturn);
+
+        // Check if the feedback exists and delete it
+        if (!feedback) {
+            return res.status(404).json({ message: 'Feedback not found.' });
+        } else {
+            await feedback.deleteOne(); 
+
+            return res.status(200).json({ message: 'Feedback deleted successfully.' });
+        }
+    } catch (error) {
+        // Handle any errors that may occur during the feedback delete process
+        console.error(error);
+        res.status(500).json({ message: 'Error deleting feedback.' });
     }
 });
 

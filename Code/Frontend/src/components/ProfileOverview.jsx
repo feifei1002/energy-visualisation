@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useState, useEffect, useContext } from 'react';
 import '../css/ProfileOverview.css';
 import { NotificationContext } from '../contexts/NotificationContext';
+import {useLocation} from "react-router-dom";
+import {access} from "@babel/core/lib/config/validation/option-assertions.js";
 
 const ProfileOverview = () => {
     const { showNotification } = useContext(NotificationContext);
@@ -15,18 +17,31 @@ const ProfileOverview = () => {
     });
     const [file, setFile] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
+    const { state } = useLocation();
+    const userID = state ? state.userID : null;
+    const token = state ? state.token : null;
+
 
     useEffect(() => {
         const fetchProfileData = async () => {
-            try {
-                const response = await axios.get('/api/profile');
-                setProfile(response.data);
-                showNotification('Profile loaded successfully.');
-            } catch (error) {
-                console.error('Error fetching profile data:', error)
-                showNotification('Could not find your profile details.');
+            if(token) {
+
+                try {
+                    const response = await axios.get(`/api/profile/${userID}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                    setProfile(response.data);
+                    showNotification('Profile loaded successfully.');
+                } catch (error) {
+                    console.error('Error fetching profile data:', error)
+                    showNotification('Could not find your profile details.');
+                }
             }
         };
+
+
 
         fetchProfileData();
     }, []);
@@ -45,8 +60,13 @@ const ProfileOverview = () => {
 
     const handleProfileSubmit = async (e) => {
         e.preventDefault();
+        if (token) {
         try {
-            const response = await axios.put('/api/profile', profile);
+            const response = await axios.put(`/api/profile/${userID}`, profile, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             setProfile(response.data);
             setIsEditing(false);
             showNotification('Success! You updated your profile details.');
@@ -54,6 +74,7 @@ const ProfileOverview = () => {
             console.error('Error updating profile:', error);
             showNotification('Failure! Your profile details were not updated.');
         }
+    }
     };
 
     const handleCSVSubmit = async (e) => {
