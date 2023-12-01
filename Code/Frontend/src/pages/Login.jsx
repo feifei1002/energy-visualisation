@@ -5,6 +5,7 @@ import '../css/Login.css'
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Header from "../Header.jsx";
+import { WebAdminLogin } from "../loginFunctions/WebAdminLogin";
 import {useAuth0} from "@auth0/auth0-react";
 
 function Login() {
@@ -26,7 +27,7 @@ function Login() {
         event.preventDefault();
         console.log(event);
 
-        // backend section
+        //backend section
         try {
             const response = await axios.post('/api/login', inputs);
             localStorage.setItem('accessToken', response.data.token);
@@ -47,16 +48,7 @@ function Login() {
                 navigate('/profiledashboard', { state: { token, userID: user._id } });
 
             } else {
-                // The response wasn't a JSON object
-
-                    // Try login as a web admin using the WebAdminLogin logic
-                    const webAdminStatus = await WebAdminLogin(setStatus, navigate, webAdminResponse, token, user);
-
-                    // Continue login logic if WebAdminLogin failed
-                    if (webAdminStatus === 'error') {
-                        console.log("Attempt login again");
-                        setStatus({ type: 'error' });
-                    }
+                   //Else block
                 }
             } catch (e) {
                 // Handle errors related to getting the response header
@@ -68,7 +60,32 @@ function Login() {
             setStatus({ type: 'error' });
             console.error("Error with posting login details");
         }
+
+        //Webadmin login
+        try{
+               // Attempt to post user data to the web admin login endpoint
+               const webAdminResponse = await axios.post('/api/loginwebadmin', inputs);
+
+               localStorage.setItem('accessToken', webAdminResponse.data.token);
+
+               // Extract the username and token from the web admin response if successful
+               const { user, token } = webAdminResponse.data;
+
+               // Try login as a web admin using the WebAdminLogin logic
+               const webAdminStatus = await WebAdminLogin(setStatus, navigate, webAdminResponse, token, user);
+
+               // Continue login logic if WebAdminLogin failed
+               if (webAdminStatus === 'error') {
+                   console.log("Attempt login again");
+                   setStatus({ type: 'error' });
+               }
+        } catch(e){
+             // Handle other errors during the authentication process
+             setStatus({ type: 'error' });
+             console.error("Error with posting login details");
+        }
     }
+
     // end of code
 
     // from https://stackoverflow.com/questions/50644976/react-button-onclick-redirect-page 06/11

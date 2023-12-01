@@ -6,6 +6,7 @@ import Header from "../Header.jsx";
 import '../css/WebAdminDashboard.css';
 import WebAdminUsersTable from '../components/tables/WebAdminUsersTable';
 import WebAdminFeedbackTable from '../components/tables/WebAdminFeedbackTable'
+import LogoutButton from '../components/LogoutButton.jsx'
 import { Table, Button  } from 'react-bootstrap';
 
 /**
@@ -33,7 +34,7 @@ export default function WebAdminDashboard() {
         {
         Header: 'Email',
         accessor: 'email',
-        },
+        }
     ];
 
     // Define table columns for feedback table
@@ -53,82 +54,82 @@ export default function WebAdminDashboard() {
         {
         Header: 'Message',
         accessor: 'message',
-        },   
+        }
     ];
 
-    useEffect(() => {
-        /**
+    /**
          * Fetch Web Admin Details
          * 
          * This function fetches web admin details from the backend based on the username, with authorization using the provided token.
          */
-        const fetchWebAdminDetails = async () => {
-            if (username && token) {
-                try {
-                    // Fetch web admin details from the backend using token to authorize
-                    const response = await axios.get(`/api/webadmin/user/${username}`, {
-                        headers: {
-                          Authorization: `Bearer ${token}`,
-                        },
-                    });
+    const fetchWebAdminDetails = async () => {
+        if (username && token) {
+            try {
+                // Fetch web admin details from the backend using token to authorize
+                const response = await axios.get(`/api/webadmin/user/${username}`, {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                });
 
-                    // Set the webAdminDetails state with the fetched data
-                    setWebAdminDetails(response.data);
-                } catch (error) {
-                    // Handle errors related to fetching web admin details
-                    console.error('Error fetching web admin details:', error);
-                }
+                // Set the webAdminDetails state with the fetched data
+                setWebAdminDetails(response.data);
+            } catch (error) {
+                // Handle errors related to fetching web admin details
+                console.error('Error fetching web admin details:', error);
             }
-        };
+        }
+    };
 
-           /**
-         * Fetch All Users Details
-         * 
-         * This function fetches all user details from the backend, with authorization using the provided token.
-         */
-        const fetchAllUserDetails =  async () => {
+       /**
+     * Fetch All Users Details
+     * 
+     * This function fetches all user details from the backend, with authorization using the provided token.
+     */
+    const fetchAllUserDetails =  async () => {
+        if (username && token) {
+            try {
+                // Fetch all user details from the backend using token to authorize
+                const response = await axios.get(`/api/getallusers`, {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                  });
+             
+                // Set the allUserDetails state with the fetched data
+                setAllUserDetails(response.data);
+            } catch (error) {
+                // Handle errors related to fetching all user details
+                console.error('Error fetching all user details:', error);
+            }
+        }
+    };
+
+    /**
+     * Fetch All Feedback 
+     * 
+     * This function fetches all contact us feedback from the backend, with authorization using the provided token.
+     */
+     const fetchAllFeedback =  async () => {
             if (username && token) {
                 try {
-                    // Fetch all user details from the backend using token to authorize
-                    const response = await axios.get(`/api/getallusers`, {
+                    // Fetch all feedback from the backend using token to authorize
+                    const response = await axios.get(`/api/getallfeedback`, {
                         headers: {
                           Authorization: `Bearer ${token}`,
                         },
                       });
                  
-                    // Set the allUserDetails state with the fetched data
-                    setAllUserDetails(response.data);
+                    // Set the all feedback state with the fetched data
+                    setAllFeedback(response.data);
                 } catch (error) {
-                    // Handle errors related to fetching all user details
-                    console.error('Error fetching all user details:', error);
+                    // Handle errors related to fetching all feedback
+                    console.error('Error fetching all feedback details:', error);
                 }
             }
-        };
+     };
 
-        /**
-         * Fetch All Feedback 
-         * 
-         * This function fetches all contact us feedback from the backend, with authorization using the provided token.
-         */
-         const fetchAllFeedback =  async () => {
-                if (username && token) {
-                    try {
-                        // Fetch all feedback from the backend using token to authorize
-                        const response = await axios.get(`/api/getallfeedback`, {
-                            headers: {
-                              Authorization: `Bearer ${token}`,
-                            },
-                          });
-                     
-                        // Set the all feedback state with the fetched data
-                        setAllFeedback(response.data);
-                    } catch (error) {
-                        // Handle errors related to fetching all feedback
-                        console.error('Error fetching all feedback details:', error);
-                    }
-                }
-         };
-
+    useEffect(() => {
         // Check authorization
         if (token) {
             // Call the fetchWebAdminDetails and fetchAllUserDetails functions when the component mounts if the user has a token
@@ -169,6 +170,9 @@ export default function WebAdminDashboard() {
                                     {webAdminDetails.fullName}
                                 </h3>
                         </div>
+                        <div className="admin-container-profile-group logoutGroup">
+                            <LogoutButton />
+                        </div>
                     </div>
                 )}
                 {allUserDetails && (
@@ -182,7 +186,7 @@ export default function WebAdminDashboard() {
                      // See the feedback from the contact us form
                      <div style={{margin: '0.5em'}}>
                      <h3>See Feedback From Contact Us</h3>
-                     <WebAdminFeedbackTable columns={columnsFeedback} data={allFeedback} authToken={token} />
+                     <WebAdminFeedbackTable columns={columnsFeedback} data={allFeedback} authToken={token} fetchAllFeedback={fetchAllFeedback}/>
                      </div>
                 )}
             </div>
