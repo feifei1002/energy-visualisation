@@ -6,6 +6,7 @@ import Header from "../Header.jsx";
 import '../css/WebAdminDashboard.css';
 import WebAdminUsersTable from '../components/tables/WebAdminUsersTable';
 import WebAdminFeedbackTable from '../components/tables/WebAdminFeedbackTable'
+import LogoutButton from '../components/LogoutButton.jsx'
 import { Table, Button  } from 'react-bootstrap';
 
 /**
@@ -168,6 +169,9 @@ export default function WebAdminDashboard() {
                                 <h3 className="admin-container-profile-text">
                                     {webAdminDetails.fullName}
                                 </h3>
+                        </div>
+                        <div className="admin-container-profile-group logoutGroup">
+                            <LogoutButton />
                         </div>
                     </div>
                 )}
