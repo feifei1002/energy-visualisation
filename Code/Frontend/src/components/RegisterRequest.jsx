@@ -5,7 +5,7 @@ import '../css/Registration.css';
 import axios from "axios";
 import {useLocation, useNavigate} from "react-router-dom";
 
-const RegisterRequest = () => {
+const RegisterRequest = ({fetchAllUserDetails}) => {
     const [pendingUsers, setPendingUsers] = useState([]);
     const { state } = useLocation();
     const token = state ? state.token : null;
@@ -59,6 +59,9 @@ const RegisterRequest = () => {
 
             console.log(data.message);
             toast.success('User approved successfully!');
+
+            //Refetch the user data
+            fetchAllUserDetails();
 
             // Update the local state to remove the approved user from the list
             setPendingUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));

@@ -173,7 +173,7 @@ export default function WebAdminDashboard() {
                                     {webAdminDetails.fullName}
                                 </h3>
                         </div>
-                        <RegisterRequest />
+                        <RegisterRequest fetchAllUserDetails={fetchAllUserDetails} />
                         <div className="admin-container-profile-group logoutGroup">
                             <LogoutButton />
                         </div>
