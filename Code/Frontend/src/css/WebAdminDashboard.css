@@ -28,3 +28,7 @@
     flex-wrap: wrap;
     justify-content: center;
 }
+
+.logoutGroup{
+  background-color: white;
+}
