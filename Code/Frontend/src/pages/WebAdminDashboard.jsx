@@ -8,6 +8,8 @@ import WebAdminUsersTable from '../components/tables/WebAdminUsersTable';
 import WebAdminFeedbackTable from '../components/tables/WebAdminFeedbackTable'
 import LogoutButton from '../components/LogoutButton.jsx'
 import { Table, Button  } from 'react-bootstrap';
+import RegisterRequest from "../components/RegisterRequest.jsx";
+
 
 /**
  * WebAdminDashboard Component
@@ -24,6 +26,7 @@ export default function WebAdminDashboard() {
     const [allUserDetails, setAllUserDetails] = useState(null);
     const [allFeedback, setAllFeedback] = useState(null);
     const navigate = useNavigate();
+
 
     // Define table columns for user table
     const columnsUsers = [
@@ -170,6 +173,7 @@ export default function WebAdminDashboard() {
                                     {webAdminDetails.fullName}
                                 </h3>
                         </div>
+                        <RegisterRequest />
                         <div className="admin-container-profile-group logoutGroup">
                             <LogoutButton />
                         </div>

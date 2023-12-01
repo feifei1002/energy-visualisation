@@ -44,9 +44,8 @@ function Login() {
                     // The response was a JSON object (with an access token)
                     setStatus({ type: 'success' });
 
-                // data has access token
-                navigate('/profiledashboard', { state: { token, userID: user._id } });
-
+                    // data has access token
+                    navigate('/profiledashboard', { state: { token, userID: user._id } });
             } else {
                    //Else block
                 }
@@ -84,6 +83,7 @@ function Login() {
              setStatus({ type: 'error' });
              console.error("Error with posting login details");
         }
+
     }
 
     // end of code
@@ -117,13 +117,13 @@ function Login() {
                         </div>
                         <div className="inputRow">
                             <input type="submit" value="Login" />
-                             {/* https://stackoverflow.com/questions/2825856/html-button-to-not-submit-form  on 04/11*/}
+                            {/* https://stackoverflow.com/questions/2825856/html-button-to-not-submit-form  on 04/11*/}
                             <button type="button" onClick={routeChange}>Register</button>
                             {/* Display unique error messages from error handling */}
                             {status?.type === 'success' && <p>Successful Login!</p>}
                             {status?.type === 'error' && <p>Incorrect username or password, try again!</p>}
                             <div className="ForgotPasswordContainer">
-                             <h4>Forgot password? contact webadmin@climatedata.com</h4>
+                                <h4>Forgot password? contact webadmin@climatedata.com</h4>
                             </div>
                         </div>
                     </form>
