@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Header from "../Header.jsx";
 import VisualisationsDropdownMenu from "../components/VisualisationsDropdownMenu.jsx";
 import LoadingGif from "../assets/LoadingGif.gif";
@@ -8,14 +8,19 @@ import GasConsumedAndElectricityDemand from "../components/graphs/GasConsumedAnd
 export default function GasBoilersPage() {
     // set variables for heat data
     const [heatData, setHeatData] = useState(null);
-    const [heatDemandData, setHeatDemandData] = useState(null);
 
+    // useRef hook to persist the loading state without triggering re-renders.
+    const loadingRef = useRef(false);
 
-    // fetch data from the half-hourly profiles csv
+    // useEffect hook to fetch data from the half-hourly profiles csv
     useEffect(() => {
+        // condition to prevent data from being loaded more than once
+        if (loadingRef.current) return;
+        loadingRef.current = true;
+
         const fetchHeatData = async () => {
             // error handling for fetching csv data
-            console.log("fetching data");
+            console.log("fetching half-hourly heat data");
             try {
                 // fetch from the backend
                 const fetchDataResonse = await fetch('http://localhost:8082/data/halfhourlyheatingprofile', { cache: "force-cache" });
@@ -63,9 +68,12 @@ export default function GasBoilersPage() {
                 <VisualisationsDropdownMenu></VisualisationsDropdownMenu><br/><br/>
 
                 {/* title for graph */}
-                <h3>Half-Hourly Temperature, Electricity Demand for Heat Pumps, and Gas Demand for Boilers</h3>
+                <h3>Breakdown of Half-Hourly Temperature, Electricity Consumption for Heat Pumps, and Gas Consumption for Gas Boilers</h3>
                 {/* heat produced graphs here*/}
-                <GasConsumedAndElectricityDemand data={heatData}/>
+                {/* minimum width for graph set so it can load on a mobile device correctly */}
+                <div style={{ flex: 1, padding: '0', minWidth: '320px' }}>
+                    <GasConsumedAndElectricityDemand data={heatData}/>
+                </div>
             </>
         )
     }

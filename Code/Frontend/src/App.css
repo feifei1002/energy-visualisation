@@ -252,6 +252,6 @@
 
 .wrapper {
   position: relative;
-  height: 600px;
+  /*height: 600px;*/
   margin: auto;
 }

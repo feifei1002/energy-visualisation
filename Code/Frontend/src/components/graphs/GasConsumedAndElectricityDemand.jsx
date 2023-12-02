@@ -102,14 +102,33 @@ export default function GasConsumedAndElectricityDemand({data, demandData}) {
     // output to page
     return(
         <>
-            {/* wrapper class to overlay both graphs on top of each other */}
-            <div className="wrapper">
+            {/* wrapper class to overlay both graphs on top of each other, due to nivo not allowing biaxial y-axis */}
+            <div className="wrapper"
+                 style={{
+                     height: "600px",
+                     margin: "auto",
+                     position: "relative"
+            }}>
                 {/* absolute used to overlay graphs */}
-                <div style={{ width: '95vw', height: "600px", position: "absolute"}}>
+                <div style={{
+                    width: "90%",
+                    height: "90%",
+                    position: "absolute",
+                    margin: "auto",
+                    top: 0,
+                    left: 0,
+                    bottom: 0,
+                    right: 0
+                }}>
+                    {/* temperature line cannot be overlayed on top of other data because it would mean you cannot hover
+                    over values without having to output the same very large amount of data twice, which would slow
+                    down the website even more */}
+                    {/* as two graphs are outputted directly on top of each other, some axis are set to null on each
+                    graph, which means that nivo thinks these are errors and outputs warnings to the console */}
                     {/* line graph outputted, for just the temperature */}
                     <ResponsiveLine
                         data={formattedTemp}
-                        margin={{ top: 120, right: 100, bottom: 20, left: 100 }}
+                        margin={{ top: 60, right: 100, bottom: 40, left: 100 }}
                         yScale={{
                             type: 'linear',
                             min: "auto",
@@ -136,7 +155,7 @@ export default function GasConsumedAndElectricityDemand({data, demandData}) {
                                 direction: 'column',
                                 justify: false,
                                 translateX: 0,
-                                translateY: -90,
+                                translateY: -60,
                                 itemsSpacing: 0,
                                 itemDirection: 'left-to-right',
                                 itemWidth: 200,
@@ -148,7 +167,16 @@ export default function GasConsumedAndElectricityDemand({data, demandData}) {
                             }]}
                     /> </div>
 
-                <div style={{ width: '95vw', height: "600px", position: "absolute"}}>
+                <div style={{
+                    width: '90%',
+                    height: "90%",
+                    position: "absolute",
+                    margin: "auto",
+                    top: 0,
+                    left: 0,
+                    bottom: 0,
+                    right: 0
+                }}>
                     {/* second graph with gas and electricity consumption data */}
                     <ResponsiveLine
                         data={filteredData}
@@ -246,7 +274,7 @@ export default function GasConsumedAndElectricityDemand({data, demandData}) {
 
             <div>
                 {/* user can type in a value to times by the graph data */}
-                <label>Input data to times by y-axis</label>
+                <label>Input value to times by y-axis (GWh): </label>
                 <input type="number" name="newValue" value={newVal} onChange={handleChange} />
                 {/*<button type="button" onClick={handleChange}>Register</button>*/}
             </div>
