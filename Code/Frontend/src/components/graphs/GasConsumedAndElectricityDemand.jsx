@@ -275,7 +275,8 @@ export default function GasConsumedAndElectricityDemand({data, demandData}) {
             <div>
                 {/* user can type in a value to times by the graph data */}
                 <label>Input value to times by y-axis (GWh): </label>
-                <input type="number" name="newValue" value={newVal} onChange={handleChange} />
+                {/* validation so the user cannot input a value below 1, so the graph will always have data that is displayed */}
+                <input data-testid="userInput" type="number" min="1" name="newValue" value={newVal} onChange={handleChange} />
                 {/*<button type="button" onClick={handleChange}>Register</button>*/}
             </div>
         </>

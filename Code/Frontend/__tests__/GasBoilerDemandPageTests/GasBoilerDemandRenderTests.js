@@ -7,19 +7,16 @@ import '@testing-library/jest-dom';
 const testData = [
     {
         "id": "electricity consumption for air-source heat pumps",
-        "color": "hsl(219,95%,33%)",
         "data": [
             {"x": "2013-01-01T00:00:00" , "y": 0.0000894006878634641*100000},
         ]},
     {
         "id": "electricity consumption for ground source heat pumps",
-        "color": "hsl(0,90%,34%)",
         "data": [
             {"x": "2013-01-01T00:00:00", "y": 7.3},
         ]},
     {
         "id": "gas consumption of gas boilers",
-        "color": "hsl(276,91%,38%)",
         "data": [
             {"x": "2013-01-01T00:00:00" , "y": 0.0000894006878634641*100000},
         ]},
@@ -47,4 +44,15 @@ describe('tests to check the page and graph renders correctly', () => {
         const checkboxThree = screen.getByText('Gas Consumption of Gas Boilers');
         expect(checkboxThree).toBeInTheDocument();
     });
+
+    it('inputting a number to change the half-hourly data', () => {
+
+        // render graph page
+        render(<GasConsumedAndElectricityDemand data={testData} />);
+
+        // gets the user input box
+        const userInput = screen.getByTestId('userInput');
+        // tests that the input box exists on the page
+        expect(userInput).toBeInTheDocument();
+    })
 });

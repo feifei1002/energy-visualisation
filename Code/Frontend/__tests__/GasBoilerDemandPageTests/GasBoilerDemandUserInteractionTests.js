@@ -1,4 +1,4 @@
-import {fireEvent, render, screen} from "@testing-library/react";
+import {fireEvent, getByLabelText, getByText, render, screen} from "@testing-library/react";
 import GasConsumedAndElectricityDemand from "../../src/components/graphs/GasConsumedAndElectricityDemand.jsx";
 import React from "react";
 import '@testing-library/jest-dom';
@@ -47,10 +47,9 @@ describe('tests for rendering the checkboxes for the graph', () => {
     it('when checkbox state changes the graph should update accordingly', () => {
 
         // renders page
-        const { getByText } = render(<GasConsumedAndElectricityDemand data={testData}></GasConsumedAndElectricityDemand>);
-
+        render(<GasConsumedAndElectricityDemand data={testData}></GasConsumedAndElectricityDemand>);
         // the checkbox should be checked vwhen the page is loaded
-        const gasConsumptionCheckbox = getByText('Gas Consumption of Gas Boilers').closest('label').querySelector('input');
+        const gasConsumptionCheckbox = screen.getByText('Gas Consumption of Gas Boilers').closest('label').querySelector('input');
         expect(gasConsumptionCheckbox).toBeChecked();
 
         // clicks the checkbox to change its state
@@ -62,10 +61,27 @@ describe('tests for rendering the checkboxes for the graph', () => {
 
     // checks three checkboxes are present on the page
     it('checks the correct number of checkboxes are rendered', () => {
+
+        // renders graph page
         render(<GasConsumedAndElectricityDemand data={testData}></GasConsumedAndElectricityDemand>);
 
         // checks if 3 checkboxes are rendered
         const checkboxes = screen.getAllByRole('checkbox');
         expect(checkboxes).toHaveLength(3);
     });
+
+    // checks the user input box can be changed
+    it('increasing the user input value by one', () => {
+
+        // render the graph page with test data
+        render(<GasConsumedAndElectricityDemand data={testData}></GasConsumedAndElectricityDemand>);
+
+        // gets the input box
+        const userInputBox = screen.getByTestId('userInput')
+        // changes the value of the input box from 1 to 2
+        fireEvent.change(userInputBox, { target: { newValue: '2' } });
+
+        // test that the input box has been changed
+        expect(userInputBox.newValue).toBe('2');
+    })
 });
