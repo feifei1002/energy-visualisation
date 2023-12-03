@@ -1,11 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { ResponsivePie } from '@nivo/pie';
+import  graphToPdf  from '../../helperFunctions/graphToPdf';
+import { toast } from 'react-toastify';
 
 export default function BreakDownOfHeatDemandRurality({ heatData, localAuthority }) {
   // State variables for managing loading, errors, and the rurality data
   const [loading, setLoading] = useState(false); // Manages the loading state
   const [error, setError] = useState(null); // Stores potential error messages
   const [ruralityData, setRuralityData] = useState([]); // Stores processed rurality data
+
+  const handleGeneratePDF = () => {
+    try{
+      graphToPdf('breakDownOfHeatDemandRurality', 
+      `Breakdown of heat demand by rurality for ${localAuthority.toString()} by percent - 2018`);
+      toast.success('Graph converted to pdf and downloaded');
+    } catch(e){
+      toast.error('Error converting graph to pdf');
+    }
+  };
 
   //Get color for the row in the corresponding table
   const getColor = (index) => {
@@ -76,7 +88,8 @@ export default function BreakDownOfHeatDemandRurality({ heatData, localAuthority
         ) : error ? ( // Display an error message if there's an error
           <p>Error: {error.message}</p>
         ) : ruralityData.length ? ( // Display the pie chart if data is available
-          <div>
+          <>
+          <div id="breakDownOfHeatDemandRurality">
             <div>
               <div style={{ width: '100vw', height: 400 }}>
                 <ResponsivePie
@@ -118,6 +131,13 @@ export default function BreakDownOfHeatDemandRurality({ heatData, localAuthority
               </table>
             </div>
           </div>
+          <div>
+           {/* Button to generate PDF */}
+           <button onClick={handleGeneratePDF} style={{margin: '1vh', backgroundColor: 'rgba(20, 72, 94, 0.99)', color: 'white'}}>
+             Generate PDF
+            </button>
+         </div>
+         </>
         ) : ( // Display a message when no data is found for the selected authority
           <p>No data found for the selected Local Authority.</p>
         )}

@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
+
 import { Link } from "react-router-dom";
 import './css/Header.css';
+import React from 'react';
 
 function HeaderLink({ to, text }) {
     return (

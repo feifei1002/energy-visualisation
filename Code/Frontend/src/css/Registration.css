@@ -1,0 +1,116 @@
+/*/* Registration.css */
+
+.form-group-register {
+    display: grid;
+    grid-template-columns: 1fr;
+    line-height: 60px;
+    width: 700px;
+}
+
+.register-form h2 {
+    text-align: center;
+    color: #000000;
+    margin-bottom: 20px;
+}
+
+.password-toggle {
+    cursor: pointer;
+    color: #15495f;
+}
+
+.form-group-register label {
+    display: inline-block;
+    text-align: center;
+    background-color: #15495f;
+    border: solid #15495f;
+    border-radius: 0;
+    color: white;
+    padding: 10px;
+    margin-top: 0;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 83px;
+    vertical-align: top;
+}
+
+.form-group-register input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #15495f;
+    border-radius: 0;
+    box-sizing: border-box;
+    margin-top: 0px;
+    margin-bottom: 5px;
+    vertical-align: top;
+}
+
+.btn.register-btn {
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #15495f;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    color: white;
+    box-sizing: border-box;
+}
+
+.btn.register-btn:hover {
+    background-color: #0f3a4d;
+}
+
+/* Media Query for larger screens */
+@media screen and (min-width: 600px) {
+    .form-group-register {
+        grid-template-columns: 3fr 7fr; /* 30% for label, 70% for input */
+    }
+}
+
+
+.registration-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 350px;
+    z-index: 1000;
+    overflow-y: auto;
+    transition: transform 0.3s ease-in-out;
+}
+
+.registration-container.hidden {
+    transform: translateX(100%);
+}
+
+.registration-container p.title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.registration-item {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.registration-item p {
+    margin: 0;
+}
+
+.registration-item button {
+    margin-right: 10px;
+    background-color: rgba(20, 72, 94, 0.99);
+    color: #ffffff;
+}
+
+.Register-Request-Button button {
+    margin-right: 10px;
+    border: 3px solid rgba(20, 72, 94, 0.99);
+}

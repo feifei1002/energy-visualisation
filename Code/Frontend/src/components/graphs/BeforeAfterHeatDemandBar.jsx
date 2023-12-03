@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ResponsiveBar } from "@nivo/bar";
+import  graphToPdf  from '../../helperFunctions/graphToPdf';
+import { toast } from 'react-toastify';
 
 export default function BeforeAfterHeatDemandBar({data}) {
   // State variables for managing data and user interface
@@ -9,6 +11,16 @@ export default function BeforeAfterHeatDemandBar({data}) {
   const [selectedLocalAuthority, setSelectedLocalAuthority] = useState(''); // Selected Local Authority from drop-down
   const [localAuthorities, setLocalAuthorities] = useState([]); // Holds calculated data or empty array
   const [error, setError] = useState(null);
+
+  const handleGeneratePDF = () => {
+    try{
+      graphToPdf('beforeAfterHeatDemandBar', 
+      `Heat efficiency before and after energy efficiency measures for ${selectedLocalAuthority.toString()} in GWh - 2019`);
+      toast.success('Graph converted to pdf and downloaded');
+    } catch(e){
+      toast.error('Error converting graph to pdf');
+    }
+  };
 
   //Define the bar chart theme 
   const [chartTheme, setChartTheme] = useState({
@@ -150,7 +162,7 @@ export default function BeforeAfterHeatDemandBar({data}) {
         <div>
           <div>
             {/* Nivo ResponsiveBar component for displaying data visually */}
-            <div style={{width: '100vw', height: 400 }}>
+            <div style={{width: '100vw', height: 400 }} id='beforeAfterHeatDemandBar'>
               <ResponsiveBar
               data={localAuthorities}
               keys={[
@@ -174,6 +186,12 @@ export default function BeforeAfterHeatDemandBar({data}) {
               theme={chartTheme}
               // ... other props
             />
+            </div>
+            <div>
+                 {/* Button to generate PDF */}
+                 <button onClick={handleGeneratePDF} style={{margin: '1vh', backgroundColor: 'rgba(20, 72, 94, 0.99)', color: 'white'}}>
+                   Generate PDF
+                  </button>
             </div>
           </div>
         </div>

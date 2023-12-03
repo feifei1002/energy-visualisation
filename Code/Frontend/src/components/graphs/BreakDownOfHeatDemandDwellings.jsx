@@ -1,11 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { ResponsivePie } from '@nivo/pie';
+import  graphToPdf  from '../../helperFunctions/graphToPdf';
+import { toast } from 'react-toastify';
 
 export default function BreakDownOfHeatDemandDwellings ({ heatData, localAuthority }) {
   // States for managing loading, error, and dwelling data
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [dwellingData, setDwellingData] = useState([]);
+
+  const handleGeneratePDF = () => {
+    try{
+      graphToPdf('breakDownOfHeatDemandDwellings', 
+      `Breakdown of heat demand by dwellings for ${localAuthority.toString()} by percent - 2018`);
+      toast.success('Graph converted to pdf and downloaded');
+    } catch(e){
+      toast.error('Error converting graph to pdf');
+    }
+  };
 
   //Get color for the row in the corresponding table
   const getColor = (index) => {
@@ -74,8 +86,9 @@ export default function BreakDownOfHeatDemandDwellings ({ heatData, localAuthori
         ) : error ? (
           <p>Error: {error.message}</p>
         ) : dwellingData.length ? (
+          <>
           <div>
-            <div>
+            <div id="breakDownOfHeatDemandDwellings">
               <div style={{ width: '100vw', height: 400 }}>
                 <ResponsivePie
                   data={dwellingData}
@@ -116,6 +129,13 @@ export default function BreakDownOfHeatDemandDwellings ({ heatData, localAuthori
               </div>
             </div>
           </div>
+          <div>
+            {/* Button to generate PDF */}
+            <button onClick={handleGeneratePDF} style={{margin: '1vh', backgroundColor: 'rgba(20, 72, 94, 0.99)', color: 'white'}}>
+              Generate PDF
+              </button>
+          </div>
+          </>
         ) : (
           <p>No data found for the selected Local Authority.</p>
         )}
