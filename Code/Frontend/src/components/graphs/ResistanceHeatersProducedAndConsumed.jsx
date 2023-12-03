@@ -146,9 +146,8 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
                     enableGridX={false}
                     // colors={(d) => d.color}
                     colors={{ scheme: 'set2' }}
-                    pointSize={3}
+                    pointSize={0}
                     pointColor={{ theme: 'background' }}
-                    pointBorderWidth={1}
                     pointBorderColor={{ from: 'serieColor' }}
                     enableSlices={'x'}
                     useMesh={true}
