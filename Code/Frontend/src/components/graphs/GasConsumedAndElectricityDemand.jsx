@@ -1,14 +1,18 @@
 import {ResponsiveLineCanvas} from "@nivo/line";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import '../../App.css';
 
 // outputs electricity and gas demand data to a graph
-export default function GasConsumedAndElectricityDemand({data, demandData}) {
+export default function GasConsumedAndElectricityDemand({data}) {
 
     // set each line on the graph as separate, so they can be selected
     const [showASHPElecLine, setShowASHPElecLine] = useState(true);
     const [showGSHPElecLine, setShowGSHPElecLine] = useState(true);
     const [showGasConsLine, setShowGasConsLine] = useState(true);
+
+    const [loading, setLoading] = useState(false); // Manages loading state
+    const [graph1Data, setGraph1Data] = useState([]);
+    const [graph2Data, setGraph2Data] = useState([]);
 
     // user inputs value to times by y-axis
     // initial value is 1 so data of the graph is not set to 0
@@ -19,78 +23,90 @@ export default function GasConsumedAndElectricityDemand({data, demandData}) {
         console.log(e.target.value)
     }
 
-    // put data into a new list
-    const formatData = (data || []).map(({index, "Normalised_ASHP_elec": ASHeatPumpsElec, "Normalised_GSHP_elec": GSHeatPumpsElec, "Normalised_Gas_boiler_gas": boilerGasConsumption, "UK_daily_average_OAT_[degrees_C]": temperature}, dataIndex) => ({
-        index: dataIndex,
-        time: new Date(index),
-        // electricity produced is split into air source heat pumps, and ground source heat pumps
-        // so I have both of them outputted separately
-        ASHeatPumpsElec,
-        GSHeatPumpsElec,
-        boilerGasConsumption,
-        temperature
-    }));
+    useEffect(() => {
+        if (!data) return;
 
-    // formats data from the list above, so it can be manipulated into a graph
-    const formattedDataList = [
+        setLoading(true);
 
-        {
-            // for air source heat pumps
-            id: 'Electricity Consumption for Air Source Heat Pumps',
-            data: formatData.map((item, index) => {
-               // Select every second data point to reduce lag
-                if (index % 2 === 0) {
-                    return {
-                        x: item.time,
-                        // example data used to find '579280', which represents 'annual heat supplied by the gas boilers'
-                        y: item.ASHeatPumpsElec * 579280 * newVal
-                    };
-                }
-                return null; // Skip alternate data points
-            }).filter(Boolean),
-        },
-        {
-            // for ground source heat pumps
-            id: 'Electricity Consumption for Ground Source Heat Pumps',
-            data: formatData.map((item, index) => {
-                // Select every second data point to reduce lag
-                if (index % 2 === 0) {
-                    return {
-                        x: item.time,
-                        // example data used to find '579280', which represents 'annual heat supplied by the gas boilers'
-                        y: item.ASHeatPumpsElec * 579280 * newVal
-                    };
-                }
-                return null; // Skip alternate data points
-            }).filter(Boolean),
-        },
-        {
-            // gas consumption
-            id: 'Gas Consumption of Gas Boilers',
-            data: formatData.map((item, index) => {
-                // Select every second data point to reduce lag
-                if (index % 2 === 0) {
-                    return {
-                        x: item.time,
-                        // example data used to find '579280', which represents 'annual heat supplied by the gas boilers'
-                        y: item.ASHeatPumpsElec * 579280 * newVal
-                    };
-                }
-                return null; // Skip alternate data points
-            }).filter(Boolean),
-        }
-    ];
+        // put data into a new list
+        const formatData = (data || []).map(({index, "Normalised_ASHP_elec": ASHeatPumpsElec, "Normalised_GSHP_elec": GSHeatPumpsElec, "Normalised_Gas_boiler_gas": boilerGasConsumption, "UK_daily_average_OAT_[degrees_C]": temperature}, dataIndex) => ({
+            index: dataIndex,
+            time: new Date(index),
+            // electricity produced is split into air source heat pumps, and ground source heat pumps
+            // so I have both of them outputted separately
+            ASHeatPumpsElec,
+            GSHeatPumpsElec,
+            boilerGasConsumption,
+            temperature
+        }));
 
-    // formats temperature data, so it can be manipulated into a graph
-    const formattedTemp = [
-        {
-            id: 'Outside Temperature',
-            data: formatData.map((item) => ({
-                x: item.time,
-                y: item.temperature,
-            })),
-        }
-    ];
+        // formats data from the list above, so it can be manipulated into a graph
+        const formattedDataList = [
+
+            {
+                // for air source heat pumps
+                id: 'Electricity Consumption for Air Source Heat Pumps',
+                data: formatData.map((item, index) => {
+                    // Select every second data point to reduce lag
+                    if (index % 2 === 0) {
+                        return {
+                            x: item.time,
+                            // example data used to find '579280', which represents 'annual heat supplied by the gas boilers'
+                            y: item.ASHeatPumpsElec * 579280 * newVal
+                        };
+                    }
+                    return null; // Skip alternate data points
+                }).filter(Boolean),
+            },
+            {
+                // for ground source heat pumps
+                id: 'Electricity Consumption for Ground Source Heat Pumps',
+                data: formatData.map((item, index) => {
+                    // Select every second data point to reduce lag
+                    if (index % 2 === 0) {
+                        return {
+                            x: item.time,
+                            // example data used to find '579280', which represents 'annual heat supplied by the gas boilers'
+                            y: item.ASHeatPumpsElec * 579280 * newVal
+                        };
+                    }
+                    return null; // Skip alternate data points
+                }).filter(Boolean),
+            },
+            {
+                // gas consumption
+                id: 'Gas Consumption of Gas Boilers',
+                data: formatData.map((item, index) => {
+                    // Select every second data point to reduce lag
+                    if (index % 2 === 0) {
+                        return {
+                            x: item.time,
+                            // example data used to find '579280', which represents 'annual heat supplied by the gas boilers'
+                            y: item.ASHeatPumpsElec * 579280 * newVal
+                        };
+                    }
+                    return null; // Skip alternate data points
+                }).filter(Boolean),
+            }
+        ];
+
+        // formats temperature data, so it can be manipulated into a graph
+        const formattedTemp = [
+            {
+                id: 'Outside Temperature',
+                data: formatData.map((item) => ({
+                    x: item.time,
+                    y: item.temperature,
+                })),
+            }
+        ];
+
+        setGraph2Data(formattedDataList);
+        setGraph1Data(formattedTemp);
+        setLoading(false);
+    }, [data]);
+
+
 
     // handle if checkboxes are checked or not
     const handleShowASHPElecLine = () => {
@@ -104,7 +120,7 @@ export default function GasConsumedAndElectricityDemand({data, demandData}) {
     }
 
     // filter data for when checkboxes have an altered state
-    const filteredData = formattedDataList.filter((dataToFilter) => {
+    const filteredData = graph2Data.filter((dataToFilter) => {
         // for air source heat pumps
         if(dataToFilter.id === "Electricity Consumption for Air Source Heat Pumps") {
             return showASHPElecLine;
@@ -121,155 +137,160 @@ export default function GasConsumedAndElectricityDemand({data, demandData}) {
 
     // output to page
     return(
-        <>
-            {/* wrapper class to overlay both graphs on top of each other, due to nivo not allowing biaxial y-axis */}
-            <div className="wrapper"
-                 style={{
-                     height: "600px",
-                     margin: "auto",
-                     position: "relative"
-            }}>
-                {/* absolute used to overlay graphs */}
-                <div style={{
-                    width: "90%",
-                    height: "90%",
-                    position: "absolute",
-                    margin: "auto",
-                    top: 0,
-                    left: 0,
-                    bottom: 0,
-                    right: 0
-                }}>
-                    {/* temperature line cannot be overlayed on top of other data because it would mean you cannot hover
-                    over values without having to output the same very large amount of data twice, which would slow
-                    down the website even more */}
-                    {/* as two graphs are outputted directly on top of each other, some axis are set to null on each
-                    graph, which means that nivo thinks these are errors and outputs warnings to the console */}
-                    {/* line graph outputted, for just the temperature */}
-                    <ResponsiveLineCanvas
-                        data={formattedTemp}
-                        margin={{ top: 60, right: 100, bottom: 40, left: 100 }}
-                        yScale={{
-                            type: 'linear',
-                            min: "auto",
-                            max: 'auto',
-                            stacked: true,
-                            reverse: false }}
-                        axisBottom={null}
-                        axisLeft={null}
-                        axisTop={null}
-                        axisRight={{
-                            legend: "Temperature",
-                            legendPosition:"middle",
-                            legendOffset: 50,
-                        }}
-                        enableGridX={false}
-                        enableGridY={false}
-                        colors={"grey"}
-                        pointSize={0}
-                        pointColor={{ from: 'paired' }}
-                        pointBorderColor={{ from: 'paired' }}
-                        legends={[
-                            {
-                                anchor: 'top-left',
-                                direction: 'column',
-                                justify: false,
-                                translateX: 0,
-                                translateY: -60,
-                                itemsSpacing: 0,
-                                itemDirection: 'left-to-right',
-                                itemWidth: 200,
-                                itemHeight: 12,
-                                itemOpacity: 1,
-                                symbolSize: 8,
-                                symbolShape: 'circle',
-                                symbolBorderColor: 'rgba(0, 0, 0, .5)'
-                            }]}
-                    /> </div>
+        <div>
+                {loading ? ( // Display 'Loading data...' message
+                    <h2>Loading data...</h2>
+                ) : (
+                    // actual data below once loaded
 
-                <div style={{
-                    width: '90%',
-                    height: "90%",
-                    position: "absolute",
-                    margin: "auto",
-                    top: 0,
-                    left: 0,
-                    bottom: 0,
-                    right: 0
-                }}>
-                    {/* second graph with gas and electricity consumption data */}
-                    <ResponsiveLineCanvas
-                        data={filteredData}
-                        margin={{ top: 60, right: 100, bottom: 40, left: 100 }}
-                        xScale={
-                            { type: 'time',
-                                format: '%Y-%m-%dT%H:%M:%S',
-                                precision: "minute",
-                                tickValues: "every 30 minutes",
-                                min: "auto",
-                                max: "auto"
-                            }
-                        }
-                        yScale={{
-                            type: 'linear',
-                            min: "auto",
-                            max: 'auto',
-                            stacked: true,
-                            reverse: false }}
-                        axisBottom={{
-                            format: '%b %Y',
-                            tickValues: 'every 1 month',
-                            legend:"Date",
-                            legendPosition:"middle",
-                            legendOffset: 35,
-                        }}
-                        axisLeft={{
-                            legend: "Hourly Electricity and Gas/Hydrogen Demand for Gas Boilers (GWh)",
-                            legendPosition:"middle",
-                            legendOffset: -60,
-                        }}
-                        axisTop={null}
-                        axisRight={
-                            null
-                        }
-                        enableGridX={true}
-                        enableGridY={true}
-                        colors={{ scheme: 'paired' }}
-                        pointSize={0}
-                        pointColor={{ from: 'paired' }}
-                        pointBorderColor={{ from: 'paired' }}
-                        enableSlices={'x'}
-                        useMesh={true}
-                        sliceTooltip={({ slice }) => (
-                            <div style={{background: 'white', padding: '10px', border: '1px solid #ccc'}}>
-                                <strong>Date:</strong> {slice.points[0].data.xFormatted}<br></br>
-                                {slice.points.map(point => (
-                                    <div key={point.id}>
-                                        <strong>{point.serieId}:</strong> {point.data.yFormatted}
+                    // wrapper class to overlay both graphs on top of each other, due to nivo not allowing biaxial y-axis
+                    <div className="wrapper"
+                         style={{
+                             height: "600px",
+                             margin: "auto",
+                             position: "relative"
+                    }}>
+                        {/* absolute used to overlay graphs */}
+                        <div style={{
+                            width: "90%",
+                            height: "90%",
+                            position: "absolute",
+                            margin: "auto",
+                            top: 0,
+                            left: 0,
+                            bottom: 0,
+                            right: 0
+                        }}>
+                            {/* temperature line cannot be overlayed on top of other data because it would mean you cannot hover
+                            over values without having to output the same very large amount of data twice, which would slow
+                            down the website even more */}
+                            {/* as two graphs are outputted directly on top of each other, some axis are set to null on each
+                            graph, which means that nivo thinks these are errors and outputs warnings to the console */}
+                            {/* line graph outputted, for just the temperature */}
+                            <ResponsiveLineCanvas
+                                data={graph1Data}
+                                margin={{ top: 60, right: 100, bottom: 40, left: 100 }}
+                                yScale={{
+                                    type: 'linear',
+                                    min: "auto",
+                                    max: 'auto',
+                                    stacked: true,
+                                    reverse: false }}
+                                axisBottom={null}
+                                axisLeft={null}
+                                axisTop={null}
+                                axisRight={{
+                                    legend: "Temperature",
+                                    legendPosition:"middle",
+                                    legendOffset: 50,
+                                }}
+                                enableGridX={false}
+                                enableGridY={false}
+                                colors={"grey"}
+                                pointSize={0}
+                                pointColor={{ from: 'paired' }}
+                                pointBorderColor={{ from: 'paired' }}
+                                legends={[
+                                    {
+                                        anchor: 'top-left',
+                                        direction: 'column',
+                                        justify: false,
+                                        translateX: 0,
+                                        translateY: -60,
+                                        itemsSpacing: 0,
+                                        itemDirection: 'left-to-right',
+                                        itemWidth: 200,
+                                        itemHeight: 12,
+                                        itemOpacity: 1,
+                                        symbolSize: 8,
+                                        symbolShape: 'circle',
+                                        symbolBorderColor: 'rgba(0, 0, 0, .5)'
+                                    }]}
+                            /> </div>
+
+                        <div style={{
+                            width: '90%',
+                            height: "90%",
+                            position: "absolute",
+                            margin: "auto",
+                            top: 0,
+                            left: 0,
+                            bottom: 0,
+                            right: 0
+                        }}>
+                            {/* second graph with gas and electricity consumption data */}
+                            <ResponsiveLineCanvas
+                                data={filteredData}
+                                margin={{ top: 60, right: 100, bottom: 40, left: 100 }}
+                                xScale={
+                                    { type: 'time',
+                                        format: '%Y-%m-%dT%H:%M:%S',
+                                        precision: "minute",
+                                        tickValues: "every 30 minutes",
+                                        min: "auto",
+                                        max: "auto"
+                                    }
+                                }
+                                yScale={{
+                                    type: 'linear',
+                                    min: "auto",
+                                    max: 'auto',
+                                    stacked: true,
+                                    reverse: false }}
+                                axisBottom={{
+                                    format: '%b %Y',
+                                    tickValues: 'every 1 month',
+                                    legend:"Date",
+                                    legendPosition:"middle",
+                                    legendOffset: 35,
+                                }}
+                                axisLeft={{
+                                    legend: "Hourly Electricity and Gas/Hydrogen Demand for Gas Boilers (GWh)",
+                                    legendPosition:"middle",
+                                    legendOffset: -60,
+                                }}
+                                axisTop={null}
+                                axisRight={
+                                    null
+                                }
+                                enableGridX={true}
+                                enableGridY={true}
+                                colors={{ scheme: 'paired' }}
+                                pointSize={0}
+                                pointColor={{ from: 'paired' }}
+                                pointBorderColor={{ from: 'paired' }}
+                                enableSlices={'x'}
+                                useMesh={true}
+                                sliceTooltip={({ slice }) => (
+                                    <div style={{background: 'white', padding: '10px', border: '1px solid #ccc'}}>
+                                        <strong>Date:</strong> {slice.points[0].data.xFormatted}<br></br>
+                                        {slice.points.map(point => (
+                                            <div key={point.id}>
+                                                <strong>{point.serieId}:</strong> {point.data.yFormatted}
+                                            </div>
+                                        ))}
                                     </div>
-                                ))}
-                            </div>
-                        )}
-                        legends={[
-                            {
-                                anchor: 'top-right',
-                                direction: 'column',
-                                justify: false,
-                                translateX: 0,
-                                translateY: -60,
-                                itemsSpacing: 0,
-                                itemDirection: 'left-to-right',
-                                itemWidth: 200,
-                                itemHeight: 12,
-                                itemOpacity: 1,
-                                symbolSize: 8,
-                                symbolShape: 'circle',
-                                symbolBorderColor: 'rgba(0, 0, 0, .5)'
-                            }]}
+                                )}
+                                legends={[
+                                    {
+                                        anchor: 'top-right',
+                                        direction: 'column',
+                                        justify: false,
+                                        translateX: 0,
+                                        translateY: -60,
+                                        itemsSpacing: 0,
+                                        itemDirection: 'left-to-right',
+                                        itemWidth: 200,
+                                        itemHeight: 12,
+                                        itemOpacity: 1,
+                                        symbolSize: 8,
+                                        symbolShape: 'circle',
+                                        symbolBorderColor: 'rgba(0, 0, 0, .5)'
+                                    }]}
 
-                    />
-                </div>
-            </div>
+                            />
+                        </div>
+                    {/*</>*/}
 
             <br/>
 
@@ -299,6 +320,10 @@ export default function GasConsumedAndElectricityDemand({data, demandData}) {
                 <input data-testid="userInput" type="number" min="1" name="newValue" value={newVal} onChange={handleChange} />
                 {/*<button type="button" onClick={handleChange}>Register</button>*/}
             </div>
-        </>
+
+
+            </div>
+            )}
+        </div>
     )
 }
