@@ -1,21 +1,40 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import ElectricityDemandForHeatPumps from "../../src/components/graphs/ElectricityDemandForHeatPumps.jsx";
-jest.mock("../../src/helperFunctions/downloadCSV.js", () => ({
-    __esModule: true,
-    default: jest.fn(),
-}));
 
-test.only("Check for download CSV button creation is ElectricityDemandForHeatPumps page", () => {
-    const { getByText } = render(<ElectricityDemandForHeatPumps></ElectricityDemandForHeatPumps>);
-    const downloadCSVButton = getByText("Download CSV");
-    expect(downloadCSVButton).toBeInTheDocument();
-});
+URL.createObjectURL = jest.fn();
+describe('ElectricityDemandForHeatPumps', () => {
+    it('renders the Download CSV button', () => {
+        // Arrange
+        const testData = [
+            { x: "2013-01-01T00:00:00" , y: 0.0000894006878634641*100000 },
+            { x: "2013-01-01T00:00:00", y: 7.3},
+            {x: "2013-01-01T00:00:00" , y: 0.0000894006878634641*100000},
+        ];
+        render(<ElectricityDemandForHeatPumps data={testData} />);
 
-test.only("Check handleDownloadCSV is being called when the button is clicked", () => {
-    const { getByText } = render(<ElectricityDemandForHeatPumps></ElectricityDemandForHeatPumps>);
-    const downloadCSVButton = getByText("Download CSV");
-    const handleDownloadCSVMock = jest.spyOn(ElectricityDemandForHeatPumps.prototype, "handleDownloadCSV");
-    fireEvent.click(downloadCSVButton);
-    expect(handleDownloadCSVMock).toHaveBeenCalledTimes(1);
+        // Act
+        const downloadButton = screen.getByText('Download CSV');
+
+        // Assert
+        expect(downloadButton).toBeInTheDocument();
+    });
+
+    it('calls handleDownloadCSV when the button is clicked', () => {
+        // Arrange
+        const testData = [
+            { x: "2013-01-01T00:00:00" , y: 0.0000894006878634641*100000 },
+            { x: "2013-01-01T00:00:00", y: 7.3},
+            {x: "2013-01-01T00:00:00" , y: 0.0000894006878634641*100000},
+        ];
+        const handleDownloadCSVMock = jest.fn();
+        render(<ElectricityDemandForHeatPumps data={testData} />);
+        const downloadButton = screen.getByText('Download CSV');
+
+        // Act
+        fireEvent.click(downloadButton);
+
+        // Assert
+        expect(handleDownloadCSVMock).toHaveBeenCalled(); // Make sure to update this based on your actual implementation
+    });
 });
