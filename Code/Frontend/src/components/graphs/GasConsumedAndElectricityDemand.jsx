@@ -20,7 +20,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
 
     const handleChange = (e) => {
         setNewVal(e.target.value)
-        console.log(e.target.value)
+        console.log("changed the value to " + e.target.value)
     }
 
     useEffect(() => {
@@ -104,7 +104,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
         setGraph2Data(formattedDataList);
         setGraph1Data(formattedTemp);
         setLoading(false);
-    }, [data]);
+    }, [data, newVal]);     // added newVal so this hook is run whenever newVal changes (so the graph updates)
 
 
 
@@ -138,12 +138,16 @@ export default function GasConsumedAndElectricityDemand({data}) {
     // output to page
     return(
         <div>
-                {loading ? ( // Display 'Loading data...' message
-                    <h2>Loading data...</h2>
-                ) : (
+            {/* Added 'loading data' section to be displayed while the graph data is being filtered,
+              although most of the time spent loading is when 'ResponsiveLineCanvas' is called twice below.
+              So the 'loading data' section cannot be displayed while the graph is already being called */}
+            {loading ? ( // displays 'Loading data...' message
+                <h2>Loading data...</h2>
+            ) : (
                     // actual data below once loaded
+                <div>
 
-                    // wrapper class to overlay both graphs on top of each other, due to nivo not allowing biaxial y-axis
+                     {/*wrapper class to overlay both graphs on top of each other, due to nivo not allowing biaxial y-axis*/}
                     <div className="wrapper"
                          style={{
                              height: "600px",
@@ -291,7 +295,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
                             />
                         </div>
                     {/*</>*/}
-
+                    </div>
             <br/>
 
             {/* checkboxes to enable and disable each line on the graph */}
