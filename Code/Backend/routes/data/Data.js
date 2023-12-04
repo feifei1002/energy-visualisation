@@ -7,7 +7,7 @@ const fs = require('fs').promises; // Import the file system promises API for re
 const compression = require('compression'); // Import the compression middleware for compressing response data
 
 // Define the time-to-live (TTL) for caching in seconds (one day)
-const cacheTTL = 24 * 60 * 60; 
+const cacheTTL = 24 * 60 * 60;
 
 // Import the path library to work with file system paths
 const path = require('path');
@@ -26,6 +26,7 @@ const csvPaths = {
   quantification: path.join(rootPath, 'Data', 'Quantification_of_inherent_flexibility.csv'),
   residentialHeatDemand: path.join(rootPath, 'Data', 'Residential_heat_demand_LSOA_Scotland.csv'),
   halfHourlyProfileHeating: path.join(rootPath, 'Data', 'Half-hourly_profiles_of_heating_technologies.csv'),
+  efficiencyImprovementCosts: path.join(rootPath, 'Data', 'Half-hourly_profiles_of_heating_technologies.csv'),
 };
 
 // Path to GeoJSON data for geographical shapes
@@ -50,7 +51,7 @@ async function getCachedData(filePath) {
     await fs.unlink(filePath);
   } catch (error) {
     // If the file doesn't exist, ignore the error
-    if (error.code !== 'ENOENT') { 
+    if (error.code !== 'ENOENT') {
       throw error;
     }
   }
@@ -64,7 +65,7 @@ async function getLocalData(filePath) {
     return await fs.readFile(filePath, 'utf8');
   } catch (error) {
     // If the file doesn't exist, ignore the error
-    if (error.code !== 'ENOENT') { 
+    if (error.code !== 'ENOENT') {
       throw error;
     }
   }
@@ -76,7 +77,7 @@ async function getLocalData(filePath) {
 async function parseAndCacheCSV(filePath) {
   const data = await fs.readFile(filePath, 'utf8'); // Read CSV file content
   const cacheFilePath = path.join(cacheDirPath, path.basename(filePath) + '.cache');
-  
+
   // Parse the CSV data and resolve with the parsed data or reject with an error
   const results = await new Promise((resolve, reject) => {
     Papa.parse(data, {
@@ -102,7 +103,7 @@ async function parseAndCacheCSV(filePath) {
 async function handleCSVRequest(req, res, filePath) {
   const cacheFilePath = path.join(cacheDirPath, path.basename(filePath) + '.cache');
   const jsonDataFilePath = path.join(jsonFilePathDir, path.basename(filePath) + '.json');
-  
+
   try {
     let cachedData = await getCachedData(cacheFilePath); // Attempt to get cached data
     let localData = await getLocalData(jsonDataFilePath); // Attempt to get local json data
@@ -171,5 +172,14 @@ router.get('/halfhourlyheatingprofile', (req, res) => {
   handleCSVRequest(req, res, csvPaths.halfHourlyProfileHeating); // Handle the CSV request
 });
 
+// API endpoint for energy efficiency improvement costs data
+router.get('/efficiencyimprovementcosts', (req, res) => {
+  res.set('Cache-Control', `public, max-age=${cacheTTL}`); // Set cache control headers
+  handleCSVRequest(req, res, csvPaths.efficiencyImprovementCosts); // Handle the CSV request
+});
+
 // Export the router to be used in other parts of the application
 module.exports = router;
+
+
+
