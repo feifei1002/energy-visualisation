@@ -224,7 +224,7 @@ export default function GasConsumedAndElectricityDemand({data, demandData}) {
                             legendOffset: 35,
                         }}
                         axisLeft={{
-                            legend: "Half-hourly Electricity and Gas/Hydrogen Demand for Gas Boilers (GWh)",
+                            legend: "Hourly Electricity and Gas/Hydrogen Demand for Gas Boilers (GWh)",
                             legendPosition:"middle",
                             legendOffset: -60,
                         }}

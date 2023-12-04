@@ -20,7 +20,7 @@ export default function GasBoilersPage() {
 
         const fetchHeatData = async () => {
             // error handling for fetching csv data
-            console.log("fetching half-hourly heat data");
+            console.log("fetching hourly heat data");
             try {
                 // fetch from the backend
                 const fetchDataResonse = await fetch('http://localhost:8082/data/halfhourlyheatingprofile', { cache: "force-cache" });
@@ -68,7 +68,7 @@ export default function GasBoilersPage() {
                 <VisualisationsDropdownMenu></VisualisationsDropdownMenu><br/><br/>
 
                 {/* title for graph */}
-                <h3>Breakdown of Half-Hourly Temperature, Electricity Consumption for Heat Pumps, and Gas Consumption for Gas Boilers</h3>
+                <h3>Breakdown of Hourly Temperature, Electricity Consumption for Heat Pumps, and Gas Consumption for Gas Boilers</h3>
                 {/* heat produced graphs here*/}
                 {/* minimum width for graph set so it can load on a mobile device correctly */}
                 <div style={{ flex: 1, padding: '0', minWidth: '320px' }}>
