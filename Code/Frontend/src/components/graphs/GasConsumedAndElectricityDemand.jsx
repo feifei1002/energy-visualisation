@@ -1,4 +1,4 @@
-import {ResponsiveLine} from "@nivo/line";
+import {ResponsiveLineCanvas} from "@nivo/line";
 import React, {useState} from "react";
 import '../../App.css';
 
@@ -37,27 +37,47 @@ export default function GasConsumedAndElectricityDemand({data, demandData}) {
         {
             // for air source heat pumps
             id: 'Electricity Consumption for Air Source Heat Pumps',
-            data: formatData.map((item) => ({
-                x: item.time,
-                // example data used to find '579280', which represents 'annual heat supplied by the gas boilers'
-                y: item.ASHeatPumpsElec * 579280 * newVal
-            })),
+            data: formatData.map((item, index) => {
+               // Select every second data point to reduce lag
+                if (index % 2 === 0) {
+                    return {
+                        x: item.time,
+                        // example data used to find '579280', which represents 'annual heat supplied by the gas boilers'
+                        y: item.ASHeatPumpsElec * 579280 * newVal
+                    };
+                }
+                return null; // Skip alternate data points
+            }).filter(Boolean),
         },
         {
             // for ground source heat pumps
             id: 'Electricity Consumption for Ground Source Heat Pumps',
-            data: formatData.map((item) => ({
-                x: item.time,
-                y: item.GSHeatPumpsElec * 579280 * newVal
-            })),
+            data: formatData.map((item, index) => {
+                // Select every second data point to reduce lag
+                if (index % 2 === 0) {
+                    return {
+                        x: item.time,
+                        // example data used to find '579280', which represents 'annual heat supplied by the gas boilers'
+                        y: item.ASHeatPumpsElec * 579280 * newVal
+                    };
+                }
+                return null; // Skip alternate data points
+            }).filter(Boolean),
         },
         {
             // gas consumption
             id: 'Gas Consumption of Gas Boilers',
-            data: formatData.map((item) => ({
-                x: item.time,
-                y: item.boilerGasConsumption * 579280 * newVal
-            })),
+            data: formatData.map((item, index) => {
+                // Select every second data point to reduce lag
+                if (index % 2 === 0) {
+                    return {
+                        x: item.time,
+                        // example data used to find '579280', which represents 'annual heat supplied by the gas boilers'
+                        y: item.ASHeatPumpsElec * 579280 * newVal
+                    };
+                }
+                return null; // Skip alternate data points
+            }).filter(Boolean),
         }
     ];
 
@@ -126,7 +146,7 @@ export default function GasConsumedAndElectricityDemand({data, demandData}) {
                     {/* as two graphs are outputted directly on top of each other, some axis are set to null on each
                     graph, which means that nivo thinks these are errors and outputs warnings to the console */}
                     {/* line graph outputted, for just the temperature */}
-                    <ResponsiveLine
+                    <ResponsiveLineCanvas
                         data={formattedTemp}
                         margin={{ top: 60, right: 100, bottom: 40, left: 100 }}
                         yScale={{
@@ -178,7 +198,7 @@ export default function GasConsumedAndElectricityDemand({data, demandData}) {
                     right: 0
                 }}>
                     {/* second graph with gas and electricity consumption data */}
-                    <ResponsiveLine
+                    <ResponsiveLineCanvas
                         data={filteredData}
                         margin={{ top: 60, right: 100, bottom: 40, left: 100 }}
                         xScale={
