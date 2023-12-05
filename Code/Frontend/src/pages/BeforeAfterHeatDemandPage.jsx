@@ -10,6 +10,7 @@ import TotalHeatDemandBeforeTable from "../components/tables/TotalHeatDemandBefo
 import TotalHeatDemandAfterTable from "../components/tables/TotalHeatDemandAfterTable"
 import Header from "../Header";
 import LoadingGif from "../assets/LoadingGif.gif";
+import downloadCSV from "../helperFunctions/downloadCSV.js";
 
 // The main component function that will be exported and used to display the page.
 export default function BeforeAfterHeatDemandPage() {
@@ -21,6 +22,11 @@ export default function BeforeAfterHeatDemandPage() {
   const [heatData, setHeatData] = useState(null);
   const [geoJsonData, setGeoJsonData] = useState(null);
   const [error, setError] = useState(null);
+
+   //handle the download CSV file when the download button is clicked
+   const handleDownloadCSV = () => {
+    downloadCSV(heatData, "Annual_heat_demand_LSOA_EnglandWales.csv");
+  }
 
   // useEffect hook to remove padding and margin from the body when the component mounts.
   useEffect(() => {
@@ -124,6 +130,9 @@ export default function BeforeAfterHeatDemandPage() {
       <>
         <Header />
         <VisualisationsDropdownMenu></VisualisationsDropdownMenu>
+        <div>
+          <button style={{ background: "#206887", borderColor: "#206887", color: "white", padding: "10px", marginTop: '1vh' }} onClick={handleDownloadCSV}>Download CSV</button>
+        </div>
         <div style={{
           display: 'flex', 
           flexDirection: 'row', 
