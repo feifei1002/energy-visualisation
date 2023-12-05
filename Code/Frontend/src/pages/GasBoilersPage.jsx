@@ -68,7 +68,9 @@ export default function GasBoilersPage() {
                 <VisualisationsDropdownMenu></VisualisationsDropdownMenu><br/><br/>
 
                 {/* title for graph */}
-                <h3>Breakdown of Hourly Temperature, Electricity Consumption for Heat Pumps, and Gas Consumption for Gas Boilers</h3>
+                <div style={{ marginLeft: '30px', marginRight: '30px' }}>
+                    <h3>Breakdown of Hourly Temperature, Electricity Consumption for Heat Pumps, and Gas Consumption for Gas Boilers</h3>
+                </div>
                 {/* heat produced graphs here*/}
                 {/* minimum width for graph set so it can load on a mobile device correctly */}
                 <div style={{ flex: 1, padding: '0', minWidth: '320px' }}>
