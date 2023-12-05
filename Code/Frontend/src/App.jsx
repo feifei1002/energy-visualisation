@@ -11,6 +11,7 @@ import ResistanceHeatersPage from "./pages/ResistanceHeatersPage.jsx";
 import BreakDownOfHeatDemandPage from "./pages/BreakDownOfHeatDemandPage.jsx";
 import RegistrationPage from "./pages/RegistrationPage";
 import WebAdminDashboard from "./pages/WebAdminDashboard"
+import WikiLandingPage from "./pages/Wiki/WikiLandingPage"
 import { NotificationProvider } from './contexts/NotificationContext';
 import SummaryOfHeatDemandPage from "./pages/SummaryHeatDemandPage.jsx";
 
@@ -29,6 +30,7 @@ export default function App() {
                 <Route path="/webadmindashboard" element={<WebAdminDashboard />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<RegistrationPage />} />
+                <Route path="/wiki" element={<WikiLandingPage/>} />
             </Routes>
             <ToastContainer />
         </Router>
