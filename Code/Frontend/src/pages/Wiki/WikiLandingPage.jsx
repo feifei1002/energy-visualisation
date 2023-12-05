@@ -5,6 +5,7 @@ import '../../css/LandingPage.css';
 import 'react-toastify/dist/ReactToastify.css';
 import WikiDropDownMenu from "../../components/WikiDropDownMenu"
 import WikiHeatDemand from "../../pages/Wiki/WikiHeatDemand"
+import WikiHeatBreakDown from "../../pages/Wiki/WikiHeatBreakDown"
 // Import necessary hooks and React itself from the react package.
 import React, { useRef, useState, useEffect } from 'react';
 
@@ -22,8 +23,7 @@ export default function WikiLandingPage() {
             case 'Heat demand before and after energy efficiency measures':
                 return <WikiHeatDemand />;
             case 'Breakdown of heat demand before energy efficiency measures for each region':
-                // return <WikiHeatDemandBreakdown />;
-                return null;
+                return <WikiHeatBreakDown />;
             default:
                 return null;
         }
