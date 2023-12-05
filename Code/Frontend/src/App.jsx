@@ -13,6 +13,7 @@ import RegistrationPage from "./pages/RegistrationPage";
 import WebAdminDashboard from "./pages/WebAdminDashboard"
 import WikiLandingPage from "./pages/Wiki/WikiLandingPage"
 import { NotificationProvider } from './contexts/NotificationContext';
+import SummaryOfHeatDemandPage from "./pages/SummaryHeatDemandPage.jsx";
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
                 <Route path="/visualisations/heatdemandbreakdown" element={<BreakDownOfHeatDemandPage />} />
                 <Route path="/visualisations" element={<VisualisationPage />} />
                 <Route path="/visualisations/halfhourlyresistanceheaters" element={<ResistanceHeatersPage />}  />
+                <Route path="/visualisations/summaryheatdemand" element={<SummaryOfHeatDemandPage />}  />
                 <Route path="/profiledashboard" element={<ProfileDashboardPage />} />
                 <Route path="/webadmindashboard" element={<WebAdminDashboard />} />
                 <Route path="/login" element={<Login />} />
