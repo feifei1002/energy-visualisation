@@ -1,4 +1,4 @@
-import { ResponsiveLine } from '@nivo/line';
+import { ResponsiveLineCanvas } from '@nivo/line';
 import React, {useState} from "react";
 import downloadCSV from "../../helperFunctions/downloadCSV.js";
 export default function ResistanceHeatersProducedAndConsumed({data}) {
@@ -55,26 +55,41 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
         {
             id: 'Heat Production',
             color: 'hsl(181, 70%, 50%)',
-            data: formatData.map((item) => ({
-                x: item.time,
-                y: item.resHeaterHeat* 100000,
-            })),
+            data: formatData.map((item, index) => {
+                if(index % 2 === 0) {
+                    return {
+                        x:item.time,
+                        y: item.resHeaterHeat* 100000,
+                    };
+                }
+                return null;
+            }).filter(Boolean),
         },
         {
             id: 'Electricity Consumption',
             color: "hsl(5, 70%, 50%)",
-            data: formatData.map((item) => ({
-                x: item.time,
-                y: item.resHeaterElec * 100000,
-            })),
+            data: formatData.map((item, index) => {
+                if(index % 2 === 0) {
+                    return {
+                        x: item.time,
+                        y: item.resHeaterElec * 100000,
+                    };
+                }
+                return null;
+            }).filter(Boolean),
         },
         {
             id: 'UK daily OAT',
             color: 'hsl(329, 70%, 50%)',
-            data: formatData.map((item) => ({
-                x: item.time,
-                y: item.temperature,
-            })),
+            data: formatData.map((item, index) => {
+                if (index %2 === 0) {
+                    return {
+                        x: item.time,
+                        y: item.temperature,
+                    };
+                }
+                return null;
+            }).filter(Boolean),
         },
     ];
     //To handle if the checkboxes are being checked or not
@@ -105,7 +120,7 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
 
     //handle the download CSV file when the download button is clicked
     const handleDownloadCSV = () => {
-        downloadCSV(formatData, "resistance_heater_produced_and_consumed.csv");
+        downloadCSV(extractedDataList, "resistance_heater_produced_and_consumed.csv");
     }
 
 
@@ -113,18 +128,18 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
         <>
             <div style={{ width: 'inherit', height: 400}}>
 
-                <ResponsiveLine
+                <ResponsiveLineCanvas
                     data={filterData}
                     // data={testData}
                     margin={{ top: 40, right: 100, bottom: 40, left: 100 }}
                     xScale={
                     { type: 'time',
                         format: '%Y-%m-%dT%H:%M:%S', //the time format that is being read
-                        precision: "minute", //set the precision to minute instead of hour to check for half-hourly (30min)
-                        tickValues: "every 30 minutes",
+                        precision: "hour", //set the precision to minute instead of hour to check for half-hourly (30min)
+                        tickValues: "every 1 hour",
                         //set max and min for conciseness
                         min: new Date("2013-01-01T00:00:00"),
-                        max: new Date("2013-12-31T23:30:00"),
+                        max: new Date("2013-12-31T23:00:00"),
                     }
                 }
                     yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
@@ -133,7 +148,7 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
                         tickValues: 'every 1 month', //x-axis shows the months only to make the graph looks cleaner
                     }}
                     axisLeft={{
-                        legend: "Half-hourly heat production by resistance heaters in 2013 (GWh) 10^5",
+                        legend: "Hourly heat production by resistance heaters in 2013 (GWh) 10^5",
                         legendPosition:"middle",
                         legendOffset: -35,
                     }}
@@ -149,7 +164,7 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
                     pointSize={0}
                     pointColor={{ theme: 'background' }}
                     pointBorderColor={{ from: 'serieColor' }}
-                    enableSlices={'x'}
+                    enableSlices={false}
                     useMesh={true}
                     sliceTooltip={({ slice }) => (
                         <div style={{background: 'white', padding: '10px', border: '1px solid #ccc'}}>

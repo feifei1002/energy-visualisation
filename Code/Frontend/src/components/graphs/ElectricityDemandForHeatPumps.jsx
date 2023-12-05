@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {ResponsiveLine} from "@nivo/line";
+import {ResponsiveLineCanvas} from "@nivo/line";
 import downloadCSV from "../../helperFunctions/downloadCSV.js";
 
 export default function ElectricityDemandForHeatPumps({data}) {
@@ -55,26 +55,41 @@ export default function ElectricityDemandForHeatPumps({data}) {
         {
             id: 'air-source heat pumps',
             color: 'hsl(181, 70%, 50%)',
-            data: formatData.map((item) => ({
-                x: item.time,
-                y: item.ashpElec* 100000,
-            })),
+            data: formatData.map((item, index) => {
+                if(index % 2 === 0) {
+                    return {
+                        x: item.time,
+                        y: item.ashpElec* 100000,
+                    };
+                }
+                return null;
+            }).filter(Boolean),
         },
         {
             id: 'ground-source heat pumps',
             color: "hsl(5, 70%, 50%)",
-            data: formatData.map((item) => ({
-                x: item.time,
-                y: item.gshpElec * 100000,
-            })),
+            data: formatData.map((item, index) => {
+                if(index % 2 === 0) {
+                    return {
+                        x: item.time,
+                        y: item.gshpElec * 100000,
+                    };
+                }
+                return null;
+            }).filter(Boolean),
         },
         {
             id: 'UK daily OAT',
             color: 'hsl(329, 70%, 50%)',
-            data: formatData.map((item) => ({
-                x: item.time,
-                y: item.temperature,
-            })),
+            data: formatData.map((item, index) => {
+                if(index % 2 === 0) {
+                    return {
+                        x: item.time,
+                        y: item.temperature,
+                    };
+                }
+                return null;
+            }).filter(Boolean),
         },
     ];
     //To handle if the checkboxes are being checked or not
@@ -113,18 +128,18 @@ export default function ElectricityDemandForHeatPumps({data}) {
         <>
             <div style={{ width: 'inherit', height: 400}}>
 
-                <ResponsiveLine
+                <ResponsiveLineCanvas
                     data={filterData}
                     // data={testData}
                     margin={{ top: 40, right: 100, bottom: 40, left: 100 }}
                     xScale={
                         { type: 'time',
                             format: '%Y-%m-%dT%H:%M:%S', //the time format that is being read
-                            precision: "minute", //set the precision to minute instead of hour to check for half-hourly (30min)
-                            tickValues: "every 30 minutes",
+                            precision: "hour", //set the precision to minute instead of hour to check for half-hourly (30min)
+                            tickValues: "every 1 hour",
                             //set max and min for conciseness
                             min: new Date("2013-01-01T00:00:00"),
-                            max: new Date("2013-12-31T23:30:00"),
+                            max: new Date("2013-12-31T23:00:00"),
                         }
                     }
                     yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
