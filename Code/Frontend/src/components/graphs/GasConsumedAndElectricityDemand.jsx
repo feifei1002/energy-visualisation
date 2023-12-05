@@ -10,22 +10,29 @@ export default function GasConsumedAndElectricityDemand({data}) {
     const [showGSHPElecLine, setShowGSHPElecLine] = useState(true);
     const [showGasConsLine, setShowGasConsLine] = useState(true);
 
-    const [loading, setLoading] = useState(false); // Manages loading state
+    // manage loading state of the graph data
+    const [loading, setLoading] = useState(false);
+    // the data for the temperature line graph
     const [graph1Data, setGraph1Data] = useState([]);
+    // the data for the hourly demand graph
     const [graph2Data, setGraph2Data] = useState([]);
 
     // user inputs value to times by y-axis
     // initial value is 1 so data of the graph is not set to 0
     const [newVal, setNewVal] = useState(1);
 
+    // when the user inputs a new value, uses setNewVal to change the variable
     const handleChange = (e) => {
         setNewVal(e.target.value)
         console.log("changed the value to " + e.target.value)
     }
 
+    // runs first time, and when data or newVal changes
     useEffect(() => {
+        // makes sure there is data
         if (!data) return;
 
+        // shows the data is being loaded
         setLoading(true);
 
         // put data into a new list
@@ -101,20 +108,25 @@ export default function GasConsumedAndElectricityDemand({data}) {
             }
         ];
 
+        // sets the graph data
         setGraph2Data(formattedDataList);
         setGraph1Data(formattedTemp);
+        // sets the state to no longer loading graph data
         setLoading(false);
     }, [data, newVal]);     // added newVal so this hook is run whenever newVal changes (so the graph updates)
 
 
 
     // handle if checkboxes are checked or not
+    // air source heat pumps
     const handleShowASHPElecLine = () => {
         setShowASHPElecLine(!showASHPElecLine);
     }
+    // ground source heat pumps
     const handleShowGSHPElecLine = () => {
         setShowGSHPElecLine(!showGSHPElecLine);
     }
+    // gas consumption
     const handleShowGasConsLine = () => {
         setShowGasConsLine(!showGasConsLine);
     }
@@ -249,7 +261,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
                                     legendOffset: 35,
                                 }}
                                 axisLeft={{
-                                    legend: "Hourly Electricity and Gas/Hydrogen Demand for Gas Boilers (GWh)",
+                                    legend: "Hourly Electricity and Gas/Hydrogen Demand for Gas Boilers (GWh)",     // data changed to hourly to reduce slow loading times
                                     legendPosition:"middle",
                                     legendOffset: -60,
                                 }}
@@ -259,12 +271,13 @@ export default function GasConsumedAndElectricityDemand({data}) {
                                 }
                                 enableGridX={true}
                                 enableGridY={true}
-                                colors={{ scheme: 'paired' }}
+                                colors={{ scheme: 'paired' }}   // simple colour scheme is used to make the graph easy to read
                                 pointSize={0}
                                 pointColor={{ from: 'paired' }}
                                 pointBorderColor={{ from: 'paired' }}
                                 enableSlices={'x'}
                                 useMesh={true}
+                                // slice to show the specific data points when you hover over the graph
                                 sliceTooltip={({ slice }) => (
                                     <div style={{background: 'white', padding: '10px', border: '1px solid #ccc'}}>
                                         <strong>Date:</strong> {slice.points[0].data.xFormatted}<br></br>
@@ -275,6 +288,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
                                         ))}
                                     </div>
                                 )}
+                                // legend shows what each colour on the graph represents
                                 legends={[
                                     {
                                         anchor: 'top-right',
@@ -322,7 +336,6 @@ export default function GasConsumedAndElectricityDemand({data}) {
                 <label>Input value to times by y-axis (GWh): </label>
                 {/* validation so the user cannot input a value below 1, so the graph will always have data that is displayed */}
                 <input data-testid="userInput" type="number" min="1" name="newValue" value={newVal} onChange={handleChange} />
-                {/*<button type="button" onClick={handleChange}>Register</button>*/}
             </div>
 
 
