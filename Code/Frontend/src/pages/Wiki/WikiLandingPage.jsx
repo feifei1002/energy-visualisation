@@ -7,7 +7,8 @@ import WikiDropDownMenu from "../../components/WikiDropDownMenu"
 import WikiHeatDemand from "../../pages/Wiki/WikiHeatDemand"
 import WikiHeatBreakDown from "../../pages/Wiki/WikiHeatBreakDown"
 // Import necessary hooks and React itself from the react package.
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import React from 'react';
 
 
 export default function WikiLandingPage() {
