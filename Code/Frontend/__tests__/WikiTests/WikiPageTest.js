@@ -18,25 +18,22 @@ describe('WikiLandingPage', () => {
   });
 });
 
-// describe('WikiHeatDemand', () => {
-//   test('renders WikiHeatDemand component', () => {
-//     render(<WikiHeatDemand />);
+describe('WikiHeatDemand', () => {
+  test('renders WikiHeatDemand component', () => {
+    render(<WikiHeatDemand />);
 
-//     // Check if the video iframe is rendered
-//     expect(screen.getByTitle('Embedded youtube')).toBeInTheDocument();
+    // Check if the "Show Transcript" button is rendered
+    expect(screen.getByText('Show Transcript')).toBeInTheDocument();
 
-//     // Check if the "Show Transcript" button is rendered
-//     expect(screen.getByText('Show Transcript')).toBeInTheDocument();
+    // Check if the table with header "Table Terms" is rendered
+    expect(screen.getByText('Table Terms')).toBeInTheDocument();
 
-//     // Check if the table with header "Table Terms" is rendered
-//     expect(screen.getByText('Table Terms')).toBeInTheDocument();
+    // Check if the terms in the table are rendered
+    expect(screen.getByText('LSOA Code')).toBeInTheDocument();
+    expect(screen.getByText('KWh')).toBeInTheDocument();
+    expect(screen.getByText('GWh')).toBeInTheDocument();
 
-//     // Check if the terms in the table are rendered
-//     expect(screen.getByText('LSOA Code')).toBeInTheDocument();
-//     expect(screen.getByText('KWh')).toBeInTheDocument();
-//     expect(screen.getByText('GWh')).toBeInTheDocument();
-
-//     // Check if the "Read more about the dataset used" link is rendered
-//     expect(screen.getByText('Read more about the dataset used')).toBeInTheDocument();
-//   });
-// });
+    // Check if the "Read more about the dataset used" link is rendered
+    expect(screen.getByText('Read more about the dataset used')).toBeInTheDocument();
+  });
+});
