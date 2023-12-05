@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {ResponsiveLine} from "@nivo/line";
+import downloadCSV from "../../helperFunctions/downloadCSV.js";
 
 export default function ElectricityDemandForHeatPumps({data}) {
 
@@ -102,6 +103,11 @@ export default function ElectricityDemandForHeatPumps({data}) {
         }
     })
 
+    //handle the download CSV file when the download button is clicked
+    const handleDownloadCSV = () => {
+        downloadCSV(formatData, "electricity_demand_for_heat_pumps.csv");
+    }
+
 
     return(
         <>
@@ -140,9 +146,8 @@ export default function ElectricityDemandForHeatPumps({data}) {
                     enableGridX={false}
                     // colors={(d) => d.color}
                     colors={{ scheme: 'set2' }}
-                    pointSize={3}
+                    pointSize={0}
                     pointColor={{ theme: 'background' }}
-                    pointBorderWidth={1}
                     pointBorderColor={{ from: 'serieColor' }}
                     enableSlices={'x'}
                     useMesh={true}
@@ -204,6 +209,9 @@ export default function ElectricityDemandForHeatPumps({data}) {
                         <input style={{ marginRight: '2px' , marginLeft: '15px'}} type="checkbox" checked={showOATLine} onChange={handleShowOATLineChange} />
                         UK daily OAT
                     </label>
+                </div>
+                <div>
+                    <button style={{ background: "#206887", borderColor: "#206887", color: "white", padding: "10px" }} onClick={handleDownloadCSV}>Download CSV</button>
                 </div>
             </div><br></br>
         </>
