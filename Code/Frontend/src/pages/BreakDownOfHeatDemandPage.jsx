@@ -10,12 +10,14 @@ import BreakDownOfHeatDemandRurality from '../components/graphs/BreakDownOfHeatD
 import Header from "../Header";
 import LoadingGif from "../assets/LoadingGif.gif";
 import { FaArrowDown } from 'react-icons/fa';
+import downloadCSV from "../helperFunctions/downloadCSV.js";
 
 // The main component function that will be exported and used to display the page.
 export default function BreakDownOfHeatDemandPage() {
-  // A console log for debugging purposes.
-  console.log('break down of heat demand page');
-
+  //handle the download CSV file when the download button is clicked
+  const handleDownloadCSV = () => {
+    downloadCSV(heatData, "Annual_heat_demand_LSOA_EnglandWales.csv");
+  }
   // useRef hook to persist the loading state without triggering re-renders.
   const loadingRef = useRef(false);
 
@@ -200,6 +202,9 @@ export default function BreakDownOfHeatDemandPage() {
       <>
         <Header />
         <VisualisationsDropdownMenu></VisualisationsDropdownMenu>
+        <div>
+          <button style={{ background: "#206887", borderColor: "#206887", color: "white", padding: "10px", marginTop: '1vh' }} onClick={handleDownloadCSV}>Download CSV</button>
+        </div>
         <div style={pageStyle}>
           <div style={dropdownStyle}>
             <h3>Breakdown of heat demand before energy efficiency measures for {selectedAuthority}</h3>
