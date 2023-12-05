@@ -6,10 +6,10 @@ import Header from "../Header.jsx";
 import Switch from 'react-switch';
 import HeatDemandPieChartAverage from "../components/graphs/HeatDemandPieChartAverage.jsx";
 import HeatDemandSummaryChartAverage from "../components/graphs/HeatDemandSummaryChartAverage.jsx";
+import '../css/Visualisations.css';
 
 export default function SummaryOfHeatDemandPage() {
     const [heatDemandData, setHeatDemandData] = useState(null);
-    const [geoJsonData, setGeoJsonData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showPieChart, setShowPieChart] = useState(true); // State to toggle between pie and bar charts
 
@@ -22,10 +22,8 @@ export default function SummaryOfHeatDemandPage() {
                 if (!heatDemandResponse.ok || !geoJsonResponse.ok) throw new Error('Data fetch failed');
 
                 const heatData = await heatDemandResponse.json();
-                const geoData = await geoJsonResponse.json();
 
                 setHeatDemandData(heatData);
-                setGeoJsonData(geoData);
             } catch (error) {
                 console.error("Error fetching data:", error);
             } finally {
@@ -44,7 +42,7 @@ export default function SummaryOfHeatDemandPage() {
         return <div>Loading...</div>;
     }
 
-    if (!heatDemandData || !geoJsonData) {
+    if (!heatDemandData) {
         return <div>Error: Data not available</div>;
     }
 
@@ -64,6 +62,7 @@ export default function SummaryOfHeatDemandPage() {
                 />
                 <span style={{ marginLeft: '10px' }}>Pie Chart</span>
             </div>
+            <div className="chart-container">
             {showPieChart ? (
                 <>
                     <HeatDemandPieChart data={heatDemandData} />
@@ -75,6 +74,7 @@ export default function SummaryOfHeatDemandPage() {
                     <HeatDemandSummaryChartAverage data={heatDemandData} />
                 </>
             )}
+            </div>
         </div>
     );
 }
