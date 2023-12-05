@@ -11,7 +11,7 @@ export default function WikiHeatBreakDown() {
                         <iframe
                         width="853"
                         height="480"
-                        src={`https://www.youtube.com/embed/SdnGXUX3HEw?si=Ighmgh7Q9j_oEWTk`}
+                        src={`https://www.youtube.com/embed/K8KlTB23yk8?si=_ChLB1pZ9ivFRqiZ`}
                         frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
@@ -20,7 +20,7 @@ export default function WikiHeatBreakDown() {
                     </div>
                  <div className="video-transcript">
                  <button className="video-button"  
-                 ><a href="https://youtubetranscript.com/?v=SdnGXUX3HEw&t=1" className="video-link">Show Transcript</a></button>
+                 ><a href="https://youtubetranscript.com/?v=K8KlTB23yk8" className="video-link">Show Transcript</a></button>
                  </div>
                 </div>
                 <div className="futher-info">
