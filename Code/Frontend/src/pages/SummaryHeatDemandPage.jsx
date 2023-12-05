@@ -10,6 +10,7 @@ import '../css/Visualisations.css';
 
 export default function SummaryOfHeatDemandPage() {
     const [heatDemandData, setHeatDemandData] = useState(null);
+    const [geoJsonData, setGeoJsonData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showPieChart, setShowPieChart] = useState(true); // State to toggle between pie and bar charts
 
@@ -22,8 +23,10 @@ export default function SummaryOfHeatDemandPage() {
                 if (!heatDemandResponse.ok || !geoJsonResponse.ok) throw new Error('Data fetch failed');
 
                 const heatData = await heatDemandResponse.json();
+                const geoData = await geoJsonResponse.json();
 
                 setHeatDemandData(heatData);
+                setGeoJsonData(geoData);
             } catch (error) {
                 console.error("Error fetching data:", error);
             } finally {
