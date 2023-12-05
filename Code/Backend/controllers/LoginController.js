@@ -28,8 +28,6 @@ const postLogin = async (req, res) => {
             // https://stackabuse.com/authentication-and-authorization-with-jwts-in-express-js/ 16/11
             const accessToken = jwt.sign({username: user.username,userId: user._id}, process.env.ACCESS_TOKEN, { expiresIn: '30m' });
 
-            // res.redirect('/profiledashboard');
-
             // send response of access token when correctly authenticated
             res.json({
                 user: {
@@ -43,14 +41,15 @@ const postLogin = async (req, res) => {
 
 
         } else {
-
-            res.send('Password is incorrect');
+            // res.send('Password is incorrect');
+            res.status(401).send('Password is incorrect');
         }
 
 
     } catch (error) {
         console.error(error);
-        res.send('Username does not match any in the system');
+        // res.send('Username does not match any in the system');
+        res.status(401).send('Username does not match any in the system');
     }
 
 };
