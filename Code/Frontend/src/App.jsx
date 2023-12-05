@@ -5,6 +5,7 @@ import './App.css'
 import BeforeAfterHeatDemandPage from './pages/BeforeAfterHeatDemandPage';
 import LandingPage from './pages/LandingPage'
 import VisualisationPage from './VisualisationPage'
+import GasBoilersPage from './pages/GasBoilersPage.jsx'
 import Login from './pages/Login.jsx';
 import ProfileDashboardPage from "./ProfileDashboardPage.jsx";
 import ResistanceHeatersPage from "./pages/ResistanceHeatersPage.jsx";
@@ -29,6 +30,7 @@ export default function App() {
                 <Route path="/profiledashboard" element={<ProfileDashboardPage />} />
                 <Route path="/webadmindashboard" element={<WebAdminDashboard />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/visualisations/halfhourlygasboilers" element={<GasBoilersPage />} />
                 <Route path="/register" element={<RegistrationPage />} />
                 <Route path="/wiki" element={<WikiLandingPage/>} />
             </Routes>
