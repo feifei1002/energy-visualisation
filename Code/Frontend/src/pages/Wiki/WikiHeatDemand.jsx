@@ -1,4 +1,6 @@
 import "../../css/WikiPages.css"
+import { Table, Button, Modal, Form} from 'react-bootstrap';
+import React from 'react';
 
 export default function WikiHeatDemand() {
     return (
@@ -16,6 +18,35 @@ export default function WikiHeatDemand() {
                         title="Embedded youtube"
                         />
                     </div>
+                 <div className="video-transcript">
+                 <button className="video-button"  
+                 ><a href="https://youtubetranscript.com/?v=SdnGXUX3HEw&t=1" className="video-link">Show Transcript</a></button>
+                 </div>
+                </div>
+                <div className="table">
+                <h3>Table Terms</h3>
+                <Table striped bordered hover responsive>
+                    <thead>
+                        <tr>
+                        <th>Term</th>
+                        <th>Meaning</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        <td>LSOA Code</td>
+                        <td>Lower Layer Super Output Areas</td>
+                        </tr>
+                        <tr>
+                        <td>KWh</td>
+                        <td>Kilowatt Hours</td>
+                        </tr>
+                        <tr>
+                        <td>GWh</td>
+                        <td>Gigawatt Hours</td>
+                        </tr>
+                    </tbody>
+                </Table>
                 </div>
             </main>
         </div>

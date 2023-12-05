@@ -2,3 +2,19 @@
     background-color: black;
     padding: 2vh;
 }
+
+.video-button{
+    border-color: "#206887" !important;
+    padding: 10px !important;
+    margin-top: 1vh !important;
+    color: black;
+}
+
+.video-link{
+    color: black !important;
+    text-decoration: none !important;
+}
+
+.table-responsive {
+    color: black !important;
+}
