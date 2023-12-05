@@ -18,6 +18,13 @@ const postLogin = async (req, res) => {
         // and selects the password
         const user = await User.findOne({username: data.username}).select('password');
         // compares the password inputted with the hashed password in the database, using bcrypt.compare
+
+        // If the user is not found, return an error response
+        if (!user) {
+            console.error('Username or password does not match any in the system');
+            return res.status(401).send('Username or password is incorrect');
+        }
+
         const comparison = await bcrypt.compare(String(data.password), user.password);
 
         // comparison is true if both password match
@@ -47,9 +54,10 @@ const postLogin = async (req, res) => {
 
 
     } catch (error) {
-        console.error(error);
-        // res.send('Username does not match any in the system');
-        res.status(401).send('Username does not match any in the system');
+        // console.error(error);
+        // res.status(401).send('Username does not match any in the system');
+        console.error('Error during login:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 
 };
