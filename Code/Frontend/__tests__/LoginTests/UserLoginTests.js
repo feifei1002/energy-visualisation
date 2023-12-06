@@ -4,13 +4,6 @@ import Login from "../../src/pages/Login.jsx";
 import {MemoryRouter} from "react-router-dom";
 import '@testing-library/jest-dom';
 
-// const mockedUsedNavigate = jest.fn();
-
-// jest.mock('react-router-dom', () => ({
-//     ...jest.requireActual('react-router-dom'),
-//     useNavigate: () => mockedUsedNavigate,
-// }));
-
 describe('component tests for the login page', () => {
     // testing the login page renders without the page crashing
     it('page renders without crashing', () => {
