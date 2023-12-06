@@ -1,6 +1,7 @@
 import {ResponsiveLineCanvas} from "@nivo/line";
 import React, {useEffect, useState} from "react";
 import '../../App.css';
+import downloadCSV from "../../helperFunctions/downloadCSV.js";
 
 // outputs electricity and gas demand data to a graph
 export default function GasConsumedAndElectricityDemand({data}) {
@@ -16,6 +17,8 @@ export default function GasConsumedAndElectricityDemand({data}) {
     const [graph1Data, setGraph1Data] = useState([]);
     // the data for the hourly demand graph
     const [graph2Data, setGraph2Data] = useState([]);
+    // both graph data from the csv, used to generate csv
+    const [combinedGraphData, setCombinedGraphData] = useState([]);
 
     // user inputs value to times by y-axis
     // initial value is 1 so data of the graph is not set to 0
@@ -111,6 +114,8 @@ export default function GasConsumedAndElectricityDemand({data}) {
         // sets the graph data
         setGraph2Data(formattedDataList);
         setGraph1Data(formattedTemp);
+        // set the combined data so it can be downloaded
+        setCombinedGraphData(formatData);
         // sets the state to no longer loading graph data
         setLoading(false);
     }, [data, newVal]);     // added newVal so this hook is run whenever newVal changes (so the graph updates)
@@ -146,6 +151,12 @@ export default function GasConsumedAndElectricityDemand({data}) {
             return showGasConsLine;
         }
     })
+
+    // utilising already created download csv function
+    // creates downloadable csv file for all the data used on the graph
+    const handleDownloadCSV = () => {
+        downloadCSV(combinedGraphData, "gas_consumed_and_electricity_demand.csv");
+    }
 
     // output to page
     return(
@@ -338,6 +349,10 @@ export default function GasConsumedAndElectricityDemand({data}) {
                 <input data-testid="userInput" type="number" min="1" name="newValue" value={newVal} onChange={handleChange} />
             </div>
 
+            {/* button to download the csv file */}
+            <div>
+                <button style={{ background: "#206887", borderColor: "#206887", color: "white", padding: "10px" }} onClick={handleDownloadCSV}>Download CSV</button>
+            </div>
 
             </div>
             )}
