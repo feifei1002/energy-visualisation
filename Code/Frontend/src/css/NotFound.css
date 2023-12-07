@@ -1,0 +1,30 @@
+.notFoundDiv{
+    margin: 2vh;
+    max-width: 100%;
+    height: auto;
+}
+
+.notFoundImgDiv{
+    margin: 2vh;
+}
+
+.notFoundButtonDiv{
+    margin: 2vh;
+}
+
+.notFoundButton{
+    background-color: cadetblue;
+    color: white;
+    width: 250px;
+}
+
+.notFoundImage{
+    max-width: 100%;
+    height: auto;
+}
+
+.notFoundHeader{
+    font-size: large;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
