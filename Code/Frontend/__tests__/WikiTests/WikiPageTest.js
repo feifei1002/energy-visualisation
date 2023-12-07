@@ -1,7 +1,7 @@
 import React from 'react';
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent } from '@testing-library/react';
-import WikiLandingPage from '../../src/pages/wiki/WikiLandingPage';
+import WikiLandingPage from '../../src/pages/Wiki/WikiLandingPage';
 import WikiHeatDemand from '../../src/pages/Wiki/WikiHeatDemand';
 import { MemoryRouter } from 'react-router-dom';
 import 'react-router-dom';

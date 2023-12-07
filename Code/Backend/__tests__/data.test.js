@@ -11,6 +11,8 @@ const router = require('../routes/data/Data');
 // Use the imported router in the express application
 app.use(router);
 
+jest.spyOn(console, 'log');
+
 // Describe the test suite for API endpoints
 describe('API endpoint tests', () => {
     // Test case for the /annualheat endpoint;
