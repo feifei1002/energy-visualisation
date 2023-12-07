@@ -42,16 +42,20 @@ describe('processHeatDemandData', () => {
 
         const mockResidentialHeatData = [
             {
-                "LSOA11CD": "S01000001",
-                "Area (km2)": 0.101,
-                "Total heat demand before energy efficiency measures 2018 (kWh)": 1234567.89,
-                "Total heat demand after energy efficiency measures 2018 (kWh)": 987654.32
+                "area": 0.135739831,
+                "averagePerSqKmAfter": 14030160.461891249,
+                "averagePerSqKmBefore": 19100501.75323999,
+                "region": "England",
+                "totalAfter": 1904451.61,
+                "totalBefore": 2592698.88
             },
             {
-                "LSOA11CD": "S01000002",
-                "Area (km2)": 0.087,
-                "Total heat demand before energy efficiency measures 2018 (kWh)": 987654.32,
-                "Total heat demand after energy efficiency measures 2018 (kWh)": 765432.10
+                "area": 0.435729831,
+                "averagePerSqKmAfter": 24030160.461491249,
+                "averagePerSqKmBefore": 39100501.75323999,
+                "region": "Wales",
+                "totalAfter": 5304451.61,
+                "totalBefore": 3492698.88
             },
             // ...more mock data entries as needed...
         ];
