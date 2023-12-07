@@ -111,6 +111,7 @@ const RegisterRequest = ({fetchAllUserDetails}) => {
             <button onClick={togglePanel}>Show Register Requests</button>
             {isPanelVisible && pendingUsers &&(
                 <div className="registration-container">
+                    <button onClick={togglePanel}>Close</button>
                     <p className="title"> Pending Users </p>
                     {pendingUsers.map((user) => (
                         <div key={user._id} className="registration-item">
