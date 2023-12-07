@@ -118,6 +118,17 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
         }
     })
 
+    const extractedDataList = formattedDataList.reduce((data, dataItem) => {
+        dataItem.data.forEach((point, index) => {
+            if (!data[index]) {
+                data[index] = { Time: point.x, [dataItem.id]: point.y };
+            } else {
+                data[index][dataItem.id] = point.y;
+            }
+        });
+        return data;
+    }, []);
+
     //handle the download CSV file when the download button is clicked
     const handleDownloadCSV = () => {
         downloadCSV(extractedDataList, "resistance_heater_produced_and_consumed.csv");
@@ -160,7 +171,7 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
                     }}
                     enableGridX={false}
                     // colors={(d) => d.color}
-                    colors={{ scheme: 'set2' }}
+                    colors={{ scheme: 'paired' }}
                     pointSize={0}
                     pointColor={{ theme: 'background' }}
                     pointBorderColor={{ from: 'serieColor' }}
@@ -212,15 +223,15 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
 
                 {/*actual checkboxes to check*/}
                 <div>
-                    <label style={{ color: '#66c2a5', fontWeight: 'bold'}}>
+                    <label style={{fontWeight: 'bold'}}>
                         <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showHeatLine} onChange={handleShowHeatLineChange} />
                         Heat Production
                     </label>
-                    <label style={{ color: '#fc8d62', fontWeight: 'bold'}}>
+                    <label style={{fontWeight: 'bold'}}>
                         <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showElecLine} onChange={handleShowElecLineChange} />
                         Electricity Consumption
                     </label>
-                    <label style={{ color: '#8da0cb', fontWeight: 'bold'}}>
+                    <label style={{ fontWeight: 'bold'}}>
                         <input style={{ marginRight: '2px' , marginLeft: '15px'}} type="checkbox" checked={showOATLine} onChange={handleShowOATLineChange} />
                         UK daily OAT
                     </label>
