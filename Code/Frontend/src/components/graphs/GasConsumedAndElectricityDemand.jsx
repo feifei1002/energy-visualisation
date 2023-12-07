@@ -351,7 +351,10 @@ export default function GasConsumedAndElectricityDemand({data}) {
 
             {/* button to download the csv file */}
             <div>
-                <button style={{ background: "#206887", borderColor: "#206887", color: "white", padding: "10px" }} onClick={handleDownloadCSV}>Download CSV</button>
+                <button style={{ background: "#206887",
+                    borderColor: "#206887",
+                    color: "white",
+                    padding: "10px" }} onClick={handleDownloadCSV}>Download CSV</button>
             </div>
 
             </div>
