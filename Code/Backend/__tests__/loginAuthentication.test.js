@@ -11,6 +11,8 @@ const axios = require("axios");
 const {response} = require("express");
 jest.mock("axios");
 
+jest.spyOn(console, 'log');
+
 describe('api tests', () => {
     // test('post /login', async () => {
     //     const inputs = [

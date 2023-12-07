@@ -1,18 +1,18 @@
-const fs = require('fs').promises;
-const { processHeatDemandData } = require('../utils/heatDemandProcessor');
+// const fs = require('fs').promises;
+// const { processHeatDemandData } = require('../utils/heatDemandProcessor');
 
 // Adjust this path to match the location of your cache file
-const cacheFilePath = '../../cache/aggregatedHeatDemandData.cache';
+// const cacheFilePath = '../../cache/aggregatedHeatDemandData.cache';
 
-async function deleteCacheFile() {
-    try {
-        await fs.unlink(cacheFilePath);
-    } catch (error) {
-        if (error.code !== 'ENOENT') { // Ignore error if file doesn't exist
-            throw error;
-        }
-    }
-}
+// async function deleteCacheFile() {
+//     try {
+//         await fs.unlink(cacheFilePath);
+//     } catch (error) {
+//         if (error.code !== 'ENOENT') { // Ignore error if file doesn't exist
+//             throw error;
+//         }
+//     }
+// }
 
 describe('processHeatDemandData', () => {
     // beforeEach(async () => {
