@@ -27,7 +27,8 @@ function Header() {
                 <ul className="nav-links">
                     {/* Use the 'to' prop for navigation with React Router */}
                     <HeaderLink to="/" text="About" />
-                    <HeaderLink to="/visualisations/beforeafterheatdemand" text="Visualisations" />
+                    <HeaderLink to="/wiki" text="Wiki" />
+                    <HeaderLink to="/visualisations" text="Visualisations" />
                     <HeaderLink to="/login" text="Login" />
                 </ul>
             </nav>

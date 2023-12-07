@@ -51,7 +51,7 @@ router.put('/profile/:userID', verifyToken, async(req, res) => {
             updateData.password = await bcrypt.hash(updateData.newPassword, saltRounds);
             delete updateData.newPassword;
         }
-        const user = await User.findByIdAndUpdate(userId, { profile: updateData }, { new: true }).select('-password');
+        const user = await User.findByIdAndUpdate(userId, updateData, { new: true }).select('-password');
         //console.log("User returned: " + user)
         res.json(user);
     } catch (error) {

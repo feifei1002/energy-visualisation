@@ -5,12 +5,14 @@ import './App.css'
 import BeforeAfterHeatDemandPage from './pages/BeforeAfterHeatDemandPage';
 import LandingPage from './pages/LandingPage'
 import VisualisationPage from './VisualisationPage'
+import GasBoilersPage from './pages/GasBoilersPage.jsx'
 import Login from './pages/Login.jsx';
 import ProfileDashboardPage from "./ProfileDashboardPage.jsx";
 import ResistanceHeatersPage from "./pages/ResistanceHeatersPage.jsx";
 import BreakDownOfHeatDemandPage from "./pages/BreakDownOfHeatDemandPage.jsx";
 import RegistrationPage from "./pages/RegistrationPage";
 import WebAdminDashboard from "./pages/WebAdminDashboard"
+import WikiLandingPage from "./pages/Wiki/WikiLandingPage"
 import { NotificationProvider } from './contexts/NotificationContext';
 import SummaryOfHeatDemandPage from "./pages/SummaryHeatDemandPage.jsx";
 
@@ -28,7 +30,9 @@ export default function App() {
                 <Route path="/profiledashboard" element={<ProfileDashboardPage />} />
                 <Route path="/webadmindashboard" element={<WebAdminDashboard />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/visualisations/halfhourlygasboilers" element={<GasBoilersPage />} />
                 <Route path="/register" element={<RegistrationPage />} />
+                <Route path="/wiki" element={<WikiLandingPage/>} />
             </Routes>
             <ToastContainer />
         </Router>

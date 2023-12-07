@@ -7,7 +7,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 // Define table component
-export default function WebAdminUsersTable({ columns, data, authToken}) {
+export default function WebAdminUsersTable({ columns, data, authToken, fetchAllUsers}) {
     //Variables for resetting passwords
     const [showModal, setShowModal] = useState(false);
     const [newPassword, setNewPassword] = useState('');
@@ -48,6 +48,35 @@ export default function WebAdminUsersTable({ columns, data, authToken}) {
       closeModal();
     };
 
+    //Apply user delete
+    const deleteUser = async (selectedUser) => {
+      // Make an API call to delete the user
+      try{
+        if (window.confirm('Are you sure you wish to delete this item?')){
+          const response = await axios.post(`/api/deleteuser/${selectedUser._id}`,
+          null,  // Pass null as the request body since it's a DELETE request
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          });
+
+          //Refetch the user data
+          fetchAllUsers();
+
+          // Alert user of deleted user
+          toast.success('Deleted user!');
+       } else {
+          // Alert user that user is not deleted
+          toast.info('User not deleted');
+       }
+      } catch(e){
+        // Alert user of deleting user error
+        console.log(e)
+        toast.error('Error deleting user!');
+      }
+    };
+
     // Use the useTable hook to create an instance of the table
     const {
       getTableProps,
@@ -68,6 +97,7 @@ export default function WebAdminUsersTable({ columns, data, authToken}) {
                 <th {...column.getHeaderProps()}>{column.render('Header')}</th>
               ))}
               <th>Reset Password</th>
+              <th>Delete User</th>
             </tr>
           ))}
         </thead>
@@ -88,6 +118,16 @@ export default function WebAdminUsersTable({ columns, data, authToken}) {
                     onClick={() => openModal(row.original)}>
                     Reset Password
                   </Button>
+                </td>
+                <td>
+                <Button variant="primary"  data-testid="DeleteUserButton" 
+                    style={{
+                    backgroundColor: 'cadetblue',
+                    color: 'black',
+                    padding: '1vw'}}  
+                    onClick={() => deleteUser(row.original)}>
+                    Delete User
+                </Button>
                 </td>
               </tr>
             );
