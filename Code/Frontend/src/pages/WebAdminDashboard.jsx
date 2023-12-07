@@ -182,14 +182,14 @@ export default function WebAdminDashboard() {
                 {allUserDetails && (
                      // Render the WebAdminTable component with columns and data
                      <div style={{margin: '0.5em'}}>
-                     <h3>Reset Password For User</h3>
-                     <WebAdminUsersTable columns={columnsUsers} data={allUserDetails} authToken={token} />
+                     <h3>User Table</h3>
+                     <WebAdminUsersTable columns={columnsUsers} data={allUserDetails} authToken={token} fetchAllUsers={fetchAllUserDetails}/>
                      </div>
                 )}
                 {allFeedback && (
                      // See the feedback from the contact us form
                      <div style={{margin: '0.5em'}}>
-                     <h3>See Feedback From Contact Us</h3>
+                     <h3>See Feedback</h3>
                      <WebAdminFeedbackTable columns={columnsFeedback} data={allFeedback} authToken={token} fetchAllFeedback={fetchAllFeedback}/>
                      </div>
                 )}

@@ -35,11 +35,11 @@ export default function ResistanceHeatersPage() {
             <>
                 <Header></Header>
                 <VisualisationsDropdownMenu></VisualisationsDropdownMenu><br></br>
-                <h3>Half-hourly heat production and electricity consumption profiles for Resistance heaters</h3>
+                <h3>Hourly heat production and electricity consumption profiles for Resistance heaters</h3>
                 <ResistanceHeatersProducedAndConsumed data={heatData}></ResistanceHeatersProducedAndConsumed><br></br>
                 <br></br>
                 <br></br>
-                <h3>Half-hourly electricity demand for heat pumps and gas/hydrogen demand for boilers</h3>
+                <h3>Hourly electricity demand for heat pumps and gas/hydrogen demand for boilers</h3>
                 <ElectricityDemandForHeatPumps data={heatData}></ElectricityDemandForHeatPumps>
             </>
         )

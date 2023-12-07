@@ -15,6 +15,7 @@ import WebAdminDashboard from "./pages/WebAdminDashboard"
 import WikiLandingPage from "./pages/Wiki/WikiLandingPage"
 import { NotificationProvider } from './contexts/NotificationContext';
 import SummaryOfHeatDemandPage from "./pages/SummaryHeatDemandPage.jsx";
+import NotFound from '../src/pages/NotFound';
 
 export default function App() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
                 <Route path="/visualisations/halfhourlygasboilers" element={<GasBoilersPage />} />
                 <Route path="/register" element={<RegistrationPage />} />
                 <Route path="/wiki" element={<WikiLandingPage/>} />
+                <Route path="*" element={<NotFound />} />
             </Routes>
             <ToastContainer />
         </Router>

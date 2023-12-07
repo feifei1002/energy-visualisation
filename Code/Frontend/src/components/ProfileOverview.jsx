@@ -85,6 +85,7 @@ const ProfileOverview = () => {
         try {
             const response = await axios.post('/api/upload-csv', formData, {
                 headers: {
+                    Authorization: `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',
                 },
             });
@@ -127,7 +128,7 @@ const ProfileOverview = () => {
                 <input
                     type="text"
                     id="name"
-                    name="name"
+                    name="fullName"
                     className="form-control"
                     value={profile.fullName}
                     onChange={handleInputChange}

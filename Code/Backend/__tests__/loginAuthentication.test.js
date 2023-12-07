@@ -11,6 +11,9 @@ const uri = `mongodb+srv://milliganec:${password}@climatedata.fh5ht06.mongodb.ne
 app.use(express.json());
 app.use('/api', router);
 
+jest.spyOn(console, 'log');
+
+
 // backend tests for the login authentication
 describe('post and get request tests for the login authentication', () => {
     // before each test connects to the database
@@ -22,6 +25,7 @@ describe('post and get request tests for the login authentication', () => {
     afterEach(async () => {
         await mongoose.connection.close();
     });
+
 
     // test to show the GET login route returns 404 status because we only have a POST on the /login route
     test('/login route should return 404 Status', async () => {
@@ -40,6 +44,7 @@ describe('post and get request tests for the login authentication', () => {
         expect(response.status).toBe(401);
     });
 
+
     // post request with invalid data
     it('post login request with invalid information inputted', async () => {
 
@@ -54,3 +59,4 @@ describe('post and get request tests for the login authentication', () => {
         expect(response.status).toBe(401);
     });
 });
+
