@@ -6,6 +6,8 @@ const app = express();
 app.use(express.json());
 app.use('/api', router);
 
+jest.spyOn(console, 'log');
+
 describe('GET /pending-users', () => {
     it('pending-users route should be unauthorized when accessing without token', async () => {
         const response = await request(app).get('/api/pending-users');

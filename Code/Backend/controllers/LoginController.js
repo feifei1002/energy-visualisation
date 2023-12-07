@@ -18,6 +18,13 @@ const postLogin = async (req, res) => {
         // and selects the password
         const user = await User.findOne({username: data.username}).select('password');
         // compares the password inputted with the hashed password in the database, using bcrypt.compare
+
+        // If the user is not found, return an error response
+        if (!user) {
+            console.error('Username or password does not match any in the system');
+            return res.status(401).send('Username or password is incorrect');
+        }
+
         const comparison = await bcrypt.compare(String(data.password), user.password);
 
         // comparison is true if both password match
@@ -27,8 +34,6 @@ const postLogin = async (req, res) => {
             // generate access token
             // https://stackabuse.com/authentication-and-authorization-with-jwts-in-express-js/ 16/11
             const accessToken = jwt.sign({username: user.username,userId: user._id}, process.env.ACCESS_TOKEN, { expiresIn: '30m' });
-
-            // res.redirect('/profiledashboard');
 
             // send response of access token when correctly authenticated
             res.json({
@@ -43,14 +48,16 @@ const postLogin = async (req, res) => {
 
 
         } else {
-
-            res.send('Password is incorrect');
+            // res.send('Password is incorrect');
+            res.status(401).send('Password is incorrect');
         }
 
 
     } catch (error) {
-        console.error(error);
-        res.send('Username does not match any in the system');
+        // console.error(error);
+        // res.status(401).send('Username does not match any in the system');
+        console.error('Error during login:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 
 };
