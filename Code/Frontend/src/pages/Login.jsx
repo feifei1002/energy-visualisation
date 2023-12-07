@@ -1,12 +1,10 @@
 import React from "react";
 import { useState } from "react";
-// import '../App.css'
 import '../css/Login.css'
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Header from "../Header.jsx";
 import { WebAdminLogin } from "../loginFunctions/WebAdminLogin";
-import {useAuth0} from "@auth0/auth0-react";
 
 function Login() {
 
@@ -109,11 +107,11 @@ function Login() {
                         <div className="inputRow">
                             <label>User Name</label>
                             {/* Set max length for username and password to 15 characters */}
-                            <input type="text" name="username" value={uname} onChange={handleChange} {...{ required: true, maxLength: 15 }} />
+                            <input type="text" name="username" data-testid="username-input" value={uname} onChange={handleChange} {...{ required: true, maxLength: 15 }} />
                         </div>
                         <div className="inputRow">
                             <label>Password</label>
-                            <input type="password" name="password" value={pass} onChange={handleChange} {...{ required: true }} />
+                            <input type="password" name="password" data-testid="password-input" value={pass} onChange={handleChange} {...{ required: true }} />
                         </div>
                         <div className="inputRow">
                             <input type="submit" value="Login" />
