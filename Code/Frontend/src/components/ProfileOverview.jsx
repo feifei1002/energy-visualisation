@@ -85,6 +85,7 @@ const ProfileOverview = () => {
         try {
             const response = await axios.post('/api/upload-csv', formData, {
                 headers: {
+                    Authorization: `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',
                 },
             });

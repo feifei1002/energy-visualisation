@@ -2,9 +2,20 @@
 const express = require('express');
 const multer = require('multer');
 const router = express.Router();
-
+const key = process.env.ACCESS_TOKEN;
 const fileSystem = require('fs');
 const path = require('path');
+const { expressjwt } = require("express-jwt");
+
+//Verify token before accessing protected routes
+const verifyToken = expressjwt({
+    secret: key,
+    algorithms: ['HS256'],
+    getToken: (request) => {
+        const token = request.headers.authorization?.split(' ')[1] || null;
+        return token;
+    },
+});
 
 const csvStorage = multer.diskStorage({
     destination: function(request, file, callback) {
@@ -33,8 +44,8 @@ const csvStorage = multer.diskStorage({
 
 const upload = multer({ storage: csvStorage });
 
-//POST request for saving the csv file
-router.post('/upload-csv', upload.single('file'), (request, response) => {
+//POST request for saving the csv file, protected using jwt token
+router.post('/upload-csv', verifyToken, upload.single('file'), (request, response) => {
     if (!request.file) {
         return response.status(400).send('No file uploaded.');
     }
