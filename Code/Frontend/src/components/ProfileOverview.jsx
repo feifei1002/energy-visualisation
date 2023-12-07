@@ -127,7 +127,7 @@ const ProfileOverview = () => {
                 <input
                     type="text"
                     id="name"
-                    name="name"
+                    name="fullName"
                     className="form-control"
                     value={profile.fullName}
                     onChange={handleInputChange}
