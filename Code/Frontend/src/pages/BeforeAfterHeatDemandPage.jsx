@@ -12,6 +12,11 @@ import Header from "../Header";
 import LoadingGif from "../assets/LoadingGif.gif";
 import downloadCSV from "../helperFunctions/downloadCSV.js";
 
+//analytics tracking
+import trackEvent from '../utils/analytics';
+
+
+
 // The main component function that will be exported and used to display the page.
 export default function BeforeAfterHeatDemandPage() {
   // A console log for debugging purposes.
@@ -23,9 +28,20 @@ export default function BeforeAfterHeatDemandPage() {
   const [geoJsonData, setGeoJsonData] = useState(null);
   const [error, setError] = useState(null);
 
+  //analytics tracking
+  let userLocation = null;
+  navigator.geolocation.getCurrentPosition((position) => {
+    userLocation = `${position.coords.latitude}, ${position.coords.longitude}`;
+  });
+
+
    //handle the download CSV file when the download button is clicked
    const handleDownloadCSV = () => {
     downloadCSV(heatData, "Annual_heat_demand_LSOA_EnglandWales.csv");
+
+    //log the action
+     const pageUrl = window.location.href;
+     trackEvent('CSVDownload', null, pageUrl, userLocation, {CSVName: 'Annual_heat_demand_LSOA_EnglandWales.csv'});
   }
 
   // useEffect hook to remove padding and margin from the body when the component mounts.
@@ -63,6 +79,9 @@ export default function BeforeAfterHeatDemandPage() {
         setError(e.message);
         console.error("Fetching annual heat data failed", e);
       }
+      //log the action
+      const pageUrl = window.location.href;
+      trackEvent('DataView', null, pageUrl, userLocation, {CSVName: 'Annual_heat_demand_LSOA_EnglandWales.csv'});
     };
 
     // Asynchronous function to fetch GeoJSON data.

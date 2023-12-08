@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const AnalyticLog = require('../../models/Analytics');
+const {expressjwt} = require("express-jwt");
 
 
 
