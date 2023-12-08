@@ -29,9 +29,11 @@ export default function BeforeAfterHeatDemandPage() {
   const [error, setError] = useState(null);
 
   //analytics tracking
-  let userLocation = null;
+  const [userLocation, setUserLocation] = useState(null);
+
   navigator.geolocation.getCurrentPosition((position) => {
-    userLocation = `${position.coords.latitude}, ${position.coords.longitude}`;
+    const location = `${position.coords.latitude}, ${position.coords.longitude}`;
+    setUserLocation(location); // This will update the state
   });
   //log user viewing page
   const pageUrl = window.location.href;
