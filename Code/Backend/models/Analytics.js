@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 const analyticLogSchema = new mongoose.Schema({
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true
+        type: String,
+        required: false
     },
     event: {
         type: String,
