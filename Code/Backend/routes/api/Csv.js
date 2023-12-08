@@ -6,7 +6,6 @@ const key = process.env.ACCESS_TOKEN;
 const fileSystem = require('fs');
 const path = require('path');
 const { expressjwt } = require("express-jwt");
-import trackEvent from '../../../Frontend/src/utils/analytics';
 
 //Verify token before accessing protected routes
 const verifyToken = expressjwt({
