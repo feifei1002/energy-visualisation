@@ -7,6 +7,7 @@ import Switch from 'react-switch';
 import HeatDemandPieChartAverage from "../components/graphs/HeatDemandPieChartAverage.jsx";
 import HeatDemandSummaryChartAverage from "../components/graphs/HeatDemandSummaryChartAverage.jsx";
 import '../css/Visualisations.css';
+import InfoToolTip from '../components/InfoToolTip.jsx';
 
 export default function SummaryOfHeatDemandPage() {
     const [heatDemandData, setHeatDemandData] = useState(null);
@@ -53,6 +54,9 @@ export default function SummaryOfHeatDemandPage() {
         <div>
             <Header />
             <VisualisationsDropdownMenu></VisualisationsDropdownMenu>
+            <div>
+                 <InfoToolTip dataset={"Summary of heat demand across England, Wales and Scotland"} />
+            </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '20px' }}>
                 <span style={{ marginRight: '10px' }}>Bar Chart</span>
                 <Switch
