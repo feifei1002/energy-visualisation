@@ -37,8 +37,9 @@ export default function BeforeAfterHeatDemandPage() {
   });
   //log user viewing page
   const pageUrl = window.location.href;
-  trackEvent('DataView', null, pageUrl, userLocation,{CSVName: 'Annual_heat_demand_LSOA_EnglandWales.csv'});
-
+  if (userLocation !== null) {
+    trackEvent('DataView', null, pageUrl, userLocation, {CSVName: 'Annual_heat_demand_LSOA_EnglandWales.csv'});
+  }
    //handle the download CSV file when the download button is clicked
    const handleDownloadCSV = () => {
     downloadCSV(heatData, "Annual_heat_demand_LSOA_EnglandWales.csv");

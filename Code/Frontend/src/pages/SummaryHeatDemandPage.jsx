@@ -22,7 +22,10 @@ export default function SummaryOfHeatDemandPage() {
     });
     //log user viewing page, data gotten through cache not csv so cant name csvname so we name dataname
     const pageUrl = window.location.href;
-    trackEvent('DataView', null, pageUrl, userLocation, {DataName: 'aggregatedHeatDemandData.cache' });
+    if (userLocation !== null){
+        trackEvent('DataView', null, pageUrl, userLocation, {DataName: 'aggregatedHeatDemandData.cache' });
+    }
+
 
 
     const [heatDemandData, setHeatDemandData] = useState(null);

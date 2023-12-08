@@ -26,8 +26,9 @@ export default function LandingPage() {
     });
     //log user viewing page
     const pageUrl = window.location.href;
-    trackEvent('PageView', null, pageUrl, userLocation);
-
+    if (userLocation !== null) {
+        trackEvent('PageView', null, pageUrl, userLocation);
+    }
     const logos = [
         { src: CardiffUniLogo, alt: 'Cardiff University Logo', href: 'https://www.cardiff.ac.uk/' },
         { src: UkriLogo, alt: 'Ukri Logo', href: 'https://www.ukri.org/' },

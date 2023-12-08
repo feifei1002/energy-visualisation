@@ -19,8 +19,9 @@ export default function GasBoilersPage() {
     });
     //log user viewing page, need to add the dataname and download csv log when download function is added.
     const pageUrl = window.location.href;
-    trackEvent('DataView', null, pageUrl, userLocation);
-
+    if (userLocation !== null) {
+        trackEvent('DataView', null, pageUrl, userLocation);
+    }
     // set variables for heat data
     const [heatData, setHeatData] = useState(null);
 
