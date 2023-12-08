@@ -31,9 +31,8 @@ export default function SummaryOfHeatDemandPage() {
         async function fetchData() {
             try {
                 const heatDemandResponse = await fetch('http://localhost:8082/data/summary');
-                const geoJsonResponse = await fetch('http://localhost:8082/data/geojson');
 
-                if (!heatDemandResponse.ok || !geoJsonResponse.ok) throw new Error('Data fetch failed');
+                if (!heatDemandResponse.ok) throw new Error('Data fetch failed');
 
                 const heatData = await heatDemandResponse.json();
 
