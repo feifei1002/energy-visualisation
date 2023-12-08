@@ -25,7 +25,7 @@ const analyticLogSchema = new mongoose.Schema({
         type: Map,
         of: String //can store additional data as key-value pairs
     }
-}, { timestamps: true }); // This adds createdAt and updatedAt fields automatically
+}, { timestamps: true }); //this adds createdAt and updatedAt fields automatically
 
 const AnalyticLog = mongoose.model('AnalyticLogs', analyticLogSchema, 'AnalyticLogs');
 

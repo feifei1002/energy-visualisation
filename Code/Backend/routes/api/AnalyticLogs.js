@@ -13,7 +13,6 @@ router.post('/analyticlog/', async (req, res) => {
             event: req.body.event,
             location: req.body.location,
             pageUrl: req.body.pageUrl,
-            referrerUrl: req.body.referrerUrl,
             additionalDetails: req.body.additionalDetails
         };
 
