@@ -42,7 +42,7 @@
     "react-switch": "^7.0.0",
     "react-table": "^7.8.0",
     "react-toastify": "^9.1.3",
-    "react-tooltip": "^5.22.0",
+    "react-tooltip": "^5.25.0",
     "supertest": "^6.3.3",
     "testing-library": "^0.0.2"
   },

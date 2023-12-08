@@ -11,6 +11,7 @@ import Header from "../Header";
 import LoadingGif from "../assets/LoadingGif.gif";
 import { FaArrowDown } from 'react-icons/fa';
 import downloadCSV from "../helperFunctions/downloadCSV.js";
+import InfoToolTip from '../components/InfoToolTip.jsx';
 
 // The main component function that will be exported and used to display the page.
 export default function BreakDownOfHeatDemandPage() {
@@ -202,6 +203,9 @@ export default function BreakDownOfHeatDemandPage() {
       <>
         <Header />
         <VisualisationsDropdownMenu></VisualisationsDropdownMenu>
+        <div>
+         <InfoToolTip dataset={"Breakdown of heat demand"} />
+        </div>
         <div>
           <button style={{ background: "#206887", borderColor: "#206887", color: "white", padding: "10px", marginTop: '1vh' }} onClick={handleDownloadCSV}>Download CSV</button>
         </div>

@@ -11,6 +11,7 @@ import TotalHeatDemandAfterTable from "../components/tables/TotalHeatDemandAfter
 import Header from "../Header";
 import LoadingGif from "../assets/LoadingGif.gif";
 import downloadCSV from "../helperFunctions/downloadCSV.js";
+import InfoToolTip from '../components/InfoToolTip.jsx';
 
 // The main component function that will be exported and used to display the page.
 export default function BeforeAfterHeatDemandPage() {
@@ -130,6 +131,9 @@ export default function BeforeAfterHeatDemandPage() {
       <>
         <Header />
         <VisualisationsDropdownMenu></VisualisationsDropdownMenu>
+        <div>
+         <InfoToolTip dataset={"Before and after heat demand"} />
+        </div>
         <div>
           <button style={{ background: "#206887", borderColor: "#206887", color: "white", padding: "10px", marginTop: '1vh' }} onClick={handleDownloadCSV}>Download CSV</button>
         </div>

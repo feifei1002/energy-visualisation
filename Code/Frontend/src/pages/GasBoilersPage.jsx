@@ -3,6 +3,7 @@ import Header from "../Header.jsx";
 import VisualisationsDropdownMenu from "../components/VisualisationsDropdownMenu.jsx";
 import LoadingGif from "../assets/LoadingGif.gif";
 import GasConsumedAndElectricityDemand from "../components/graphs/GasConsumedAndElectricityDemand.jsx"
+import InfoToolTip from '../components/InfoToolTip.jsx';
 
 // page which loads the half-hourly data and then outputs a graph
 export default function GasBoilersPage() {
@@ -66,6 +67,9 @@ export default function GasBoilersPage() {
                 {/* default header and dropdown menu for graphs */}
                 <Header />
                 <VisualisationsDropdownMenu></VisualisationsDropdownMenu><br/><br/>
+                <div>
+                 <InfoToolTip dataset={"Hourly electricity and heat demand"} />
+                </div>
 
                 {/* title for graph */}
                 <div style={{ marginLeft: '30px', marginRight: '30px' }}>
