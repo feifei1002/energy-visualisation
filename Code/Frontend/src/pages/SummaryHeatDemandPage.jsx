@@ -8,9 +8,22 @@ import HeatDemandPieChartAverage from "../components/graphs/HeatDemandPieChartAv
 import HeatDemandSummaryChartAverage from "../components/graphs/HeatDemandSummaryChartAverage.jsx";
 import '../css/Visualisations.css';
 
+//analytics tracking
+import trackEvent from '../utils/analytics';
+
 export default function SummaryOfHeatDemandPage() {
+
+    //analytics tracking
+    let userLocation = null;
+    navigator.geolocation.getCurrentPosition((position) => {
+        userLocation = `${position.coords.latitude}, ${position.coords.longitude}`;
+    });
+    //log user viewing page, data gotten through cache not csv so cant name csvname so we name dataname
+    const pageUrl = window.location.href;
+    trackEvent('DataView', null, pageUrl, userLocation, {DataName: 'aggregatedHeatDemandData.cache' });
+
+
     const [heatDemandData, setHeatDemandData] = useState(null);
-    const [geoJsonData, setGeoJsonData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showPieChart, setShowPieChart] = useState(true); // State to toggle between pie and bar charts
 
@@ -23,10 +36,8 @@ export default function SummaryOfHeatDemandPage() {
                 if (!heatDemandResponse.ok || !geoJsonResponse.ok) throw new Error('Data fetch failed');
 
                 const heatData = await heatDemandResponse.json();
-                const geoData = await geoJsonResponse.json();
 
                 setHeatDemandData(heatData);
-                setGeoJsonData(geoData);
             } catch (error) {
                 console.error("Error fetching data:", error);
             } finally {

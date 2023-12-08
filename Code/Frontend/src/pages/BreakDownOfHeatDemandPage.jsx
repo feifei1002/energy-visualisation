@@ -12,11 +12,26 @@ import LoadingGif from "../assets/LoadingGif.gif";
 import { FaArrowDown } from 'react-icons/fa';
 import downloadCSV from "../helperFunctions/downloadCSV.js";
 
+//analytics tracking
+import trackEvent from '../utils/analytics';
+
 // The main component function that will be exported and used to display the page.
 export default function BreakDownOfHeatDemandPage() {
+
+  //analytics tracking
+  let userLocation = null;
+  navigator.geolocation.getCurrentPosition((position) => {
+    userLocation = `${position.coords.latitude}, ${position.coords.longitude}`;
+  });
+  //log user viewing page
+  const pageUrl = window.location.href;
+  trackEvent('DataView', null, pageUrl, userLocation,{CSVName: 'Annual_heat_demand_LSOA_EnglandWales.csv'});
+
   //handle the download CSV file when the download button is clicked
   const handleDownloadCSV = () => {
     downloadCSV(heatData, "Annual_heat_demand_LSOA_EnglandWales.csv");
+    //log the action
+    trackEvent('CSVDownload', null, pageUrl, userLocation, {CSVName: 'Annual_heat_demand_LSOA_EnglandWales.csv'});
   }
   // useRef hook to persist the loading state without triggering re-renders.
   const loadingRef = useRef(false);

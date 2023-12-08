@@ -4,7 +4,22 @@ import ResistanceHeatersProducedAndConsumed from "../components/graphs/Resistanc
 import ElectricityDemandForHeatPumps from "../components/graphs/ElectricityDemandForHeatPumps.jsx";
 import {useEffect, useState} from "react";
 import LoadingGif from "../assets/LoadingGif.gif";
+
+//analytics tracking
+import trackEvent from '../utils/analytics';
+
 export default function ResistanceHeatersPage() {
+
+    //analytics tracking
+    let userLocation = null;
+    navigator.geolocation.getCurrentPosition((position) => {
+        userLocation = `${position.coords.latitude}, ${position.coords.longitude}`;
+    });
+    //log user viewing page, need to add the dataname and download csv log when download function is added.
+    const pageUrl = window.location.href;
+    trackEvent('DataView', null, pageUrl, userLocation);
+
+
     const [heatData, setHeatData] = useState(null);
 
     //fetch all the data from the CSV

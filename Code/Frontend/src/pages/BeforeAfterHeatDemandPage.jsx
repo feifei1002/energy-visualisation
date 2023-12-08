@@ -33,14 +33,15 @@ export default function BeforeAfterHeatDemandPage() {
   navigator.geolocation.getCurrentPosition((position) => {
     userLocation = `${position.coords.latitude}, ${position.coords.longitude}`;
   });
-
+  //log user viewing page
+  const pageUrl = window.location.href;
+  trackEvent('DataView', null, pageUrl, userLocation,{CSVName: 'Annual_heat_demand_LSOA_EnglandWales.csv'});
 
    //handle the download CSV file when the download button is clicked
    const handleDownloadCSV = () => {
     downloadCSV(heatData, "Annual_heat_demand_LSOA_EnglandWales.csv");
 
     //log the action
-     const pageUrl = window.location.href;
      trackEvent('CSVDownload', null, pageUrl, userLocation, {CSVName: 'Annual_heat_demand_LSOA_EnglandWales.csv'});
   }
 
@@ -79,9 +80,6 @@ export default function BeforeAfterHeatDemandPage() {
         setError(e.message);
         console.error("Fetching annual heat data failed", e);
       }
-      //log the action
-      const pageUrl = window.location.href;
-      trackEvent('DataView', null, pageUrl, userLocation, {CSVName: 'Annual_heat_demand_LSOA_EnglandWales.csv'});
     };
 
     // Asynchronous function to fetch GeoJSON data.
