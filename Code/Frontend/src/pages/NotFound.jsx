@@ -9,7 +9,7 @@ export default function NotFound() {
   const navigate = useNavigate();
 
   const handleReturnClick = () => {
-    navigate('/');
+    navigate(-1);
   };
 
 
