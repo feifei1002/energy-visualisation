@@ -13,22 +13,22 @@ export default function GasBoilersPage() {
     // useRef hook to persist the loading state without triggering re-renders.
     const loadingRef = useRef(false);
 
-    const showToastRef = useRef(false);
+    // const showToastRef = useRef(false);
 
     // useEffect hook to fetch data from the half-hourly profiles csv
     useEffect(() => {
-        if (showToastRef.current) return;
-        showToastRef.current = true;
-
-        toast.info("The Graph is Loading",
-            {autoClose: 10000,
-                position: "top-right"
-            }
-        );
+        // if (showToastRef.current) return;
+        // showToastRef.current = true;
+        //
+        // toast.info("The Graph is Loading",
+        //     {autoClose: 10000,
+        //         position: "top-right"
+        //     }
+        // );
 
         // condition to prevent data from being loaded more than once
-        if (loadingRef.current) return;
-        loadingRef.current = true;
+        // if (loadingRef.current) return;
+        // loadingRef.current = true;
 
         const fetchHeatData = async () => {
             // error handling for fetching csv data

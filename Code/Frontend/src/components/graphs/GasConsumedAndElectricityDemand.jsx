@@ -1,5 +1,5 @@
 import {ResponsiveLineCanvas} from "@nivo/line";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import '../../App.css';
 import downloadCSV from "../../helperFunctions/downloadCSV.js";
 import graphToPdf from "../../helperFunctions/graphToPdf.js";
@@ -26,11 +26,26 @@ export default function GasConsumedAndElectricityDemand({data}) {
     // initial value is 1 so data of the graph is not set to 0
     const [newVal, setNewVal] = useState(1);
 
+    const showToastRef = useRef(false);
+
     // when the user inputs a new value, uses setNewVal to change the variable
     const handleChange = (e) => {
         setNewVal(e.target.value)
         console.log("changed the value to " + e.target.value)
     }
+
+    //On load send a notification reminding the user to scroll down to use the contact us form
+    useEffect(() => {
+        // Condition to prevent toast from being shown more than once.
+        if (showToastRef.current) return;
+        showToastRef.current = true;
+
+        toast.info("Scroll down to download the graph data.",
+            {autoClose: 10000,
+                position: "top-right"
+            }
+        );
+    }, []);
 
     // runs first time, and when data or newVal changes
     useEffect(() => {
@@ -39,6 +54,24 @@ export default function GasConsumedAndElectricityDemand({data}) {
 
         // shows the data is being loaded
         setLoading(true);
+
+        // if (showToastRef.current) return;
+        // showToastRef.current = true;
+
+        // if (setLoading) {
+        //     toast.info("The Graph is Loading",
+        //         {autoClose: 10000,
+        //                 position: "top-right"
+        //         });
+        //     showToastRef.current = true;
+        // }
+
+        //
+        // toast.info("The Graph is Loading",
+        //     {autoClose: 10000,
+        //         position: "top-right"
+        //     });
+        // );
 
         // put data into a new list
         const formatData = (data || []).map(({index, "Normalised_ASHP_elec": ASHeatPumpsElec, "Normalised_GSHP_elec": GSHeatPumpsElec, "Normalised_Gas_boiler_gas": boilerGasConsumption, "UK_daily_average_OAT_[degrees_C]": temperature}, dataIndex) => ({
@@ -229,7 +262,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
                                 axisRight={{
                                     legend: "Temperature",
                                     legendPosition:"middle",
-                                    legendOffset: 50,
+                                    legendOffset: 40,
                                 }}
                                 enableGridX={false}
                                 enableGridY={false}
