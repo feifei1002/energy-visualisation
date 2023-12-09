@@ -3,6 +3,7 @@ import Header from "../Header.jsx";
 import VisualisationsDropdownMenu from "../components/VisualisationsDropdownMenu.jsx";
 import LoadingGif from "../assets/LoadingGif.gif";
 import GasConsumedAndElectricityDemand from "../components/graphs/GasConsumedAndElectricityDemand.jsx"
+import {toast} from "react-toastify";
 
 // page which loads the half-hourly data and then outputs a graph
 export default function GasBoilersPage() {
@@ -12,8 +13,19 @@ export default function GasBoilersPage() {
     // useRef hook to persist the loading state without triggering re-renders.
     const loadingRef = useRef(false);
 
+    const showToastRef = useRef(false);
+
     // useEffect hook to fetch data from the half-hourly profiles csv
     useEffect(() => {
+        if (showToastRef.current) return;
+        showToastRef.current = true;
+
+        toast.info("The Graph is Loading",
+            {autoClose: 10000,
+                position: "top-right"
+            }
+        );
+
         // condition to prevent data from being loaded more than once
         if (loadingRef.current) return;
         loadingRef.current = true;
@@ -40,6 +52,9 @@ export default function GasBoilersPage() {
         // trigger data fetching functions
         fetchHeatData();
     }, []);
+
+
+
 
     // error handling for displaying heat data
     if(!heatData) {
