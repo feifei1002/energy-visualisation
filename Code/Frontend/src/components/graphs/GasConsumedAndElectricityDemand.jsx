@@ -2,6 +2,8 @@ import {ResponsiveLineCanvas} from "@nivo/line";
 import React, {useEffect, useState} from "react";
 import '../../App.css';
 import downloadCSV from "../../helperFunctions/downloadCSV.js";
+import graphToPdf from "../../helperFunctions/graphToPdf.js";
+import {toast} from "react-toastify";
 
 // outputs electricity and gas demand data to a graph
 export default function GasConsumedAndElectricityDemand({data}) {
@@ -158,6 +160,22 @@ export default function GasConsumedAndElectricityDemand({data}) {
         downloadCSV(combinedGraphData, "gas_consumed_and_electricity_demand.csv");
     }
 
+    // utilising already created download as pdf function
+    // creates a downloadable pdf file of the graph outputted
+    const handleGeneratePDF = () => {
+        try{
+            // define container id to be converted to pdf
+            graphToPdf('combinedGraphsForGasBoilers',
+                // define title of file
+                `Breakdown of Hourly Temperature, Electricity Consumption for Heat Pumps, and Gas Consumption for Gas Boilers`);
+            // toast outputs notification for successful download
+            toast.success('Graph converted to pdf and downloaded');
+        } catch(e){
+            // error handling for when a pdf cannot be created
+            toast.error('Error converting graph to pdf');
+        }
+    };
+
     // output to page
     return(
         <div>
@@ -169,6 +187,8 @@ export default function GasConsumedAndElectricityDemand({data}) {
             ) : (
                     // actual data below once loaded
                 <div>
+                    {/* specific id used to identify section of code to be outputted as pdf */}
+                    <div id='combinedGraphsForGasBoilers'>
 
                      {/*wrapper class to overlay both graphs on top of each other, due to nivo not allowing biaxial y-axis*/}
                     <div className="wrapper"
@@ -321,6 +341,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
                         </div>
                     {/*</>*/}
                     </div>
+                    </div>
             <br/>
 
             {/* checkboxes to enable and disable each line on the graph */}
@@ -351,10 +372,26 @@ export default function GasConsumedAndElectricityDemand({data}) {
 
             {/* button to download the csv file */}
             <div>
-                <button style={{ background: "#206887",
-                    borderColor: "#206887",
+                <button style={{
+                    backgroundColor: 'rgba(20, 72, 94, 0.99)',
+                    // borderColor: "#206887",
                     color: "white",
-                    padding: "10px" }} onClick={handleDownloadCSV}>Download CSV</button>
+                    padding: "10px" }}
+                        onClick={handleDownloadCSV}>
+                    Download Graph Data as CSV File
+                </button>
+            </div>
+
+            <div>
+                {/* button to generate PDF */}
+                <button onClick={handleGeneratePDF}
+                        style={{
+                            // margin: '1vh',
+                            padding: "10px",
+                            backgroundColor: 'rgba(20, 72, 94, 0.99)',
+                            color: 'white'}}>
+                    Generate PDF of Graph
+                </button>
             </div>
 
             </div>
