@@ -10,7 +10,7 @@ import InfoToolTip from '../components/InfoToolTip.jsx';
 
 
 // page which loads the half-hourly data and then outputs a graph
-export default function GasBoilersPage(props) {
+export default function GasBoilersPage() {
     // set variables for heat data
     const [heatData, setHeatData] = useState(null);
 
@@ -30,12 +30,13 @@ export default function GasBoilersPage(props) {
 
                 console.log("fetched graph data")
                 if (!fetchDataResonse.ok) {
-                    throw new Error(`HTTP error, status: ${fetchDataResonse.status}`);
+                    // throw new Error(`HTTP error, status: ${fetchDataResonse.status}`);
+                    return
                 }
                 // set the response to json
                 const jsonResponse = await fetchDataResonse.json();
                 setHeatData(jsonResponse);
-                console.log("set graph data")
+
 
                 // if (showToastRef.current) return;
                 // showToastRef.current = true;
@@ -54,7 +55,7 @@ export default function GasBoilersPage(props) {
         };
 
         // trigger data fetching functions
-        fetchHeatData();
+        fetchHeatData().then(r => console.log("set graph data"));
     }, []);
 
 

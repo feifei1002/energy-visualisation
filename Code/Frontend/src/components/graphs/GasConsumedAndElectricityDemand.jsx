@@ -187,7 +187,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
             // define container id to be converted to pdf
             graphToPdf('combinedGraphsForGasBoilers',
                 // define title of file
-                `Breakdown of Hourly Temperature, Electricity Consumption for Heat Pumps, and Gas Consumption for Gas Boilers`);
+                `Breakdown of Hourly Temperature, Electricity Consumption for Heat Pumps, and Gas Consumption for Gas Boilers`).then(r => console.log("successful graph to pdf"));
             // toast outputs notification for successful download
             toast.success('Graph converted to pdf and downloaded');
         } catch(e){
