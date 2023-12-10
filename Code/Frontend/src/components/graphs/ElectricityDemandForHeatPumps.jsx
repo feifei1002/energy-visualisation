@@ -1,46 +1,14 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {ResponsiveLineCanvas} from "@nivo/line";
 import downloadCSV from "../../helperFunctions/downloadCSV.js";
+import {NotificationContext} from "../../contexts/NotificationContext.jsx";
 
 export default function ElectricityDemandForHeatPumps({data}) {
 
     const [showASHPElecLine, setShowASHPElecLine] = useState(true);
     const [showGSHPElecLine, setShowGSHPElecLine] = useState(true);
     const [showOATLine, setShowOATLine] = useState(true);
-
-    //a set of test data to use to generate the graph instead of the actual data (very slow)
-    const testData = [
-        {
-            "id": "air-source heat pumps",
-            "color": "hsl(181, 70%, 50%)",
-            "data": [
-                {"x": "2013-01-01T00:00:00" , "y": 0.0000894006878634641*100000},
-                {"x": "2013-02-12T14:00:00", "y": 0.00007365896427030812*100000},
-                {"x": "2013-03-08T00:00:00", "y": 0.000044381285702676944*100000},
-                {"x": "2013-04-05T01:00:00", "y": 0.00011170909712761813*100000},
-                {"x": "2013-05-09T20:00:00", "y": 0.00003897649693032608*100000},
-            ]},
-        {
-            "id": "ground-source heat pumps",
-            "color": "hsl(329, 70%, 50%)",
-            "data": [
-                {"x": "2013-01-01T00:00:00", "y": 7.3},
-                {"x": "2013-02-12T14:00:00", "y": 2.2},
-                {"x": "2013-03-08T00:00:00", "y": 7.2},
-                {"x": "2013-04-05T01:00:00", "y": 4},
-                {"x": "2013-05-09T20:00:00", "y": 13},
-            ]},
-        {
-            "id": "UK daily OAT",
-            "color": "hsl(5, 70%, 50%)",
-            "data": [
-                {"x": "2013-01-01T00:00:00" , "y": 0.0000894006878634641*100000},
-                {"x": "2013-02-12T14:00:00", "y": 0.00007365896427030812*100000},
-                {"x": "2013-03-08T00:00:00", "y": 0.000044381285702676944*100000},
-                {"x": "2013-04-05T01:00:00", "y": 0.00011170909712761813*100000},
-                {"x": "2013-05-09T20:00:00", "y": 0.00003897649693032608*100000},
-            ]},
-    ]
+    const { showNotification } = useContext(NotificationContext);
 
     //Extract the needed data and put it into a new list
     const formatData = (data || []).map(({index, "Normalised_ASHP_elec": ashpElec, "Normalised_GSHP_elec": gshpElec, "UK_daily_average_OAT_[degrees_C]": temperature}, dataIndex) => ({
@@ -131,6 +99,7 @@ export default function ElectricityDemandForHeatPumps({data}) {
 
     //handle the download CSV file when the download button is clicked
     const handleDownloadCSV = () => {
+        showNotification("CSV file downloaded");
         downloadCSV(extractedDataList, "electricity_demand_for_heat_pumps.csv");
     }
 
