@@ -1,46 +1,12 @@
 import { ResponsiveLineCanvas } from '@nivo/line';
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import downloadCSV from "../../helperFunctions/downloadCSV.js";
+import graphToImage from "../../helperFunctions/graphToImage.js";
 export default function ResistanceHeatersProducedAndConsumed({data}) {
 
     const [showHeatLine, setShowHeatLine] = useState(true);
     const [showElecLine, setShowElecLine] = useState(true);
     const [showOATLine, setShowOATLine] = useState(true);
-
-    //a set of test data to use to generate the graph instead of the actual data (very slow)
-    const testData = [
-        {
-            "id": "Heat Production",
-            "color": "hsl(181, 70%, 50%)",
-            "data": [
-                {"x": "2013-01-01T00:00:00" , "y": 0.0000894006878634641*100000},
-                {"x": "2013-02-12T14:00:00", "y": 0.00007365896427030812*100000},
-                {"x": "2013-03-08T00:00:00", "y": 0.000044381285702676944*100000},
-                {"x": "2013-04-05T01:00:00", "y": 0.00011170909712761813*100000},
-                {"x": "2013-05-09T20:00:00", "y": 0.00003897649693032608*100000},
-            ]},
-        {
-            "id": "Electricity Consumption",
-            "color": "hsl(329, 70%, 50%)",
-            "data": [
-                {"x": "2013-01-01T00:00:00", "y": 7.3},
-                {"x": "2013-02-12T14:00:00", "y": 2.2},
-                {"x": "2013-03-08T00:00:00", "y": 7.2},
-                {"x": "2013-04-05T01:00:00", "y": 4},
-                {"x": "2013-05-09T20:00:00", "y": 13},
-            ]},
-        {
-            "id": "UK daily OAT",
-            "color": "hsl(5, 70%, 50%)",
-            "data": [
-                {"x": "2013-01-01T00:00:00" , "y": 0.0000894006878634641*100000},
-                {"x": "2013-02-12T14:00:00", "y": 0.00007365896427030812*100000},
-                {"x": "2013-03-08T00:00:00", "y": 0.000044381285702676944*100000},
-                {"x": "2013-04-05T01:00:00", "y": 0.00011170909712761813*100000},
-                {"x": "2013-05-09T20:00:00", "y": 0.00003897649693032608*100000},
-            ]},
-    ]
-
 
     // Extract the needed data and put it into a new list
     const formatData = (data || []).map(({index, "Normalised_Resistance_heater_heat": resHeaterHeat, "Normalised_Resistance_heater_elec": resHeaterElec, "UK_daily_average_OAT_[degrees_C]": temperature}, dataIndex) => ({
@@ -131,14 +97,17 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
 
     //handle the download CSV file when the download button is clicked
     const handleDownloadCSV = () => {
-        downloadCSV(extractedDataList, "resistance_heater_produced_and_consumed.csv");
+        downloadCSV(extractedDataList, "resistance_heaters_produced_and_consumed.csv");
     }
+
+    const handleDownloadGraphAsImage = () => {
+        graphToImage("resistance-heaters-produced-and-consumed", "resistance_heaters_graph.png");
+    };
 
 
     return(
         <>
-            <div style={{ width: 'inherit', height: 400}}>
-
+            <div style={{ width: 'inherit', height: 400}} id="resistance-heaters-produced-and-consumed">
                 <ResponsiveLineCanvas
                     data={filterData}
                     // data={testData}
@@ -220,26 +189,27 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
                             ]
                         }]}
                 />
-
-                {/*actual checkboxes to check*/}
-                <div>
-                    <label style={{fontWeight: 'bold'}}>
-                        <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showHeatLine} onChange={handleShowHeatLineChange} />
-                        Heat Production
-                    </label>
-                    <label style={{fontWeight: 'bold'}}>
-                        <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showElecLine} onChange={handleShowElecLineChange} />
-                        Electricity Consumption
-                    </label>
-                    <label style={{ fontWeight: 'bold'}}>
-                        <input style={{ marginRight: '2px' , marginLeft: '15px'}} type="checkbox" checked={showOATLine} onChange={handleShowOATLineChange} />
-                        UK daily OAT
-                    </label>
-                </div>
-                <div>
-                    <button style={{ background: "#206887", borderColor: "#206887", color: "white", padding: "10px" }} onClick={handleDownloadCSV}>Download CSV</button>
-                </div>
-            </div><br></br>
+            </div>
+            {/*actual checkboxes to check*/}
+            <div>
+                <label style={{fontWeight: 'bold'}}>
+                    <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showHeatLine} onChange={handleShowHeatLineChange} />
+                    Heat Production
+                </label>
+                <label style={{fontWeight: 'bold'}}>
+                    <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showElecLine} onChange={handleShowElecLineChange} />
+                    Electricity Consumption
+                </label>
+                <label style={{ fontWeight: 'bold'}}>
+                    <input style={{ marginRight: '2px' , marginLeft: '15px'}} type="checkbox" checked={showOATLine} onChange={handleShowOATLineChange} />
+                    UK daily OAT
+                </label>
+            </div>
+            <div>
+                <button style={{ background: "#206887", borderColor: "#206887", color: "white", padding: "10px" }} onClick={handleDownloadCSV}>Download CSV</button>&ensp;&ensp;
+                <button style={{ background: "#206887", borderColor: "#206887", color: "white", padding: "10px" }} onClick={handleDownloadGraphAsImage}>Download Graph As Image</button>
+            </div>
+            <br></br>
         </>
     )
 }

@@ -9,6 +9,7 @@ import WikiHeatBreakDown from "../../pages/Wiki/WikiHeatBreakDown"
 // Import necessary hooks and React itself from the react package.
 import { useRef, useState, useEffect } from 'react';
 import React from 'react';
+import WikiResistanceHeaters from "../../pages/Wiki/WikiResistanceHeaters.jsx";
 
 
 export default function WikiLandingPage() {
@@ -25,6 +26,8 @@ export default function WikiLandingPage() {
                 return <WikiHeatDemand />;
             case 'Breakdown of heat demand before energy efficiency measures for each region':
                 return <WikiHeatBreakDown />;
+            case 'Hourly heat production and gas consumption profiles - Resistance heaters':
+                return <WikiResistanceHeaters />;
             default:
                 return null;
         }
