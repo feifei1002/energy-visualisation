@@ -204,11 +204,10 @@ export default function GasConsumedAndElectricityDemand({data}) {
               So the 'loading data' section cannot be displayed while the graph is already being called */}
             {loading ? ( // displays 'Loading data...' message
                 <h2>Loading data...</h2>
-                // <ToastMessage />
             ) : (
                     // actual data below once loaded
             <div>
-                    {/* specific id used to identify section of code to be outputted as pdf */}
+                 {/*specific id used to identify section of code to be outputted as pdf */}
                  <div id='combinedGraphsForGasBoilers'>
 
                      {/*wrapper class to overlay both graphs on top of each other, due to nivo not allowing biaxial y-axis*/}
@@ -310,7 +309,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
                                     tickValues: 'every 1 month',
                                     legend:"Date",
                                     legendPosition:"middle",
-                                    legendOffset: 50,
+                                    legendOffset: 35,
                                 }}
                                 axisLeft={{
                                     legend: "Hourly Electricity and Gas/Hydrogen Demand for Gas Boilers (GWh)",     // data changed to hourly to reduce slow loading times
@@ -365,85 +364,91 @@ export default function GasConsumedAndElectricityDemand({data}) {
 
                 <br/>
 
-                {/* checkboxes to enable and disable each line on the graph */}
-                <div className="graph-checkboxes" style={{
-                    width: '100%'
-                }}>
+                <div>
 
                     <h5>Un-Tick Boxes to Remove a Specific Line From the Graph Above:</h5>
+                    {/* checkboxes to enable and disable each line on the graph */}
+                    <div className="graph-checkboxes">
 
-                    {/* gas consumption */}
-                    <label style={{ color: '#ffffff', fontWeight: 'bold'}}>
-                        <input
-                            style={{ marginRight: '2px' , marginLeft: '15px'}}
-                            type="checkbox" checked={showGasConsLine} onChange={handleShowGasConsLine} />
-                        Gas Consumption of Gas Boilers
-                    </label>
+                        {/* gas consumption */}
+                        <label style={{ color: '#ffffff'}}>
+                            <input
+                                style={{ marginRight: '2px' , marginLeft: '15px'}}
+                                type="checkbox" checked={showGasConsLine} onChange={handleShowGasConsLine} />
+                            Gas Consumption of Gas Boilers
+                        </label>
 
-                    {/* ground source heat pumps */}
-                    <label style={{ color: '#ffffff', fontWeight: 'bold'}}>
-                        <input
-                            style={{ marginRight: '2px', marginLeft: '15px' }}
-                            type="checkbox" checked={showGSHPElecLine} onChange={handleShowGSHPElecLine} />
-                        Electricity Consumption for Ground Source Heat Pumps
-                    </label>
+                        {/* ground source heat pumps */}
+                        <label style={{ color: '#ffffff'}}>
+                            <input
+                                style={{ marginRight: '2px', marginLeft: '15px' }}
+                                type="checkbox" checked={showGSHPElecLine} onChange={handleShowGSHPElecLine} />
+                            Electricity Consumption for Ground Source Heat Pumps
+                        </label>
 
-                    {/* air source heat pumps */}
-                    <label style={{ color: '#ffffff', fontWeight: 'bold'}}>
-                        <input
-                            style={{ marginRight: '2px', marginLeft: '15px' }}
-                            type="checkbox" checked={showASHPElecLine} onChange={handleShowASHPElecLine} />
-                        Electricity Consumption for Air Source Heat Pumps
-                    </label>
-                </div>
+                        {/* air source heat pumps */}
+                        <label style={{ color: '#ffffff'}}>
+                            <input
+                                style={{ marginRight: '2px', marginLeft: '15px' }}
+                                type="checkbox" checked={showASHPElecLine} onChange={handleShowASHPElecLine} />
+                            Electricity Consumption for Air Source Heat Pumps
+                        </label>
+                    </div>
 
-                <br/>
+                    <br/>
 
-                <div>
                     <h5>Alter the Y-Axis:</h5>
-
-                    {/* user can type in a value to times by the graph data */}
-                    <label>Input value to times by y-axis (GWh): </label>
-                    {/* validation so the user cannot input a value below 1, so the graph will always have data that is displayed */}
-                    <input data-testid="userInput" type="number" min="1" name="newValue" value={newVal} onChange={handleChange} />
-                </div>
-
-
-                <br/><br/>
-
-
-                <h5>Buttons to Download Graph Data:</h5>
-                <div style={{
-                    display: 'flex',
-                    // display: 'inline-block'
-                    justifyContent: 'center',
-                    gap: '20px'
-                }}>
-                    {/* button to download the csv file */}
                     <div>
-                        <button style={{
-                            backgroundColor: 'rgba(20, 72, 94, 0.99)',
-                            // borderColor: "#206887",
-                            color: "white",
-                            padding: "10px" }}
-                                onClick={handleDownloadCSV}>
-                            Download Graph Data as CSV File
-                        </button>
+
+                        {/* user can type in a value to times by the graph data */}
+                        <label>Input value to times by y-axis (GWh): </label>
+                            {/* validation so the user cannot input a value below 1, so the graph will always have data that is displayed */}
+                        <input data-testid="userInput"
+                               type="number"
+                               min="1"
+                               name="newValue"
+                               value={newVal}
+                               onChange={handleChange} />
                     </div>
 
-                    <div>
-                        {/* button to generate PDF */}
-                        <button onClick={handleGeneratePDF}
-                                style={{
-                                    // margin: '1vh',
-                                    padding: "10px",
-                                    backgroundColor: 'rgba(20, 72, 94, 0.99)',
-                                    color: 'white'}}>
-                            Generate PDF of Graph
-                        </button>
-                    </div>
-                </div>
 
+                    <br/><br/>
+
+
+                    <h5>Buttons to Download Graph Data:</h5>
+                    <div className="buttons" style={{
+                        display: 'flex',
+                        // display: 'inline-block'
+                        justifyContent: 'center',
+                        gap: '20px'
+                    }}>
+                        {/* button to download the csv file */}
+                        <div>
+                            <button style={{
+                                backgroundColor: 'rgba(20, 72, 94, 0.99)',
+                                // borderColor: "#206887",
+                                color: "white",
+                                padding: "10px" }}
+                                    onClick={handleDownloadCSV}>
+                                Download Graph Data as CSV File
+                            </button>
+                        </div>
+
+                        <div>
+                            {/* button to generate PDF */}
+                            <button onClick={handleGeneratePDF}
+                                    style={{
+                                        // margin: '1vh',
+                                        padding: "10px",
+                                        backgroundColor: 'rgba(20, 72, 94, 0.99)',
+                                        color: 'white'}}>
+                                Generate PDF of Graph
+                            </button>
+                        </div>
+                    </div>
+
+
+                </div>
             </div>
             )}
         </div>

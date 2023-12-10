@@ -5,12 +5,12 @@ import LoadingGif from "../assets/LoadingGif.gif";
 import GasConsumedAndElectricityDemand from "../components/graphs/GasConsumedAndElectricityDemand.jsx"
 import {toast, ToastContainer} from "react-toastify";
 import InfoToolTip from '../components/InfoToolTip.jsx';
-import { NotificationContext } from '../contexts/NotificationContext';
+
 
 
 
 // page which loads the half-hourly data and then outputs a graph
-export default function GasBoilersPage() {
+export default function GasBoilersPage(props) {
     // set variables for heat data
     const [heatData, setHeatData] = useState(null);
 
@@ -86,8 +86,6 @@ export default function GasBoilersPage() {
                 <Header />
                 <VisualisationsDropdownMenu/>
                 <InfoToolTip dataset={"Hourly electricity and heat demand"} /><br/>
-
-                {/*<ToastContainer />*/}
 
                 {/* title for graph */}
                 <div style={{ marginLeft: '30px', marginRight: '30px' }}>
