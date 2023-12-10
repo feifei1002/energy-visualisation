@@ -111,7 +111,7 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
 
     return(
         <>
-            <div style={{ width: 'inherit', height: 400}} id="resistance-heater-produced-and-consumed">
+            <div style={{ width: 'inherit', height: 400}} id="resistance-heaters-produced-and-consumed">
                 <ResponsiveLineCanvas
                     data={filterData}
                     // data={testData}
