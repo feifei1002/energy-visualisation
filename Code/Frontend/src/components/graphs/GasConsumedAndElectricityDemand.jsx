@@ -40,7 +40,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
         if (showToastRef.current) return;
         showToastRef.current = true;
 
-        toast.info("Scroll down to download the graph data.",
+        toast.info("Scroll Down to Download the Graph Data.",
             {autoClose: 10000,
                 position: "top-right"
             }
@@ -54,24 +54,6 @@ export default function GasConsumedAndElectricityDemand({data}) {
 
         // shows the data is being loaded
         setLoading(true);
-
-        // if (showToastRef.current) return;
-        // showToastRef.current = true;
-
-        // if (setLoading) {
-        //     toast.info("The Graph is Loading",
-        //         {autoClose: 10000,
-        //                 position: "top-right"
-        //         });
-        //     showToastRef.current = true;
-        // }
-
-        //
-        // toast.info("The Graph is Loading",
-        //     {autoClose: 10000,
-        //         position: "top-right"
-        //     });
-        // );
 
         // put data into a new list
         const formatData = (data || []).map(({index, "Normalised_ASHP_elec": ASHeatPumpsElec, "Normalised_GSHP_elec": GSHeatPumpsElec, "Normalised_Gas_boiler_gas": boilerGasConsumption, "UK_daily_average_OAT_[degrees_C]": temperature}, dataIndex) => ({
@@ -190,7 +172,12 @@ export default function GasConsumedAndElectricityDemand({data}) {
     // utilising already created download csv function
     // creates downloadable csv file for all the data used on the graph
     const handleDownloadCSV = () => {
-        downloadCSV(combinedGraphData, "gas_consumed_and_electricity_demand.csv");
+        try {
+            downloadCSV(combinedGraphData, "gas_consumed_and_electricity_demand.csv");
+            toast.success('Downloaded CSV File');
+        } catch (e) {
+            toast.error('Error Downloading CSV File');
+        }
     }
 
     // utilising already created download as pdf function
@@ -217,6 +204,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
               So the 'loading data' section cannot be displayed while the graph is already being called */}
             {loading ? ( // displays 'Loading data...' message
                 <h2>Loading data...</h2>
+                // <ToastMessage />
             ) : (
                     // actual data below once loaded
             <div>

@@ -1,10 +1,12 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import Header from "../Header.jsx";
 import VisualisationsDropdownMenu from "../components/VisualisationsDropdownMenu.jsx";
 import LoadingGif from "../assets/LoadingGif.gif";
 import GasConsumedAndElectricityDemand from "../components/graphs/GasConsumedAndElectricityDemand.jsx"
-import {toast} from "react-toastify";
+import {toast, ToastContainer} from "react-toastify";
 import InfoToolTip from '../components/InfoToolTip.jsx';
+import { NotificationContext } from '../contexts/NotificationContext';
+
 
 
 // page which loads the half-hourly data and then outputs a graph
@@ -12,25 +14,12 @@ export default function GasBoilersPage() {
     // set variables for heat data
     const [heatData, setHeatData] = useState(null);
 
-    // useRef hook to persist the loading state without triggering re-renders.
-    const loadingRef = useRef(false);
+    // const { showNotification } = useContext(NotificationContext);
+    const showToastRef = useRef(false);
 
-    // const showToastRef = useRef(false);
 
     // useEffect hook to fetch data from the half-hourly profiles csv
     useEffect(() => {
-        // if (showToastRef.current) return;
-        // showToastRef.current = true;
-        //
-        // toast.info("The Graph is Loading",
-        //     {autoClose: 10000,
-        //         position: "top-right"
-        //     }
-        // );
-
-        // condition to prevent data from being loaded more than once
-        // if (loadingRef.current) return;
-        // loadingRef.current = true;
 
         const fetchHeatData = async () => {
             // error handling for fetching csv data
@@ -46,6 +35,19 @@ export default function GasBoilersPage() {
                 // set the response to json
                 const jsonResponse = await fetchDataResonse.json();
                 setHeatData(jsonResponse);
+                console.log("set graph data")
+
+                // if (showToastRef.current) return;
+                // showToastRef.current = true;
+                //
+                // // notification
+                // // however doesn't show until the graph is loaded...
+                // toast.info("The Graph is Loading",
+                //     {autoClose: 10000,
+                //         position: "top-right"
+                //     }
+                // );
+
             } catch (e) {
                 console.error("Error fetching data: ", e);
             }
@@ -82,10 +84,10 @@ export default function GasBoilersPage() {
             <>
                 {/* default header and dropdown menu for graphs */}
                 <Header />
-                <VisualisationsDropdownMenu></VisualisationsDropdownMenu><br/><br/>
-                <div>
-                 <InfoToolTip dataset={"Hourly electricity and heat demand"} />
-                </div>
+                <VisualisationsDropdownMenu/>
+                <InfoToolTip dataset={"Hourly electricity and heat demand"} /><br/>
+
+                {/*<ToastContainer />*/}
 
                 {/* title for graph */}
                 <div style={{ marginLeft: '30px', marginRight: '30px' }}>
