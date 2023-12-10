@@ -2,6 +2,7 @@ import React, {useContext, useState} from "react";
 import {ResponsiveLineCanvas} from "@nivo/line";
 import downloadCSV from "../../helperFunctions/downloadCSV.js";
 import {NotificationContext} from "../../contexts/NotificationContext.jsx";
+import graphToImage from "../../helperFunctions/graphToImage.js";
 
 export default function ElectricityDemandForHeatPumps({data}) {
 
@@ -103,10 +104,15 @@ export default function ElectricityDemandForHeatPumps({data}) {
         downloadCSV(extractedDataList, "electricity_demand_for_heat_pumps.csv");
     }
 
+    const handleDownloadGraphAsImage = () => {
+        showNotification("Image is downloaded");
+        graphToImage("electricity-demand-for-heat-pump", "electricity_demand_graph.png");
+    };
+
 
     return(
         <>
-            <div style={{ width: 'inherit', height: 400}}>
+            <div style={{ width: 'inherit', height: 400}} id="electricity-demand-for-heat-pump">
 
                 <ResponsiveLineCanvas
                     data={filterData}
@@ -189,26 +195,27 @@ export default function ElectricityDemandForHeatPumps({data}) {
                             ]
                         }]}
                 />
-
-                {/*actual checkboxes to check*/}
-                <div>
-                    <label style={{fontWeight: 'bold'}}>
-                        <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showASHPElecLine} onChange={handleShowASHPElecLineChange} />
-                        Electricity Consumption for ASHP
-                    </label>
-                    <label style={{fontWeight: 'bold'}}>
-                        <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showGSHPElecLine} onChange={handleShowGSHPElecLineChange} />
-                        Electricity Consumption for GSHP
-                    </label>
-                    <label style={{fontWeight: 'bold'}}>
-                        <input style={{ marginRight: '2px' , marginLeft: '15px'}} type="checkbox" checked={showOATLine} onChange={handleShowOATLineChange} />
-                        UK daily OAT
-                    </label>
-                </div>
-                <div>
-                    <button style={{ background: "#206887", borderColor: "#206887", color: "white", padding: "10px" }} onClick={handleDownloadCSV}>Download CSV</button>
-                </div>
-            </div><br></br>
+            </div>
+            {/*actual checkboxes to check*/}
+            <div>
+                <label style={{fontWeight: 'bold'}}>
+                    <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showASHPElecLine} onChange={handleShowASHPElecLineChange} />
+                    Electricity Consumption for ASHP
+                </label>
+                <label style={{fontWeight: 'bold'}}>
+                    <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showGSHPElecLine} onChange={handleShowGSHPElecLineChange} />
+                    Electricity Consumption for GSHP
+                </label>
+                <label style={{fontWeight: 'bold'}}>
+                    <input style={{ marginRight: '2px' , marginLeft: '15px'}} type="checkbox" checked={showOATLine} onChange={handleShowOATLineChange} />
+                    UK daily OAT
+                </label>
+            </div>
+            <div>
+                <button style={{ background: "#206887", borderColor: "#206887", color: "white", padding: "10px" }} onClick={handleDownloadCSV}>Download CSV</button>&ensp;&ensp;
+                <button style={{ background: "#206887", borderColor: "#206887", color: "white", padding: "10px" }} onClick={handleDownloadGraphAsImage}>Download Graph As Image</button>
+            </div>
+            <br></br>
         </>
     )
 }

@@ -2,6 +2,7 @@ import { ResponsiveLineCanvas } from '@nivo/line';
 import React, {useContext, useState} from "react";
 import downloadCSV from "../../helperFunctions/downloadCSV.js";
 import {NotificationContext} from "../../contexts/NotificationContext.jsx";
+import graphToImage from "../../helperFunctions/graphToImage.js";
 export default function ResistanceHeatersProducedAndConsumed({data}) {
 
     const [showHeatLine, setShowHeatLine] = useState(true);
@@ -98,15 +99,19 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
 
     //handle the download CSV file when the download button is clicked
     const handleDownloadCSV = () => {
-        showNotification("CSV file downloaded");
-        downloadCSV(extractedDataList, "resistance_heater_produced_and_consumed.csv");
+        showNotification("CSV file is downloaded");
+        downloadCSV(extractedDataList, "resistance_heaters_produced_and_consumed.csv");
     }
+
+    const handleDownloadGraphAsImage = () => {
+        showNotification("Image is downloaded");
+        graphToImage("resistance-heaters-produced-and-consumed", "resistance_heaters_graph.png");
+    };
 
 
     return(
         <>
-            <div style={{ width: 'inherit', height: 400}}>
-
+            <div style={{ width: 'inherit', height: 400}} id="resistance-heater-produced-and-consumed">
                 <ResponsiveLineCanvas
                     data={filterData}
                     // data={testData}
@@ -188,26 +193,27 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
                             ]
                         }]}
                 />
-
-                {/*actual checkboxes to check*/}
-                <div>
-                    <label style={{fontWeight: 'bold'}}>
-                        <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showHeatLine} onChange={handleShowHeatLineChange} />
-                        Heat Production
-                    </label>
-                    <label style={{fontWeight: 'bold'}}>
-                        <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showElecLine} onChange={handleShowElecLineChange} />
-                        Electricity Consumption
-                    </label>
-                    <label style={{ fontWeight: 'bold'}}>
-                        <input style={{ marginRight: '2px' , marginLeft: '15px'}} type="checkbox" checked={showOATLine} onChange={handleShowOATLineChange} />
-                        UK daily OAT
-                    </label>
-                </div>
-                <div>
-                    <button style={{ background: "#206887", borderColor: "#206887", color: "white", padding: "10px" }} onClick={handleDownloadCSV}>Download CSV</button>
-                </div>
-            </div><br></br>
+            </div>
+            {/*actual checkboxes to check*/}
+            <div>
+                <label style={{fontWeight: 'bold'}}>
+                    <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showHeatLine} onChange={handleShowHeatLineChange} />
+                    Heat Production
+                </label>
+                <label style={{fontWeight: 'bold'}}>
+                    <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showElecLine} onChange={handleShowElecLineChange} />
+                    Electricity Consumption
+                </label>
+                <label style={{ fontWeight: 'bold'}}>
+                    <input style={{ marginRight: '2px' , marginLeft: '15px'}} type="checkbox" checked={showOATLine} onChange={handleShowOATLineChange} />
+                    UK daily OAT
+                </label>
+            </div>
+            <div>
+                <button style={{ background: "#206887", borderColor: "#206887", color: "white", padding: "10px" }} onClick={handleDownloadCSV}>Download CSV</button>&ensp;&ensp;
+                <button style={{ background: "#206887", borderColor: "#206887", color: "white", padding: "10px" }} onClick={handleDownloadGraphAsImage}>Download Graph As Image</button>
+            </div>
+            <br></br>
         </>
     )
 }
