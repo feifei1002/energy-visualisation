@@ -1,7 +1,6 @@
 import React, {useContext, useState} from "react";
 import {ResponsiveLineCanvas} from "@nivo/line";
 import downloadCSV from "../../helperFunctions/downloadCSV.js";
-import {NotificationContext} from "../../contexts/NotificationContext.jsx";
 import graphToImage from "../../helperFunctions/graphToImage.js";
 
 export default function ElectricityDemandForHeatPumps({data}) {
@@ -9,7 +8,6 @@ export default function ElectricityDemandForHeatPumps({data}) {
     const [showASHPElecLine, setShowASHPElecLine] = useState(true);
     const [showGSHPElecLine, setShowGSHPElecLine] = useState(true);
     const [showOATLine, setShowOATLine] = useState(true);
-    const { showNotification } = useContext(NotificationContext);
 
     //Extract the needed data and put it into a new list
     const formatData = (data || []).map(({index, "Normalised_ASHP_elec": ashpElec, "Normalised_GSHP_elec": gshpElec, "UK_daily_average_OAT_[degrees_C]": temperature}, dataIndex) => ({
@@ -100,12 +98,10 @@ export default function ElectricityDemandForHeatPumps({data}) {
 
     //handle the download CSV file when the download button is clicked
     const handleDownloadCSV = () => {
-        showNotification("CSV file downloaded");
         downloadCSV(extractedDataList, "electricity_demand_for_heat_pumps.csv");
     }
 
     const handleDownloadGraphAsImage = () => {
-        showNotification("Image is downloaded");
         graphToImage("electricity-demand-for-heat-pump", "electricity_demand_graph.png");
     };
 

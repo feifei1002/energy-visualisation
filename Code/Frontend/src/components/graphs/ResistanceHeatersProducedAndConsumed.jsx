@@ -1,14 +1,12 @@
 import { ResponsiveLineCanvas } from '@nivo/line';
 import React, {useContext, useState} from "react";
 import downloadCSV from "../../helperFunctions/downloadCSV.js";
-import {NotificationContext} from "../../contexts/NotificationContext.jsx";
 import graphToImage from "../../helperFunctions/graphToImage.js";
 export default function ResistanceHeatersProducedAndConsumed({data}) {
 
     const [showHeatLine, setShowHeatLine] = useState(true);
     const [showElecLine, setShowElecLine] = useState(true);
     const [showOATLine, setShowOATLine] = useState(true);
-    const { showNotification } = useContext(NotificationContext);
 
     // Extract the needed data and put it into a new list
     const formatData = (data || []).map(({index, "Normalised_Resistance_heater_heat": resHeaterHeat, "Normalised_Resistance_heater_elec": resHeaterElec, "UK_daily_average_OAT_[degrees_C]": temperature}, dataIndex) => ({
@@ -99,12 +97,10 @@ export default function ResistanceHeatersProducedAndConsumed({data}) {
 
     //handle the download CSV file when the download button is clicked
     const handleDownloadCSV = () => {
-        showNotification("CSV file is downloaded");
         downloadCSV(extractedDataList, "resistance_heaters_produced_and_consumed.csv");
     }
 
     const handleDownloadGraphAsImage = () => {
-        showNotification("Image is downloaded");
         graphToImage("resistance-heaters-produced-and-consumed", "resistance_heaters_graph.png");
     };
 
