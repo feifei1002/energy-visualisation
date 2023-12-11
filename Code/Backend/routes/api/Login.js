@@ -7,7 +7,6 @@ const LoginController = require('../../controllers/LoginController');
 const bodyParser = require("body-parser");
 const key = process.env.ACCESS_TOKEN;
 const verifyToken = require('../api/Profile')
-// router.put('/login', LoginController.getLogin);;
 
 router.post('/login', LoginController.postLogin);
 router.post('/logout', verifyToken, (req, res) =>{
