@@ -128,15 +128,16 @@ function Login() {
                                 https://stackoverflow.com/questions/2825856/html-button-to-not-submit-form */}
                             <button type="button" onClick={routeChange}>Register</button>
                             {/* end of code */}
-
-                            {/* Display unique error messages from error handling */}
-                            {status?.type === 'success' && <p>Successful Login!</p>}
-                            {status?.type === 'error' && <p>Incorrect username or password, try again!</p>}
                         </div>
                     </form>
+                    {/* Display unique error messages from error handling */}
+                    {status?.type === 'success' && <p>Successful Login!</p>}
+                    {status?.type === 'error' && <p>Incorrect username or password, try again!</p>}
+
                     <div className="ForgotPasswordContainer">
                         <h4>Forgot password? contact webadmin@climatedata.com</h4>
                     </div>
+                    <br/>
                 </div>
             </main>
 
