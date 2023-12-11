@@ -9,7 +9,7 @@ export default function InfoToolTip({dataset}) {
 
   return (
     <>
-       <a data-tooltip-id="my-tooltip" data-tooltip-content={tooltipContent} class="toolTip">
+       <a data-tooltip-id="my-tooltip" data-tooltip-content={tooltipContent} className="toolTip">
             ℹ
        </a>
        <Tooltip id="my-tooltip" />

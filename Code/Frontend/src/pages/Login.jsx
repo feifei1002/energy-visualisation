@@ -8,6 +8,9 @@ import { WebAdminLogin } from "../loginFunctions/WebAdminLogin";
 
 function Login() {
 
+    // code to check username and password from login form using react hook
+    // taken from Stack Overflow post by kodamace 19-03-2022
+    // accessed 11-12-2023
     // https://stackoverflow.com/questions/71536244/check-username-password-login-form-using-react-hooks
     const [inputs, setInputs] = useState({
         username: '',
@@ -20,6 +23,7 @@ function Login() {
     const handleChange = (e) => {
         setInputs({...inputs, [e.target.name]:[e.target.value]})
     }
+    // end of referenced code
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -58,7 +62,7 @@ function Login() {
             console.error("Error with posting login details");
         }
 
-        //Webadmin login
+        // Webadmin login
         try{
                // Attempt to post user data to the web admin login endpoint
                const webAdminResponse = await axios.post('/api/loginwebadmin', inputs);
@@ -86,8 +90,10 @@ function Login() {
 
     // end of code
 
-    // from https://stackoverflow.com/questions/50644976/react-button-onclick-redirect-page 06/11
-    // Navigate function from react-router-dom
+    // code to redirect the user to a new page when clicking a button
+    // taken from Stack Overflow post by aravind_reddy 01-06-2018
+    // accessed 11-12-2023
+    // https://stackoverflow.com/questions/50644976/react-button-onclick-redirect-page
     let navigate = useNavigate();
 
     // Function to change route to the registration page
@@ -102,7 +108,7 @@ function Login() {
             <Header />  {/* Display the header component */}
 
             <main>
-                <div className="login-container">
+                <div className="login-container" >
                     <form onSubmit={handleSubmit}>
                         <div className="inputRow">
                             <label>User Name</label>
@@ -115,16 +121,23 @@ function Login() {
                         </div>
                         <div className="inputRow">
                             <input type="submit" value="Login" />
-                            {/* https://stackoverflow.com/questions/2825856/html-button-to-not-submit-form  on 04/11*/}
+
+                            {/* code to have a button inside a form that does not submit the user inputs
+                                taken from Stack Overflow post edited by jpp 05-02-2019
+                                accessed 11-12-2023
+                                https://stackoverflow.com/questions/2825856/html-button-to-not-submit-form */}
                             <button type="button" onClick={routeChange}>Register</button>
-                            {/* Display unique error messages from error handling */}
-                            {status?.type === 'success' && <p>Successful Login!</p>}
-                            {status?.type === 'error' && <p>Incorrect username or password, try again!</p>}
-                            <div className="ForgotPasswordContainer">
-                                <h4>Forgot password? contact webadmin@climatedata.com</h4>
-                            </div>
+                            {/* end of code */}
                         </div>
                     </form>
+                    {/* Display unique error messages from error handling */}
+                    {status?.type === 'success' && <p>Successful Login!</p>}
+                    {status?.type === 'error' && <p>Incorrect username or password, try again!</p>}
+
+                    <div className="ForgotPasswordContainer">
+                        <h4>Forgot password? contact webadmin@climatedata.com</h4>
+                    </div>
+                    <br/>
                 </div>
             </main>
 
