@@ -4,6 +4,7 @@ import '../../App.css';
 import downloadCSV from "../../helperFunctions/downloadCSV.js";
 import graphToPdf from "../../helperFunctions/graphToPdf.js";
 import {toast} from "react-toastify";
+import graphToImage from "../../helperFunctions/graphToImage.js";
 
 // outputs electricity and gas demand data to a graph
 export default function GasConsumedAndElectricityDemand({data}) {
@@ -182,6 +183,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
 
     // utilising already created download as pdf function
     // creates a downloadable pdf file of the graph outputted
+    // not used in the page anymore as creates a blurry image of the graph
     const handleGeneratePDF = () => {
         try{
             // define container id to be converted to pdf
@@ -193,6 +195,19 @@ export default function GasConsumedAndElectricityDemand({data}) {
         } catch(e){
             // error handling for when a pdf cannot be created
             toast.error('Error converting graph to pdf');
+        }
+    };
+
+    // creates an image of the line graph that the user downloads
+    const handleDownloadGraphAsImage = () => {
+        try {
+            // define container id to be converted to png
+            graphToImage("combinedGraphsForGasBoilers", "gas_boilers_graph.png")
+            // toast outputs notification for successful download
+            toast.success('Graph Converted to PNG and Downloaded');
+        } catch (e) {
+            // unable to download
+            toast.error('Error Converting Graph to PNG');
         }
     };
 
@@ -208,7 +223,10 @@ export default function GasConsumedAndElectricityDemand({data}) {
                     // actual data below once loaded
             <div>
                  {/*specific id used to identify section of code to be outputted as pdf */}
-                 <div id='combinedGraphsForGasBoilers'>
+                 <div id='combinedGraphsForGasBoilers' style={{
+                     // added white background so when downloading an image of the graph the data is visible in dark mode
+                     backgroundColor: 'white'
+                 }}>
 
                      {/*wrapper class to overlay both graphs on top of each other, due to nivo not allowing biaxial y-axis*/}
                     <div className="wrapper"
@@ -426,7 +444,6 @@ export default function GasConsumedAndElectricityDemand({data}) {
                         <div>
                             <button style={{
                                 backgroundColor: 'rgba(20, 72, 94, 0.99)',
-                                // borderColor: "#206887",
                                 color: "white",
                                 padding: "10px" }}
                                     onClick={handleDownloadCSV}>
@@ -435,14 +452,13 @@ export default function GasConsumedAndElectricityDemand({data}) {
                         </div>
 
                         <div>
-                            {/* button to generate PDF */}
-                            <button onClick={handleGeneratePDF}
+                            {/* button to generate image */}
+                            <button onClick={handleDownloadGraphAsImage}
                                     style={{
-                                        // margin: '1vh',
                                         padding: "10px",
                                         backgroundColor: 'rgba(20, 72, 94, 0.99)',
                                         color: 'white'}}>
-                                Generate PDF of Graph
+                                Download Graph as Image
                             </button>
                         </div>
                     </div>
