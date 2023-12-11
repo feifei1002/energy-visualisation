@@ -31,7 +31,7 @@ export default function App() {
                 <Route path="/profiledashboard" element={<ProfileDashboardPage />} />
                 <Route path="/webadmindashboard" element={<WebAdminDashboard />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/visualisations/halfhourlygasboilers" element={<GasBoilersPage />} />
+                <Route path="/visualisations/hourlygasboilers" element={<GasBoilersPage />} />
                 <Route path="/register" element={<RegistrationPage />} />
                 <Route path="/wiki" element={<WikiLandingPage/>} />
                 <Route path="*" element={<NotFound />} />

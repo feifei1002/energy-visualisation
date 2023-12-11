@@ -40,7 +40,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
         if (showToastRef.current) return;
         showToastRef.current = true;
 
-        toast.info("Scroll Down to Download the Graph Data.",
+        toast.info("Scroll Down to Download the Graph Data ↓",
             {autoClose: 10000,
                 position: "top-right"
             }
@@ -446,7 +446,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
                             </button>
                         </div>
                     </div>
-
+                    <br/>
 
                 </div>
             </div>

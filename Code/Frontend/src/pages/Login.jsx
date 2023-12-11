@@ -108,7 +108,7 @@ function Login() {
             <Header />  {/* Display the header component */}
 
             <main>
-                <div className="login-container">
+                <div className="login-container" >
                     <form onSubmit={handleSubmit}>
                         <div className="inputRow">
                             <label>User Name</label>
@@ -132,12 +132,11 @@ function Login() {
                             {/* Display unique error messages from error handling */}
                             {status?.type === 'success' && <p>Successful Login!</p>}
                             {status?.type === 'error' && <p>Incorrect username or password, try again!</p>}
-                            <br/>
-                            <div className="ForgotPasswordContainer">
-                                <h4>Forgot password? contact webadmin@climatedata.com</h4>
-                            </div>
                         </div>
                     </form>
+                    <div className="ForgotPasswordContainer">
+                        <h4>Forgot password? contact webadmin@climatedata.com</h4>
+                    </div>
                 </div>
             </main>
 

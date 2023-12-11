@@ -6,17 +6,10 @@ import GasConsumedAndElectricityDemand from "../components/graphs/GasConsumedAnd
 import {toast, ToastContainer} from "react-toastify";
 import InfoToolTip from '../components/InfoToolTip.jsx';
 
-
-
-
 // page which loads the half-hourly data and then outputs a graph
 export default function GasBoilersPage() {
     // set variables for heat data
     const [heatData, setHeatData] = useState(null);
-
-    // const { showNotification } = useContext(NotificationContext);
-    const showToastRef = useRef(false);
-
 
     // useEffect hook to fetch data from the half-hourly profiles csv
     useEffect(() => {
@@ -36,18 +29,6 @@ export default function GasBoilersPage() {
                 // set the response to json
                 const jsonResponse = await fetchDataResonse.json();
                 setHeatData(jsonResponse);
-
-
-                // if (showToastRef.current) return;
-                // showToastRef.current = true;
-                //
-                // // notification
-                // // however doesn't show until the graph is loaded...
-                // toast.info("The Graph is Loading",
-                //     {autoClose: 10000,
-                //         position: "top-right"
-                //     }
-                // );
 
             } catch (e) {
                 console.error("Error fetching data: ", e);
