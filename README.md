@@ -53,3 +53,5 @@ https://git.cardiff.ac.uk/c21054715/energy_visualization_team2/-/wikis/Problem/P
 Good MERN Tutorial: https://blog.logrocket.com/mern-stack-tutorial/ I used vite to create the react app but the principles are good.
 
 React Beginner Tutorial: https://www.youtube.com/watch?v=SqcY0GlETPk kind of similar to what Nathan taught in class.
+
+Onboarding pack for new developers with descriptions of individual pages within the application: https://git.cardiff.ac.uk/c21054715/energy_visualization_team2/-/wikis/Individual-Webpages
