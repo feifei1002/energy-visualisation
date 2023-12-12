@@ -16,14 +16,17 @@ router.post('/analyticlog/', async (req, res) => {
         //convert latitude and longitude to country
         const country = await convertLatLongToCountry(latitude, longitude);
 
+        //parse the pageUrl to extract the pathname and query
+        const parsedUrl = new URL(pageUrl, 'http://localhost'); //fallback base URL in case of relative URLs
+        const pathWithQuery = parsedUrl.pathname + (parsedUrl.search ? parsedUrl.search : '');
+
         //prepare the event data, adding the country field
         const eventData = {
-            //assuming userId is available in the request body or through authentication context
             userId: req.body.userId || 'defaultUserId',
             event,
             location,
-            country, //add the country name to the event data
-            pageUrl,
+            country,
+            pageUrl: pathWithQuery,
             additionalDetails
         };
 
@@ -37,27 +40,34 @@ router.post('/analyticlog/', async (req, res) => {
     }
 });
 
+
 router.get('/analytics/pageviews-per-month', async (req, res) => {
     try {
         const data = await AnalyticLog.aggregate([
-            { $match: { event: "PageView" } },
+            {
+                $match: {
+                    event: { $in: ["PageView", "DataView"] }
+                }
+            },
             {
                 $group: {
                     _id: {
-                        year: { $year: "$timestamp" },
-                        month: { $month: "$timestamp" },
-                        pageUrl: "$pageUrl"
+                        year: { $year: { $toDate: "$timestamp" } },
+                        month: { $month: { $toDate: "$timestamp" } },
+                        pageUrl: "$pageUrl",
+                        eventType: "$event"
                     },
                     count: { $sum: 1 }
                 }
             },
-            { $sort: { "_id.year": 1, "_id.month": 1, "_id.pageUrl": 1 } }
+            { $sort: { "_id.year": 1, "_id.month": 1, "_id.pageUrl": 1, "_id.eventType": 1 } }
         ]);
         res.json(data);
     } catch (error) {
         res.status(500).send('Error retrieving analytics data');
     }
 });
+
 
 
 
