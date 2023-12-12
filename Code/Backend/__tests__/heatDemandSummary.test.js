@@ -14,7 +14,7 @@
 //     }
 // }
 
-describe('processHeatDemandData', () => {
+//describe('processHeatDemandData', () => {
     // beforeEach(async () => {
     //     await deleteCacheFile();
     // });
@@ -86,4 +86,4 @@ describe('processHeatDemandData', () => {
           expect(true).toBe(true);
         });
       });
-});
+//});
