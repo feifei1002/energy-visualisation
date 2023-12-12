@@ -49,11 +49,17 @@ export default function DataViewMap() {
     const tooltip = ({ feature }) => {
         const dataItem = nivoMapData.find(item => item.id === feature.id);
         return (
-            <span>
-                {feature.properties.name}: {dataItem ? dataItem.value : 'No data'}
-            </span>
+            <div style={{
+                background: 'white',
+                padding: '10px',
+                border: '1px solid #ddd',
+                boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)'
+            }}>
+                {feature.properties.name}: {dataItem ? dataItem.value + ' Views' : 'No data'}
+            </div>
         );
     };
+
 
     return (
         <div>
