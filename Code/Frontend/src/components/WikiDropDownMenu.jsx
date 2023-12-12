@@ -6,7 +6,8 @@ import React from 'react';
 export default function WikiDropdownMenu({onDatasetChange}) {
     const data = [
         { name: 'Heat demand before and after energy efficiency measures'},
-        { name: 'Breakdown of heat demand before energy efficiency measures for each region'}
+        { name: 'Breakdown of heat demand before energy efficiency measures for each region'},
+        { name: 'Hourly heat production and gas consumption profiles - Resistance heaters'}
     ];
 
 

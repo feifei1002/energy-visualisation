@@ -8,6 +8,8 @@ import LoadingGif from "../assets/LoadingGif.gif";
 //analytics tracking
 import trackEvent from '../utils/analytics';
 
+import InfoToolTip from '../components/InfoToolTip.jsx';
+
 export default function ResistanceHeatersPage() {
 
     //analytics tracking
@@ -55,6 +57,9 @@ export default function ResistanceHeatersPage() {
             <>
                 <Header></Header>
                 <VisualisationsDropdownMenu></VisualisationsDropdownMenu><br></br>
+                <div>
+                 <InfoToolTip dataset={"Hourly heat production and gas consumption profiles"} />
+                </div>
                 <h3>Hourly heat production and electricity consumption profiles for Resistance heaters</h3>
                 <ResistanceHeatersProducedAndConsumed data={heatData}></ResistanceHeatersProducedAndConsumed><br></br>
                 <br></br>
