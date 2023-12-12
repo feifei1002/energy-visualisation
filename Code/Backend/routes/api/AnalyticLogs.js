@@ -74,7 +74,7 @@ router.get('/analytics/pageviews-per-month', async (req, res) => {
 //endpoint to get analytics data by country and year
 router.get('/analytics/by-country', async (req, res) => {
     const year = parseInt(req.query.year);
-    const month = parseInt(req.query.month); //get the month from the query, if we get given it
+    const month = parseInt(req.query.month); // Get the month from the query, if provided
 
     let matchCondition = {
         event: "DataView",
@@ -84,7 +84,6 @@ router.get('/analytics/by-country', async (req, res) => {
         }
     };
 
-    //modify the match condition if a specific month is provided
     if (month) {
         const startDate = new Date(year, month - 1, 1);
         const endDate = new Date(year, month, 0, 23, 59, 59, 999);
@@ -99,12 +98,13 @@ router.get('/analytics/by-country', async (req, res) => {
                 $group: {
                     _id: {
                         country: "$country",
-                        pageUrl: "$pageUrl"
+                        pageUrl: "$pageUrl",
+                        month: { $month: "$timestamp" }
                     },
                     count: { $sum: 1 }
                 }
             },
-            { $sort: { "_id.country": 1, "_id.pageUrl": 1 } }
+            { $sort: { "_id.country": 1, "_id.pageUrl": 1, "_id.month": 1 } }
         ]);
         res.json(data);
     } catch (error) {

@@ -21,12 +21,15 @@ export default function DataViewMap() {
         //fetching the analytics data
         axios.get(url)
             .then(response => {
-                const transformedData = response.data.map(item => ({
-                    country: item._id.country,
-                    pageUrl: item._id.pageUrl,
-                    count: item.count,
-                    month: new Date(item.timestamp).getMonth() + 1 // Extract month from timestamp
-                }));
+                const transformedData = response.data.map(item => {
+                    return {
+                        country: item._id.country,
+                        pageUrl: item._id.pageUrl,
+                        month: item._id.month,
+                        count: item.count
+                    };
+                });
+
                 setMapData(transformedData);
                 const uniqueUrls = [...new Set(transformedData.map(item => item.pageUrl))];
                 setPageUrls(uniqueUrls);
@@ -53,7 +56,6 @@ export default function DataViewMap() {
             value: aggregatedData[country]
         }));
 
-        console.log(nivoMapData);
         setNivoMapData(transformedNivoData);
     },  [mapData, selectedPageUrl, selectedMonth]);
 
@@ -94,6 +96,7 @@ export default function DataViewMap() {
             </div>
             <div style={{ height: 400 }}>
                 {nivoMapData.length > 0 && <ResponsiveChoropleth
+                    key={`${selectedYear}-${selectedMonth}`}
                     data={nivoMapData}
                     features={geoFeatures.features}
                     tooltip={tooltip}
