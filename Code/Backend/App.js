@@ -62,6 +62,7 @@ const registerRouter = require("./routes/api/Register");
 const webAdminRouter = require("./routes/api/Admin");
 const contactUsRouter = require("./routes/api/ContactUs");
 const loginRouter = require('./routes/api/Login');
+const analyticsRouter = require('./routes/api/AnalyticLogs');
 
 app.use('/api', registerRouter);
 app.use('/api', apiRouter);
@@ -71,6 +72,7 @@ app.use('/api',profileRouter);
 app.use('/api',webAdminRouter);
 app.use('/api', contactUsRouter);
 app.use('/api',loginRouter);
+app.use('/api', analyticsRouter);
 
 //Start the server
 app.listen(port, () => console.log(`Server running on port ${port}`));

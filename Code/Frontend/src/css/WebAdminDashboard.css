@@ -32,3 +32,23 @@
 .logoutGroup{
   background-color: white;
 }
+
+.button-link {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px;
+    background-color: #15495f;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    border: 1px solid #0056b3;
+}
+
+.button-link:hover, .button-link:focus {
+    background-color: white;
+    color: #15495f;
+    text-decoration: none;
+}

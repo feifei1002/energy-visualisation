@@ -35,7 +35,6 @@ const csvStorage = multer.diskStorage({
                 if (error) throw error;
             });
         }
-        // TODO: do some auth stuff later on here on user permissions/session
 
         //save the new file with the original name
         callback(null, originalName);
@@ -55,6 +54,10 @@ router.post('/upload-csv', verifyToken, upload.single('file'), (request, respons
 
     //tell the user that the file has been saved successfully
     response.send('File has been uploaded and saved successfully.');
+
+    //Log that a user downloaded file
+    const pageUrl = window.location.href; // Current page URL
+    trackEvent('ButtonClick', userId, pageUrl, userLocation, { buttonName: 'MyButton' });
 });
 
 module.exports = router;

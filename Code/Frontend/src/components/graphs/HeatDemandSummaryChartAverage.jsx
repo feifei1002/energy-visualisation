@@ -12,7 +12,7 @@ const HeatDemandSummaryChartAverage = ({ data }) => {
                 margin={{ top: 40, right: 50, bottom: 50, left: 120 }}
                 padding={0.3}
                 colors={{ scheme: 'blues' }}
-                borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+                borderColor={{ from: 'color', modifiers: [['darker', 16]] }}
                 axisBottom={{
                     tickSize: 5,
                     tickPadding: 5,

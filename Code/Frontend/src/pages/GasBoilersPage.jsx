@@ -6,8 +6,24 @@ import GasConsumedAndElectricityDemand from "../components/graphs/GasConsumedAnd
 import {toast, ToastContainer} from "react-toastify";
 import InfoToolTip from '../components/InfoToolTip.jsx';
 
+//analytics tracking
+import trackEvent from '../utils/analytics';
+
 // page which loads the half-hourly data and then outputs a graph
 export default function GasBoilersPage() {
+
+    //analytics tracking
+    const [userLocation, setUserLocation] = useState(null);
+
+    navigator.geolocation.getCurrentPosition((position) => {
+        const location = `${position.coords.latitude}, ${position.coords.longitude}`;
+        setUserLocation(location); // This will update the state
+    });
+    //log user viewing page, need to add the dataname and download csv log when download function is added.
+    const pageUrl = window.location.href;
+    if (userLocation !== null) {
+        trackEvent('DataView', null, pageUrl, userLocation);
+    }
     // set variables for heat data
     const [heatData, setHeatData] = useState(null);
 

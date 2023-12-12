@@ -26,19 +26,19 @@ const HeatDemandPieChart = ({ data }) => {
                     cornerRadius={3}
                     colors={{ scheme: 'blues' }}
                     borderWidth={1}
-                    borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
+                    borderColor={{ from: 'color', modifiers: [['darker', 1]] }}
                     radialLabelsSkipAngle={10}
-                    radialLabelsTextColor="#333333"
+                    radialLabelsTextColor="#FFFFFF"
                     radialLabelsLinkColor={{ from: 'color' }}
                     sliceLabelsSkipAngle={10}
-                    sliceLabelsTextColor="#333333"
+                    sliceLabelsTextColor="#FFFFFF"
                     enableRadialLabels={false} // Disable radial labels
                     enableSliceLabels={false} // Disable slice labels
                     tooltip={({ datum }) => (
                         <div style={{
                             background: 'steelblue',
                             padding: '5px',
-                            border: '1px solid #ccc',
+                            border: '1px solid #000000',
                             borderRadius: '4px',
                             color: datum.color
                         }}>
