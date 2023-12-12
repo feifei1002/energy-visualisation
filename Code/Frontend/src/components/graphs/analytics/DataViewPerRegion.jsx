@@ -6,23 +6,30 @@ export default function DataViewMap() {
     const [selectedYear, setSelectedYear] = useState(2023);
     const [mapData, setMapData] = useState([]);
     const [geoJsonData, setGeoJsonData] = useState(null);
+    const [selectedPageUrl, setSelectedPageUrl] = useState('');
+    const [pageUrls, setPageUrls] = useState([]);
 
     useEffect(() => {
         // Fetching the analytics data
-        axios.get(`/api/analytics/by-country?year=${selectedYear}`)
+        axios.get(`http://localhost:8082/api/analytics/by-country?year=${selectedYear}`)
             .then(response => {
                 const transformedData = response.data.map(item => ({
-                    id: item._id, //assuming this matches the 'ISO_3166-1_alpha-3' in GeoJSON
-                    value: item.count
+                    country: item._id.country,
+                    pageUrl: item._id.pageUrl,
+                    count: item.count
                 }));
                 setMapData(transformedData);
+                //extract page urls available
+                const uniqueUrls = [...new Set(response.data.map(item => item._id.pageUrl))];
+                setPageUrls(uniqueUrls);
             })
             .catch(error => console.error(error));
 
         //fetching the GeoJSON data
-        axios.get('/data/geojsonCountry')
+        axios.get('http://localhost:8082/data/geojsonCountry')
             .then(response => setGeoJsonData(response.data))
             .catch(error => console.error('Error fetching GeoJSON:', error));
+
     }, [selectedYear]);
 
     return (
@@ -30,11 +37,18 @@ export default function DataViewMap() {
             <select value={selectedYear} onChange={e => setSelectedYear(e.target.value)}>
                 <option value={2023}>2023</option>
             </select>
-
+            <div>
+                <select value={selectedPageUrl} onChange={e => setSelectedPageUrl(e.target.value)}>
+                    <option value="">Select a Page URL</option>
+                    {pageUrls.map(url => (
+                        <option key={url} value={url}>{url}</option>
+                    ))}
+                </select>
+            </div>
             <div style={{ height: 400 }}>
                 {geoJsonData && <ResponsiveGeoMap
                     features={geoJsonData.features}
-                    data={mapData}
+                    data={selectedPageUrl ? mapData.filter(item => item.pageUrl === selectedPageUrl) : mapData}
                     projectionType="mercator"
                     colors={{ scheme: 'blues' }}
                     domain={[0, Math.max(...mapData.map(d => d.value))]}

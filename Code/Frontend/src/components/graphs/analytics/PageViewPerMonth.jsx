@@ -7,11 +7,12 @@ export default function PageViewPerMonth() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch('/api/analytics/pageviews-per-month');
+            const response = await fetch('http://localhost:8082/api/analytics/pageviews-per-month');
             const result = await response.json();
             const formattedData = result.map(item => ({
                 date: `${item._id.month}-${item._id.year}`,
-                PageViews: item.count
+                pageUrl: item._id.pageUrl,
+                count: item.count
             }));
             setData(formattedData);
         };

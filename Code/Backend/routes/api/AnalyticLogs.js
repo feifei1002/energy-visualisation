@@ -37,18 +37,6 @@ router.post('/analyticlog/', async (req, res) => {
     }
 });
 
-router.get('/analytics/pageviews-per-region', async (req, res) => {
-    try {
-        const data = await AnalyticLog.aggregate([
-            { $match: { event: "PageView" } },
-            { $group: { _id: "$region", count: { $sum: 1 } } }
-        ]);
-        res.json(data);
-    } catch (error) {
-        res.status(500).send('Error retrieving analytics data');
-    }
-});
-
 router.get('/analytics/pageviews-per-month', async (req, res) => {
     try {
         const data = await AnalyticLog.aggregate([
@@ -57,34 +45,44 @@ router.get('/analytics/pageviews-per-month', async (req, res) => {
                 $group: {
                     _id: {
                         year: { $year: "$timestamp" },
-                        month: { $month: "$timestamp" }
+                        month: { $month: "$timestamp" },
+                        pageUrl: "$pageUrl"
                     },
                     count: { $sum: 1 }
                 }
             },
-            { $sort: { "_id.year": 1, "_id.month": 1 } }
+            { $sort: { "_id.year": 1, "_id.month": 1, "_id.pageUrl": 1 } }
         ]);
         res.json(data);
     } catch (error) {
         res.status(500).send('Error retrieving analytics data');
     }
 });
+
 
 
 //endpoint to get analytics data by country and year
 router.get('/analytics/by-country', async (req, res) => {
     const year = parseInt(req.query.year);
-
     try {
         const data = await AnalyticLog.aggregate([
-            { $project: { year: { $year: "$timestamp" }, country: 1 } },
-            { $match: { year: year, event: "DataView" } },
-            { $group: { _id: "$country", count: { $sum: 1 } } }
+            { $match: { event: "DataView", "timestamp": { $gte: new Date(`${year}-01-01T00:00:00.000Z`), $lte: new Date(`${year}-12-31T23:59:59.999Z`) } } },
+            {
+                $group: {
+                    _id: {
+                        country: "$country",
+                        pageUrl: "$pageUrl"
+                    },
+                    count: { $sum: 1 }
+                }
+            },
+            { $sort: { "_id.country": 1, "_id.pageUrl": 1 } }
         ]);
         res.json(data);
     } catch (error) {
         res.status(500).send('Error retrieving analytics data');
     }
 });
+
 
 module.exports = router;
