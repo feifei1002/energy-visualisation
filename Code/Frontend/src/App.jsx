@@ -7,6 +7,7 @@ import LandingPage from './pages/LandingPage'
 import VisualisationPage from './VisualisationPage'
 import GasBoilersPage from './pages/GasBoilersPage.jsx'
 import Login from './pages/Login.jsx';
+import ImprovementCostsPage from "./pages/ImprovementCostsPage";
 import ProfileDashboardPage from "./ProfileDashboardPage.jsx";
 import ResistanceHeatersPage from "./pages/ResistanceHeatersPage.jsx";
 import BreakDownOfHeatDemandPage from "./pages/BreakDownOfHeatDemandPage.jsx";
@@ -28,6 +29,7 @@ export default function App() {
                 <Route path="/visualisations" element={<VisualisationPage />} />
                 <Route path="/visualisations/halfhourlyresistanceheaters" element={<ResistanceHeatersPage />}  />
                 <Route path="/visualisations/summaryheatdemand" element={<SummaryOfHeatDemandPage />}  />
+                <Route path="/visualisations/energyimprovementcosts" element={<ImprovementCostsPage />}  />
                 <Route path="/profiledashboard" element={<ProfileDashboardPage />} />
                 <Route path="/webadmindashboard" element={<WebAdminDashboard />} />
                 <Route path="/login" element={<Login />} />
