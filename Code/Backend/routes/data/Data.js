@@ -169,10 +169,16 @@ router.get('/residentialheat', (req, res) => {
   handleCSVRequest(req, res, csvPaths.residentialHeatDemand); // Handle the CSV request
 });
 
-// API endpoint for geojson data
+// API endpoint for geojson data using lsoa and at city level
 router.get('/geojson', (req, res) => {
   res.set('Cache-Control', `public, max-age=${cacheTTL}`); // Set cache control headers
   handleGeoJSONRequest(req, res, geojsonPath); // Handle the GeoJSON request
+});
+
+// API endpoint for geojson data at country level using country names
+router.get('/geojsonCountry', (req, res) => {
+  res.set('Cache-Control', `public, max-age=${cacheTTL}`); // Set cache control headers
+  handleGeoJSONRequest(req, res, geojsonCountryPath); // Handle the GeoJSON request
 });
 
 // API endpoint for energy efficiency improvement costs data
