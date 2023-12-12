@@ -1,6 +1,10 @@
 import {ResponsiveLineCanvas} from "@nivo/line";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import '../../App.css';
+import downloadCSV from "../../helperFunctions/downloadCSV.js";
+import graphToPdf from "../../helperFunctions/graphToPdf.js";
+import {toast} from "react-toastify";
+import graphToImage from "../../helperFunctions/graphToImage.js";
 
 // outputs electricity and gas demand data to a graph
 export default function GasConsumedAndElectricityDemand({data}) {
@@ -16,16 +20,33 @@ export default function GasConsumedAndElectricityDemand({data}) {
     const [graph1Data, setGraph1Data] = useState([]);
     // the data for the hourly demand graph
     const [graph2Data, setGraph2Data] = useState([]);
+    // both graph data from the csv, used to generate csv
+    const [combinedGraphData, setCombinedGraphData] = useState([]);
 
     // user inputs value to times by y-axis
     // initial value is 1 so data of the graph is not set to 0
     const [newVal, setNewVal] = useState(1);
+
+    const showToastRef = useRef(false);
 
     // when the user inputs a new value, uses setNewVal to change the variable
     const handleChange = (e) => {
         setNewVal(e.target.value)
         console.log("changed the value to " + e.target.value)
     }
+
+    //On load send a notification reminding the user to scroll down to use the contact us form
+    useEffect(() => {
+        // Condition to prevent toast from being shown more than once.
+        if (showToastRef.current) return;
+        showToastRef.current = true;
+
+        toast.info("Scroll Down to Download the Graph Data ↓",
+            {autoClose: 10000,
+                position: "top-right"
+            }
+        );
+    }, []);
 
     // runs first time, and when data or newVal changes
     useEffect(() => {
@@ -111,6 +132,8 @@ export default function GasConsumedAndElectricityDemand({data}) {
         // sets the graph data
         setGraph2Data(formattedDataList);
         setGraph1Data(formattedTemp);
+        // set the combined data so it can be downloaded
+        setCombinedGraphData(formatData);
         // sets the state to no longer loading graph data
         setLoading(false);
     }, [data, newVal]);     // added newVal so this hook is run whenever newVal changes (so the graph updates)
@@ -147,6 +170,47 @@ export default function GasConsumedAndElectricityDemand({data}) {
         }
     })
 
+    // utilising already created download csv function
+    // creates downloadable csv file for all the data used on the graph
+    const handleDownloadCSV = () => {
+        try {
+            downloadCSV(combinedGraphData, "gas_consumed_and_electricity_demand.csv");
+            toast.success('Downloaded CSV File');
+        } catch (e) {
+            toast.error('Error Downloading CSV File');
+        }
+    }
+
+    // utilising already created download as pdf function
+    // creates a downloadable pdf file of the graph outputted
+    // not used in the page anymore as creates a blurry image of the graph
+    const handleGeneratePDF = () => {
+        try{
+            // define container id to be converted to pdf
+            graphToPdf('combinedGraphsForGasBoilers',
+                // define title of file
+                `Breakdown of Hourly Temperature, Electricity Consumption for Heat Pumps, and Gas Consumption for Gas Boilers`).then(r => console.log("successful graph to pdf"));
+            // toast outputs notification for successful download
+            toast.success('Graph converted to pdf and downloaded');
+        } catch(e){
+            // error handling for when a pdf cannot be created
+            toast.error('Error converting graph to pdf');
+        }
+    };
+
+    // creates an image of the line graph that the user downloads
+    const handleDownloadGraphAsImage = () => {
+        try {
+            // define container id to be converted to png
+            graphToImage("combinedGraphsForGasBoilers", "gas_boilers_graph.png")
+            // toast outputs notification for successful download
+            toast.success('Graph Converted to PNG and Downloaded');
+        } catch (e) {
+            // unable to download
+            toast.error('Error Converting Graph to PNG');
+        }
+    };
+
     // output to page
     return(
         <div>
@@ -157,7 +221,12 @@ export default function GasConsumedAndElectricityDemand({data}) {
                 <h2>Loading data...</h2>
             ) : (
                     // actual data below once loaded
-                <div>
+            <div>
+                 {/*specific id used to identify section of code to be outputted as pdf */}
+                 <div id='combinedGraphsForGasBoilers' style={{
+                     // added white background so when downloading an image of the graph the data is visible in dark mode
+                     backgroundColor: 'white'
+                 }}>
 
                      {/*wrapper class to overlay both graphs on top of each other, due to nivo not allowing biaxial y-axis*/}
                     <div className="wrapper"
@@ -198,7 +267,7 @@ export default function GasConsumedAndElectricityDemand({data}) {
                                 axisRight={{
                                     legend: "Temperature",
                                     legendPosition:"middle",
-                                    legendOffset: 50,
+                                    legendOffset: 40,
                                 }}
                                 enableGridX={false}
                                 enableGridY={false}
@@ -308,37 +377,94 @@ export default function GasConsumedAndElectricityDemand({data}) {
 
                             />
                         </div>
-                    {/*</>*/}
                     </div>
-            <br/>
+                 </div>
 
-            {/* checkboxes to enable and disable each line on the graph */}
-            <div className="graph-checkboxes">
-                {/* air source heat pumps */}
-                <label style={{ color: '#ffffff', fontWeight: 'bold'}}>
-                    <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showASHPElecLine} onChange={handleShowASHPElecLine} />
-                    Electricity Consumption for Air Source Heat Pumps
-                </label>
-                {/* ground source heat pumps */}
-                <label style={{ color: '#ffffff', fontWeight: 'bold'}}>
-                    <input style={{ marginRight: '2px', marginLeft: '15px' }} type="checkbox" checked={showGSHPElecLine} onChange={handleShowGSHPElecLine} />
-                    Electricity Consumption for Ground Source Heat Pumps
-                </label>
-                {/* gas consumption */}
-                <label style={{ color: '#ffffff', fontWeight: 'bold'}}>
-                    <input style={{ marginRight: '2px' , marginLeft: '15px'}} type="checkbox" checked={showGasConsLine} onChange={handleShowGasConsLine} />
-                    Gas Consumption of Gas Boilers
-                </label>
-            </div>
+                <br/>
 
-            <div>
-                {/* user can type in a value to times by the graph data */}
-                <label>Input value to times by y-axis (GWh): </label>
-                {/* validation so the user cannot input a value below 1, so the graph will always have data that is displayed */}
-                <input data-testid="userInput" type="number" min="1" name="newValue" value={newVal} onChange={handleChange} />
-            </div>
+                <div>
+
+                    <h5>Un-Tick Boxes to Remove a Specific Line From the Graph Above:</h5>
+                    {/* checkboxes to enable and disable each line on the graph */}
+                    <div className="graph-checkboxes">
+
+                        {/* gas consumption */}
+                        <label style={{ color: '#ffffff'}}>
+                            <input
+                                style={{ marginRight: '2px' , marginLeft: '15px'}}
+                                type="checkbox" checked={showGasConsLine} onChange={handleShowGasConsLine} />
+                            Gas Consumption of Gas Boilers
+                        </label>
+
+                        {/* ground source heat pumps */}
+                        <label style={{ color: '#ffffff'}}>
+                            <input
+                                style={{ marginRight: '2px', marginLeft: '15px' }}
+                                type="checkbox" checked={showGSHPElecLine} onChange={handleShowGSHPElecLine} />
+                            Electricity Consumption for Ground Source Heat Pumps
+                        </label>
+
+                        {/* air source heat pumps */}
+                        <label style={{ color: '#ffffff'}}>
+                            <input
+                                style={{ marginRight: '2px', marginLeft: '15px' }}
+                                type="checkbox" checked={showASHPElecLine} onChange={handleShowASHPElecLine} />
+                            Electricity Consumption for Air Source Heat Pumps
+                        </label>
+                    </div>
+
+                    <br/>
+
+                    <h5>Alter the Y-Axis:</h5>
+                    <div>
+
+                        {/* user can type in a value to times by the graph data */}
+                        <label>Input value to times by y-axis (GWh): </label>
+                            {/* validation so the user cannot input a value below 1, so the graph will always have data that is displayed */}
+                        <input data-testid="userInput"
+                               type="number"
+                               min="1"
+                               name="newValue"
+                               value={newVal}
+                               onChange={handleChange} />
+                    </div>
 
 
+                    <br/><br/>
+
+
+                    <h5>Buttons to Download Graph Data:</h5>
+                    <div className="buttons" style={{
+                        display: 'flex',
+                        // display: 'inline-block'
+                        justifyContent: 'center',
+                        gap: '20px'
+                    }}>
+                        {/* button to download the csv file */}
+                        <div>
+                            <button style={{
+                                backgroundColor: 'rgba(20, 72, 94, 0.99)',
+                                color: "white",
+                                padding: "10px" }}
+                                    onClick={handleDownloadCSV}>
+                                Download Graph Data as CSV File
+                            </button>
+                        </div>
+
+                        <div>
+                            {/* button to generate image */}
+                            <button onClick={handleDownloadGraphAsImage}
+                                    style={{
+                                        padding: "10px",
+                                        backgroundColor: 'rgba(20, 72, 94, 0.99)',
+                                        color: 'white'}}>
+                                Download Graph as Image
+                            </button>
+                        </div>
+                    </div>
+                    <br/>
+
+                </div>
             </div>
             )}
         </div>

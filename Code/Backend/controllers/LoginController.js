@@ -17,7 +17,6 @@ const postLogin = async (req, res) => {
         // find the user in the table with the same username inputted
         // and selects the password
         const user = await User.findOne({username: data.username}).select('password');
-        // compares the password inputted with the hashed password in the database, using bcrypt.compare
 
         // If the user is not found, return an error response
         if (!user) {
@@ -25,15 +24,19 @@ const postLogin = async (req, res) => {
             return res.status(401).send('Username or password is incorrect');
         }
 
+        // compares the password inputted with the hashed password in the database, using bcrypt.compare
         const comparison = await bcrypt.compare(String(data.password), user.password);
 
         // comparison is true if both password match
         if (comparison === true) {
             // user is authenticated, after correctly logs in
 
-            // generate access token
-            // https://stackabuse.com/authentication-and-authorization-with-jwts-in-express-js/ 16/11
+            // code to generate an access token
+            // taken from Stack Abuse post by J Kasun 06-09-2023
+            // accessed 11-12-2023
+            // https://stackabuse.com/authentication-and-authorization-with-jwts-in-express-js/
             const accessToken = jwt.sign({username: user.username,userId: user._id}, process.env.ACCESS_TOKEN, { expiresIn: '30m' });
+            // end of referenced code
 
             // send response of access token when correctly authenticated
             res.json({
