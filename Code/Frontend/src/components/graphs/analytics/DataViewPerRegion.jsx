@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ResponsiveGeoMap } from '@nivo/geo';
 import axios from 'axios';
 
-const DataViewMap = () => {
+export default function DataViewMap() {
     const [selectedYear, setSelectedYear] = useState(2023);
     const [mapData, setMapData] = useState([]);
     const [geoJsonData, setGeoJsonData] = useState(null);
@@ -51,6 +51,5 @@ const DataViewMap = () => {
             </div>
         </div>
     );
-};
+}
 
-export default DataViewMap;

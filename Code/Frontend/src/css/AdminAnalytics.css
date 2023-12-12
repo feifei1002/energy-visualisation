@@ -1,0 +1,12 @@
+.analytics-dashboard {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+}
+
+.dashboard-item {
+    flex: 1;
+    max-width: 40%;
+}

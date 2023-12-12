@@ -173,10 +173,15 @@ export default function WebAdminDashboard() {
                                     {webAdminDetails.fullName}
                                 </h3>
                         </div>
+
                         <RegisterRequest fetchAllUserDetails={fetchAllUserDetails} />
+
+                        <a href="/webadmindashboard/analytics" className="admin-container-profile-group button-link">View Analytics</a>
+
                         <div className="admin-container-profile-group logoutGroup">
                             <LogoutButton />
                         </div>
+
                     </div>
                 )}
                 {allUserDetails && (
