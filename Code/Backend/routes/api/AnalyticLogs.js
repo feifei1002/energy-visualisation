@@ -74,9 +74,27 @@ router.get('/analytics/pageviews-per-month', async (req, res) => {
 //endpoint to get analytics data by country and year
 router.get('/analytics/by-country', async (req, res) => {
     const year = parseInt(req.query.year);
+    const month = parseInt(req.query.month); //get the month from the query, if we get given it
+
+    let matchCondition = {
+        event: "DataView",
+        timestamp: {
+            $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+            $lte: new Date(`${year}-12-31T23:59:59.999Z`)
+        }
+    };
+
+    //modify the match condition if a specific month is provided
+    if (month) {
+        const startDate = new Date(year, month - 1, 1);
+        const endDate = new Date(year, month, 0, 23, 59, 59, 999);
+        matchCondition.timestamp.$gte = startDate;
+        matchCondition.timestamp.$lte = endDate;
+    }
+
     try {
         const data = await AnalyticLog.aggregate([
-            { $match: { event: "DataView", "timestamp": { $gte: new Date(`${year}-01-01T00:00:00.000Z`), $lte: new Date(`${year}-12-31T23:59:59.999Z`) } } },
+            { $match: matchCondition },
             {
                 $group: {
                     _id: {
@@ -93,6 +111,7 @@ router.get('/analytics/by-country', async (req, res) => {
         res.status(500).send('Error retrieving analytics data');
     }
 });
+
 
 
 module.exports = router;

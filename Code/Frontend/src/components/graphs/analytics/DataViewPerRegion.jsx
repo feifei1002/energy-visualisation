@@ -5,32 +5,43 @@ import geoFeatures from '../../../data/countries';
 
 export default function DataViewMap() {
     const [selectedYear, setSelectedYear] = useState(2023);
+    const [selectedMonth, setSelectedMonth] = useState('');
     const [mapData, setMapData] = useState([]);
     const [nivoMapData, setNivoMapData] = useState([]);
     const [selectedPageUrl, setSelectedPageUrl] = useState('');
     const [pageUrls, setPageUrls] = useState([]);
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
     useEffect(() => {
-        // Fetching the analytics data
-        axios.get(`http://localhost:8082/api/analytics/by-country?year=${selectedYear}`)
+        //make sure we get the right url to query data from
+        let url = `http://localhost:8082/api/analytics/by-country?year=${selectedYear}`;
+        if (selectedMonth) {
+            url += `&month=${selectedMonth}`;
+        }
+        //fetching the analytics data
+        axios.get(url)
             .then(response => {
                 const transformedData = response.data.map(item => ({
                     country: item._id.country,
                     pageUrl: item._id.pageUrl,
-                    count: item.count
+                    count: item.count,
+                    month: new Date(item.timestamp).getMonth() + 1 // Extract month from timestamp
                 }));
                 setMapData(transformedData);
                 const uniqueUrls = [...new Set(transformedData.map(item => item.pageUrl))];
                 setPageUrls(uniqueUrls);
             })
             .catch(error => console.error(error));
-
-    }, [selectedYear]);
+    }, [selectedYear, selectedMonth]);
 
     useEffect(() => {
-        const filteredData = selectedPageUrl
+        let filteredData = selectedPageUrl
             ? mapData.filter(item => item.pageUrl === selectedPageUrl)
             : mapData;
+
+        if (selectedMonth) {
+            filteredData = filteredData.filter(item => item.month === parseInt(selectedMonth));
+        }
 
         const aggregatedData = filteredData.reduce((acc, item) => {
             acc[item.country] = (acc[item.country] || 0) + item.count;
@@ -44,7 +55,7 @@ export default function DataViewMap() {
 
         console.log(nivoMapData);
         setNivoMapData(transformedNivoData);
-    }, [mapData, selectedPageUrl]);
+    },  [mapData, selectedPageUrl, selectedMonth]);
 
     const tooltip = ({ feature }) => {
         const dataItem = nivoMapData.find(item => item.id === feature.id);
@@ -66,6 +77,13 @@ export default function DataViewMap() {
             <select value={selectedYear} onChange={e => setSelectedYear(e.target.value)}>
                 <option value={2023}>2023</option>
             </select>
+            <select value={selectedMonth} onChange={e => setSelectedMonth(e.target.value)}>
+                <option value="">Select a Month</option>
+                {monthNames.map((month, index) => (
+                    <option key={month} value={index + 1}>{month}</option>
+                ))}
+            </select>
+
             <div>
                 <select value={selectedPageUrl} onChange={e => setSelectedPageUrl(e.target.value)}>
                     <option value="">Select a Page URL</option>
