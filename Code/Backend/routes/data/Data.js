@@ -31,8 +31,11 @@ const csvPaths = {
   efficiencyImprovementCosts: path.join(rootPath, 'Data', 'Energy_efficiency_improvements_costs_LA.csv'),
 };
 
-// Path to GeoJSON data for geographical shapes
+// Path to GeoJSON data for geographical shapes (based on LSOA, its at city level)
 const geojsonPath = path.join(rootPath, 'Data', 'lsoa.geojson')
+
+//Path to GeoJSON data for country geographical shapes (based on country name, at country level)
+const geojsonCountryPath = path.join(rootPath, 'Data', 'countries.geojson')
 
 // Define a directory path for cached files using the root path
 const cacheDirPath = path.join(rootPath, 'cache');

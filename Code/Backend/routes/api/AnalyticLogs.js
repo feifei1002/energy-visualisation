@@ -71,4 +71,20 @@ router.get('/analytics/pageviews-per-month', async (req, res) => {
 });
 
 
+//endpoint to get analytics data by country and year
+router.get('/analytics/by-country', async (req, res) => {
+    const year = parseInt(req.query.year);
+
+    try {
+        const data = await AnalyticLog.aggregate([
+            { $project: { year: { $year: "$timestamp" }, country: 1 } },
+            { $match: { year: year, event: "DataView" } },
+            { $group: { _id: "$country", count: { $sum: 1 } } }
+        ]);
+        res.json(data);
+    } catch (error) {
+        res.status(500).send('Error retrieving analytics data');
+    }
+});
+
 module.exports = router;
