@@ -14,7 +14,7 @@ export default function ImprovementCostsPage() {
     const loadingRef = useRef(false);
     // useState hooks to manage the state of the data for the page.
     const [heatData, setHeatData] = useState(null);
-    const [improvementCostData, setimprovementCostData] = useState(null);
+    const [costData, setCostData] = useState(null);
     const [geoJsonData, setGeoJsonData] = useState(null);
     const [error, setError] = useState(null);
     const [uniqueLocalAuthorities, setUniqueLocalAuthorities] = useState(null);
@@ -26,182 +26,154 @@ export default function ImprovementCostsPage() {
         if (loadingRef.current) return;
         loadingRef.current = true;
 
-        // Asynchronous function to fetch annual heat data from a local server.
-        const fetchHeatData = async () => {
-            console.log('fetchHeatData...');
+        async function fetchData() {
             try {
-                // Attempt to fetch the data using the Fetch API.
-                const response = await fetch('http://localhost:8082/data/annualheat', { cache: 'force-cache' });
+                const improvementCostResponse = await fetch('http://localhost:8082/data/efficiencyimprovementcosts');
+                const heatDataResponse = await fetch('http://localhost:8082/data/annualheat');
+                const geoJsonResponse = await fetch('http://localhost:8082/data/geojson');
 
-                // Throw an error if the response is not OK to handle it in the catch block.
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+                if (!improvementCostResponse.ok || !geoJsonResponse.ok || !heatDataResponse.ok) throw new Error('Data fetch failed');
 
-                // If the response is ok, parse the JSON and set the heat data state.
-                const fetchedData = await response.json();
-                setHeatData(fetchedData);
-            } catch (e) {
-                // Catch any errors, log them, and set the error state.
-                setError(e.message);
-                console.error("Fetching annual heat data failed", e);
-            }
-        };
+                const improvementData = await improvementCostResponse.json();
+                const heatData = await heatDataResponse.json();
+                const geoData = await geoJsonResponse.json();
 
-        // Asynchronous function to fetch GeoJSON data.
-        const fetchGeoJsonData = async () => {
-            console.log('fetchGeoJsonData...');
-            try {
-                const response = await fetch('http://localhost:8082/data/geojson', { cache: 'force-cache' });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const fetchedData = await response.json();
-                setGeoJsonData(fetchedData);
-            } catch (e) {
-                setError(e.message);
-                console.error("Fetching GeoJSON data failed", e);
-            }
-        };
-
-        const fetchCostData = async () => {
-            try {
-                const fetchDataResponse = await fetch('http://localhost:8082/data/efficiencyimprovementcosts');
-                const jsonData = await fetchDataResponse.json();
-                setimprovementCostData(jsonData);
+                setCostData(improvementData);
+                setHeatData(heatData)
+                setGeoJsonData(geoData);
             } catch (error) {
-                console.error("Error occurs when fetching data", error);
-            }
-        };
-
-        // Trigger the data fetching functions.
-        fetchCostData();
-        fetchHeatData();
-        fetchGeoJsonData();
-    }, []);
-
-    useEffect(() => {
-        if (heatData) {
-            // Extract the list of local authorities
-            const localAuthorities = heatData.map(entry => entry["Local Authority (2019)"]);
-
-            // Remove duplicate entries and set the unique local authorities state.
-            const uniqueAuthorities = Array.from(new Set(localAuthorities));
-            setUniqueLocalAuthorities(uniqueAuthorities.sort()); //Sort in alphabetical order
-
-            // Select "Adur" by default if it exists in the data
-            if (!selectedAuthority && uniqueAuthorities.includes("Adur")) {
-                setSelectedAuthority("Adur");
-            } else if (!selectedAuthority && uniqueAuthorities.length > 0) {
-                setSelectedAuthority(uniqueAuthorities[0]);
+                console.error("Error fetching data:", error);
+            } finally {
+                loadingRef.current = false; // Update loading state
             }
         }
-    }, [heatData]);
 
-    // Callback function to handle authority selection.
-    const handleSelectAuthority = (newAuthority) => {
-        // Update the selected authority state and trigger re-rendering.
-        setSelectedAuthority(newAuthority);
-    };
+        fetchData();
 
-    // Conditional rendering based on the state of the data and any error.
-    if (error) {
-        // Render an error message if there is an error.
-        return <div>Error: {error}</div>;
-    }
+    }, []);
 
-    // Styling for this page
-    const pageStyle = {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-    };
+        useEffect(() => {
+            if (costData) {
+                // Extract the list of local authorities
+                const localAuthorities = costData.map(entry => entry["Local Authority (2019)"]);
 
-    // Drop down style for this page
-    const dropdownStyle = {
-        padding: '1em', // Padding inside the sidebar
-        overflowY: 'auto', // Scroll vertically if content overflows
-    };
+                // Remove duplicate entries and set the unique local authorities state.
+                const uniqueAuthorities = Array.from(new Set(localAuthorities));
+                setUniqueLocalAuthorities(uniqueAuthorities.sort()); //Sort in alphabetical order
 
-    // Styling for each pie chart
-    const pieStyle = {
-        display: 'block',
-        marginTop: '2vh',
-        width: '100%', // Suitable percentage for responsiveness
-        margin: 'auto', // Center the charts
-    };
-    // Render a loading state if the data has not been loaded yet.
-    if (!heatData || !geoJsonData) {
-        return (
-            <>
-                <Header />
-                <VisualisationsDropdownMenu></VisualisationsDropdownMenu>
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    width: '100%',
-                    alignItems: 'stretch',
-                    boxSizing: 'border-box',
-                }}>
-                    <div style={{ flex: 1, padding: '0', margin: '0.5em', boxSizing: 'border-box' }}>
-                        <p style={{
-                            fontSize: '24px',
-                            fontWeight: 'bold',
-                            margin: '0 0 20px 0',
-                            color: '#333'
-                        }}>Getting your data...</p>
-                        <img
-                            src={LoadingGif}
-                            alt="Loading..."
-                            style={{
-                                width: '50px',
-                                height: '50px'
-                            }}
-                        />
-                    </div>
-                </div>
-            </>
-        );
-    } else {
-        // Render the main content of the page if the data is available.
-        return (
-            <>
-                <Header />
-                <VisualisationsDropdownMenu></VisualisationsDropdownMenu>
-                {/*Heat maps showing data before and after efficiency measures*/}
-                {/*<div style={{ flex: 1, padding: '0', margin: '0.5em', boxSizing: 'border-box', minWidth: '500px' }}>*/}
-                {/*    <HeatEfficiencyBeforeHeatMap heatData={heatData} geoJsonData={geoJsonData} />*/}
-                {/*</div>*/}
-                <div style={pageStyle}>
-                    <div style={dropdownStyle}>
-                        <h3>Breakdown of heat demand before energy efficiency measures for {selectedAuthority}</h3>
-                        {uniqueLocalAuthorities && (<LocalAuthorityDropDownMenu
-                            authorities={['All Authorities', ...uniqueLocalAuthorities]}
-                            selectedAuthority={selectedAuthority}
-                            onSelectAuthority={handleSelectAuthority}
-                        />)}
-                    </div>
-                </div>
-                <div style={pageStyle}>
-                    <div>
-                        <div style={pieStyle}>
-                            <h5>Breakdown of Energy Efficiency Improvement Costs by Heating Technology for {selectedAuthority} (£)</h5>
-                            <BreakDownOfImprovementCostsHeatTechnology
-                                localAuthority={selectedAuthority === 'All' ? null : selectedAuthority}// Pass selectedAuthority as localAuthority prop
-                            />
-                        </div>
-                        <div style={pieStyle}>
-                            <h5>Breakdown of Energy Efficiency Improvement Costs by dwelling type for {selectedAuthority} (£)</h5>
-                            <BreakDownOfImprovementCostsDwellings
-                                localAuthority={selectedAuthority === 'All' ? null : selectedAuthority} // Pass selectedAuthority as localAuthority prop
+                // Select "Adur" by default if it exists in the data
+                if (!selectedAuthority && uniqueAuthorities.includes("Adur")) {
+                    setSelectedAuthority("Adur");
+                } else if (!selectedAuthority && uniqueAuthorities.length > 0) {
+                    setSelectedAuthority(uniqueAuthorities[0]);
+                }
+            }
+        }, [costData]);
+
+        // Callback function to handle authority selection.
+        const handleSelectAuthority = (newAuthority) => {
+            // Update the selected authority state and trigger re-rendering.
+            setSelectedAuthority(newAuthority);
+        };
+
+        // Conditional rendering based on the state of the data and any error.
+        if (error) {
+            // Render an error message if there is an error.
+            return <div>Error: {error}</div>;
+        }
+
+        // Styling for this page
+        const pageStyle = {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+        };
+
+        // Drop down style for this page
+        const dropdownStyle = {
+            padding: '1em', // Padding inside the sidebar
+            overflowY: 'auto', // Scroll vertically if content overflows
+        };
+
+        // Styling for each pie chart
+        const pieStyle = {
+            display: 'block',
+            marginTop: '2vh',
+            width: '100%', // Suitable percentage for responsiveness
+            margin: 'auto', // Center the charts
+        };
+        // Render a loading state if the data has not been loaded yet.
+        if (!heatData || !geoJsonData || !costData) {
+            return (
+                <>
+                    <Header/>
+                    <VisualisationsDropdownMenu></VisualisationsDropdownMenu>
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        width: '100%',
+                        alignItems: 'stretch',
+                        boxSizing: 'border-box',
+                    }}>
+                        <div style={{flex: 1, padding: '0', margin: '0.5em', boxSizing: 'border-box'}}>
+                            <p style={{
+                                fontSize: '24px',
+                                fontWeight: 'bold',
+                                margin: '0 0 20px 0',
+                                color: '#333'
+                            }}>Getting your data...</p>
+                            <img
+                                src={LoadingGif}
+                                alt="Loading..."
+                                style={{
+                                    width: '50px',
+                                    height: '50px'
+                                }}
                             />
                         </div>
                     </div>
-                </div>
-                <Footer/>
-            </>
-        );
+                </>
+            );
+        } else {
+            // Render the main content of the page if the data is available.
+            return (
+                <>
+                    <Header/>
+                    <VisualisationsDropdownMenu></VisualisationsDropdownMenu>
+                    <div style={pageStyle}>
+                        <div style={dropdownStyle}>
+                            <h3>Breakdown of heat demand before energy efficiency measures for {selectedAuthority}</h3>
+                            {uniqueLocalAuthorities && (<LocalAuthorityDropDownMenu
+                                authorities={['All Authorities', ...uniqueLocalAuthorities]}
+                                selectedAuthority={selectedAuthority}
+                                onSelectAuthority={handleSelectAuthority}
+                            />)}
+                        </div>
+                    </div>
+                    <div style={pageStyle}>
+                        <div>
+                            <div style={pieStyle}>
+                                <h5>Breakdown of Energy Efficiency Improvement Costs by Heating Technology
+                                    for {selectedAuthority} (£)</h5>
+                                {/* Pass necessary props to the child component */}
+                                <BreakDownOfImprovementCostsHeatTechnology
+                                    costData={costData}
+                                    localAuthority={selectedAuthority === 'All' ? null : selectedAuthority}
+                                />
+                            </div>
+                            <div style={pieStyle}>
+                                <h5>Breakdown of Energy Efficiency Improvement Costs by dwelling type
+                                    for {selectedAuthority} (£)</h5>
+                                {/* Pass necessary props to the child component */}
+                                <BreakDownOfImprovementCostsDwellings
+                                    costData={costData}
+                                    localAuthority={selectedAuthority === 'All' ? null : selectedAuthority}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <Footer/>
+                </>
+            );
+        }
     }
-}

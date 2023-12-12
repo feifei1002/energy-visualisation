@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { ResponsivePie } from '@nivo/pie';
 import graphToPdf from '../../helperFunctions/graphToPdf';
 
-const BreakDownOfImprovementCostsDwelling = ({ localAuthority }) => {
+const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -33,11 +33,7 @@ const BreakDownOfImprovementCostsDwelling = ({ localAuthority }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:8082/data/efficiencyimprovementcosts');
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch data. Status: ${response.status}`);
-                }
-                const result = await response.json();
+                const result = costData;
                 setData(result);
 
                 const selectedAuthorityData = result.filter(

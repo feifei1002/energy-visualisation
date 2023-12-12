@@ -6,28 +6,57 @@ import BreakDownOfImprovementCostsDwelling from '../../src/components/graphs/Bre
 // Sample test data for the BreakDownOfImprovementCostsDwelling component
 const testData = [
     {
-        "Local Authority (2019)": "City of London",
-        "Average energy efficiency improvements costs of detached gas boiler (GBP)": 1200,
-        "Average energy efficiency improvements costs of detached oil boiler (GBP)": 800,
+        "LSOA11CD": "E01000001",
+        "Area (km2)": 0.135739831,
+        "Average energy efficiency improvements costs of detached gas boiler (GBP)": 13221.20,
+        "Average energy efficiency improvements costs of semi-detached gas boiler (GBP)": 14589.64,
+        "Average energy efficiency improvements costs of flat gas boiler (GBP)": 17483.12,
+        "Average energy efficiency improvements costs of terraced gas boiler (GBP)": 12367.98,
+        "Local Authority (2011)": "City of London",
+        "Local Authority (2019)": "City of London"
     },
     {
-        "Local Authority (2019)": "City of London",
-        "Average energy efficiency improvements costs of flat gas boiler (GBP)": 1000,
-        "Average energy efficiency improvements costs of flat oil boiler (GBP)": 700,
+        "LSOA11CD": "E01000002",
+        "Area (km2)": 0.223719826,
+        "Average energy efficiency improvements costs of detached gas boiler (GBP)": 13221.20,
+        "Average energy efficiency improvements costs of semi-detached gas boiler (GBP)": 14589.64,
+        "Average energy efficiency improvements costs of flat gas boiler (GBP)": 17483.12,
+        "Average energy efficiency improvements costs of terraced gas boiler (GBP)": 12367.98,
+        "Local Authority (2011)": "City of London",
+        "Local Authority (2019)": "City of London"
     },
 ];
 
-describe('BreakDownOfImprovementCostsDwelling', () => {
+describe('BreakDownOfImprovementCostsDwellings', () => {
     it('renders table when data is available', () => {
-        render(<BreakDownOfImprovementCostsDwelling localAuthority="City of London" />);
+        render(<BreakDownOfImprovementCostsDwelling costData={testData} localAuthority="City of London"/>);
 
         // Check if the table is rendered by looking for table headers
         const tableHeaders = screen.getAllByRole('columnheader');
-        expect(tableHeaders).toHaveLength(3); // Assuming there are three columns: "Colour", "Dwelling Type" and "Cost"
+        expect(tableHeaders).toHaveLength(3); // Assuming there are three columns: "Colour", "Dwelling Type" and "Heat Demand Percentage"
 
         // Check if individual table rows are rendered
         const tableRows = screen.getAllByRole('row');
-        // Assuming the table has a header row and data rows for different dwelling types
-        expect(tableRows).toHaveLength(5); // Update the count based on your data
+        expect(tableRows).toHaveLength(5); // Assuming the table has a header row and four data rows for different dwelling types
+    });
+
+    it('shows the correct dwelling types on pie chart', () => {
+        render(<BreakDownOfImprovementCostsDwelling costData={testData} localAuthority="City of London"/>);
+
+        //Check detached type is shown on pie chart
+        const typeCell = screen.getByText('detached');
+        expect(typeCell).toBeInTheDocument();
+
+        //Check semi-detached type is shown on pie chart
+        const typeCell2 = screen.getByText('semi-detached');
+        expect(typeCell2).toBeInTheDocument();
+
+        //Check flat type is shown on pie chart
+        const typeCell3 = screen.getByText('flat');
+        expect(typeCell3).toBeInTheDocument();
+
+        //Check terraced type is shown on pie chart
+        const typeCell4 = screen.getByText('terraced');
+        expect(typeCell4).toBeInTheDocument();
     });
 });
