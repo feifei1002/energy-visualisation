@@ -1,10 +1,11 @@
 .analytics-dashboard {
-    display: flex;
+    display: grid;
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: flex-start;
     gap: 20px;
     padding: 20px;
+
 }
 
 .dashboard-item {

@@ -6,13 +6,12 @@ export default function PageViewPerMonth() {
     const [selectedLines, setSelectedLines] = useState({});
     const [data, setData] = useState([]);
 
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const transformDataForGraph = (rawData) => {
         const lineData = {};
 
         rawData.forEach(item => {
             const key = item._id.pageUrl + ' - ' + item._id.eventType;
-            const dateLabel = monthNames[item._id.month - 1] + ' ' + item._id.year;
+            const dateLabel = `${item._id.year}-${String(item._id.month).padStart(2, '0')}`;
 
             if (!lineData[key]) {
                 lineData[key] = { id: key, data: [] };
@@ -46,15 +45,45 @@ export default function PageViewPerMonth() {
         setData(filteredData);
     }, [rawData, selectedLines]);
 
+
+
     const handleToggle = (lineId) => {
         setSelectedLines(prev => ({ ...prev, [lineId]: !prev[lineId] }));
     };
 
     return (
         <div>
-            <div style={{height: "400px"}}>
+            <div style={{ height: "500px",width: "800px" }}>
                 <ResponsiveLine
                     data={data}
+                    useMesh={true}
+                    margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+                    xScale={{ type: 'time', format: '%Y-%m', precision: 'month' }}
+                    xFormat="time:%Y-%m"
+                    yScale={{ type: 'linear', stacked: true, min: 'auto', max: 'auto' }}
+                    axisTop={null}
+                    axisRight={null}
+                    axisBottom={{
+                        format: '%b %Y',
+                        tickValues: 'every month',
+                        legend: 'Month',
+                        legendOffset: -12
+                    }}
+                    axisLeft={{
+                        orient: 'left',
+                        tickSize: 5,
+                        tickPadding: 5,
+                        tickRotation: 0,
+                        legend: 'Page Views',
+                        legendPosition: 'middle',
+                        legendOffset: -40
+                    }}
+                    colors={{ scheme: 'category10' }}
+                    tooltip={({ point }) => (
+                        <div style={{ color: point.serieColor, background: 'white', padding: '5px', border: '1px solid #ccc' }}>
+                            <strong>{point.serieId}</strong>: {point.data.y} views on {point.data.xFormatted}
+                        </div>
+                    )}
                 />
             </div>
             <div>
