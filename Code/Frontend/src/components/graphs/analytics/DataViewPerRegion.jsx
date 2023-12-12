@@ -5,7 +5,6 @@ import geoFeatures from '../../../data/countries';
 
 export default function DataViewMap() {
     const [selectedYear, setSelectedYear] = useState(2023);
-    const [geoJsonData, setGeoJsonData] = useState(null);
     const [mapData, setMapData] = useState([]);
     const [nivoMapData, setNivoMapData] = useState([]);
     const [selectedPageUrl, setSelectedPageUrl] = useState('');
@@ -26,10 +25,6 @@ export default function DataViewMap() {
             })
             .catch(error => console.error(error));
 
-        // Fetching the GeoJSON data
-        axios.get('http://localhost:8082/data/geojsonCountry')
-            .then(response => setGeoJsonData(response.data))
-            .catch(error => console.error('Error fetching GeoJSON:', error));
     }, [selectedYear]);
 
     useEffect(() => {
@@ -74,7 +69,7 @@ export default function DataViewMap() {
                 </select>
             </div>
             <div style={{ height: 400 }}>
-                {geoJsonData && nivoMapData.length > 0 && <ResponsiveChoropleth
+                {nivoMapData.length > 0 && <ResponsiveChoropleth
                     data={nivoMapData}
                     features={geoFeatures.features}
                     tooltip={tooltip}
