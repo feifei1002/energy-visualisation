@@ -28,6 +28,7 @@ const csvPaths = {
   quantification: path.join(rootPath, 'Data', 'Quantification_of_inherent_flexibility.csv'),
   residentialHeatDemand: path.join(rootPath, 'Data', 'Residential_heat_demand_LSOA_Scotland.csv'),
   halfHourlyProfileHeating: path.join(rootPath, 'Data', 'Half-hourly_profiles_of_heating_technologies.csv'),
+  efficiencyImprovementCosts: path.join(rootPath, 'Data', 'Energy_efficiency_improvements_costs_LA.csv'),
 };
 
 // Path to GeoJSON data for geographical shapes
@@ -73,6 +74,10 @@ async function getLocalData(filePath) {
   // If no valid file is found, return null
   return null;
 }
+
+// app.get('/api/energy-improvement-costs', (req, res) => {
+//   res.json(data);
+// });
 
 // Function to parse CSV data, cache it, and return the parsed data
 async function parseAndCacheCSV(filePath) {
@@ -166,6 +171,13 @@ router.get('/geojson', (req, res) => {
   res.set('Cache-Control', `public, max-age=${cacheTTL}`); // Set cache control headers
   handleGeoJSONRequest(req, res, geojsonPath); // Handle the GeoJSON request
 });
+
+// API endpoint for energy efficiency improvement costs data
+router.get('/efficiencyimprovementcosts', (req, res) => {
+  res.set('Cache-Control', `public, max-age=${cacheTTL}`); // Set cache control headers
+  handleCSVRequest(req, res, csvPaths.efficiencyImprovementCosts); // Handle the CSV request
+});
+
 
 // API endpoint for half-hourly profile heating data
 router.get('/halfhourlyheatingprofile', (req, res) => {
