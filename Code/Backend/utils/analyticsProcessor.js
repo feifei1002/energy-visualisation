@@ -9,13 +9,15 @@ const convertLatLongToCountry = async (latitude, longitude) => {
         const data = response.data;
 
         if (data && data.results && data.results.length > 0) {
-            // Typically, the country information is in the 'components' object
-            return data.results[0].components.country;
+            //accessing the ISO_3166-1_alpha-3 country code because this is type country code used in the geojson
+            return data.results[0].components['ISO_3166-1_alpha-3'];
         }
 
         return null;
     } catch (error) {
-        console.error('Error converting lat-long to country:', error);
+        console.error('Error converting lat-long to country code:', error);
         return null;
     }
 };
+
+module.exports = { convertLatLongToCountry };
