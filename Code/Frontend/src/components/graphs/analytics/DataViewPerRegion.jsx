@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { ResponsiveGeoMap } from '@nivo/geo';
+import { ResponsiveChoropleth } from '@nivo/geo';
 import axios from 'axios';
+import geoFeatures from '../../../data/countries';
 
 export default function DataViewMap() {
     const [selectedYear, setSelectedYear] = useState(2023);
@@ -20,8 +21,6 @@ export default function DataViewMap() {
                     count: item.count
                 }));
                 setMapData(transformedData);
-
-                // Extract page urls available
                 const uniqueUrls = [...new Set(transformedData.map(item => item.pageUrl))];
                 setPageUrls(uniqueUrls);
             })
@@ -34,12 +33,10 @@ export default function DataViewMap() {
     }, [selectedYear]);
 
     useEffect(() => {
-        // Filter data by selectedPageUrl if one is selected
         const filteredData = selectedPageUrl
             ? mapData.filter(item => item.pageUrl === selectedPageUrl)
             : mapData;
 
-        // Transform data for Nivo GeoMap
         const aggregatedData = filteredData.reduce((acc, item) => {
             acc[item.country] = (acc[item.country] || 0) + item.count;
             return acc;
@@ -50,14 +47,23 @@ export default function DataViewMap() {
             value: aggregatedData[country]
         }));
 
+        console.log(nivoMapData);
         setNivoMapData(transformedNivoData);
     }, [mapData, selectedPageUrl]);
+
+    const tooltip = ({ feature }) => {
+        const dataItem = nivoMapData.find(item => item.id === feature.id);
+        return (
+            <span>
+                {feature.properties.name}: {dataItem ? dataItem.value : 'No data'}
+            </span>
+        );
+    };
 
     return (
         <div>
             <select value={selectedYear} onChange={e => setSelectedYear(e.target.value)}>
                 <option value={2023}>2023</option>
-                {/* Add more year options as needed */}
             </select>
             <div>
                 <select value={selectedPageUrl} onChange={e => setSelectedPageUrl(e.target.value)}>
@@ -68,23 +74,46 @@ export default function DataViewMap() {
                 </select>
             </div>
             <div style={{ height: 400 }}>
-                {geoJsonData && <ResponsiveGeoMap
-                    features={geoJsonData.features}
+                {geoJsonData && nivoMapData.length > 0 && <ResponsiveChoropleth
                     data={nivoMapData}
-                    projectionType="mercator"
-                    colors={{ scheme: 'blues' }}
+                    features={geoFeatures.features}
+                    tooltip={tooltip}
+                    colors="nivo"
                     domain={[0, Math.max(...nivoMapData.map(d => d.value))]}
                     label="properties.name"
                     valueFormat=".2s"
+                    projectionTranslation={[0.5, 0.5]}
+                    projectionRotation={[0, 0, 0]}
                     borderWidth={0.5}
                     borderColor="#333333"
-                    tooltip={({ feature, value }) => (
-                        <strong>
-                            {feature.properties.name}: {value}
-                        </strong>
-                    )}
+                    legends={[
+                        {
+                            anchor: 'bottom-left',
+                            direction: 'column',
+                            justify: true,
+                            translateX: 20,
+                            translateY: -100,
+                            itemsSpacing: 0,
+                            itemWidth: 94,
+                            itemHeight: 18,
+                            itemDirection: 'left-to-right',
+                            itemTextColor: '#444444',
+                            itemOpacity: 0.85,
+                            symbolSize: 18,
+                            effects: [
+                                {
+                                    on: 'hover',
+                                    style: {
+                                        itemTextColor: '#000000',
+                                        itemOpacity: 1
+                                    }
+                                }
+                            ]
+                        }
+                    ]}
                 />}
             </div>
         </div>
+
     );
 }
