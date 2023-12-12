@@ -2,19 +2,29 @@ const express = require('express');
 const router = express.Router();
 const AnalyticLog = require('../../models/Analytics');
 const {expressjwt} = require("express-jwt");
-
+const { convertLatLongToCountry } = require('../../utils/analyticsProcessor');
 
 
 //POST route to create a new analytic log entry
 router.post('/analyticlog/', async (req, res) => {
     try {
-        let userId = req.params.userID;
+        const { event, location, pageUrl, additionalDetails } = req.body;
+
+        //extract latitude and longitude from the location
+        const [latitude, longitude] = location.split(',').map(coord => parseFloat(coord.trim()));
+
+        //convert latitude and longitude to country
+        const country = await convertLatLongToCountry(latitude, longitude);
+
+        //prepare the event data, adding the country field
         const eventData = {
-            userId: userId,
-            event: req.body.event,
-            location: req.body.location,
-            pageUrl: req.body.pageUrl,
-            additionalDetails: req.body.additionalDetails
+            //assuming userId is available in the request body or through authentication context
+            userId: req.body.userId || 'defaultUserId',
+            event,
+            location,
+            country, //add the country name to the event data
+            pageUrl,
+            additionalDetails
         };
 
         const newLog = new AnalyticLog(eventData);
@@ -26,5 +36,39 @@ router.post('/analyticlog/', async (req, res) => {
         res.status(500).json({ message: 'Error creating analytic log' });
     }
 });
+
+router.get('/analytics/pageviews-per-region', async (req, res) => {
+    try {
+        const data = await AnalyticLog.aggregate([
+            { $match: { event: "PageView" } },
+            { $group: { _id: "$region", count: { $sum: 1 } } }
+        ]);
+        res.json(data);
+    } catch (error) {
+        res.status(500).send('Error retrieving analytics data');
+    }
+});
+
+router.get('/analytics/pageviews-per-month', async (req, res) => {
+    try {
+        const data = await AnalyticLog.aggregate([
+            { $match: { event: "PageView" } },
+            {
+                $group: {
+                    _id: {
+                        year: { $year: "$timestamp" },
+                        month: { $month: "$timestamp" }
+                    },
+                    count: { $sum: 1 }
+                }
+            },
+            { $sort: { "_id.year": 1, "_id.month": 1 } }
+        ]);
+        res.json(data);
+    } catch (error) {
+        res.status(500).send('Error retrieving analytics data');
+    }
+});
+
 
 module.exports = router;

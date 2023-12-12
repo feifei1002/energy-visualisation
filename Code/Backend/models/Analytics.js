@@ -17,6 +17,10 @@ const analyticLogSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    country: {
+        type: String,
+        required: false
+    },
     pageUrl: {
         type: String,
         required: true //for page view events for analysing later
