@@ -1,6 +1,9 @@
+// ... (other imports)
+
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { ResponsivePie } from '@nivo/pie';
+import { ResponsiveBar } from '@nivo/bar';
 import graphToPdf from '../../helperFunctions/graphToPdf';
 
 const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
@@ -8,6 +11,9 @@ const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [formattedData, setFormattedData] = useState([]);
+    const [graphFormattedData, setGraphFormattedData] = useState([]);
+    const [averageCostPerAuthority, setAverageCostPerAuthority] = useState(null);
+    const [currentView, setCurrentView] = useState('bar');
 
     const handleGeneratePDF = () => {
         try {
@@ -22,7 +28,7 @@ const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
         }
     };
 
-    const getColor = (index) => {
+    const getBarColors = (index) => {
         const schemeCategory10 = [
             '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
             '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'
@@ -44,7 +50,7 @@ const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
                     ? result
                     : selectedAuthorityData;
 
-                const dwellingBreakdown = filteredData.reduce((acc, curr) => {
+                const dwellingBreakdown = filteredData.map((curr) => {
                     const newTotalCostsPerCity = {};
 
                     ['detached', 'flat', 'semi-detached', 'terraced'].forEach((dwellingType) => {
@@ -60,18 +66,41 @@ const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
                         newTotalCostsPerCity[dwellingType] = totalDwellingValue;
                     });
 
-                    acc = { ...acc, ...newTotalCostsPerCity };
-                    return acc;
-                }, {});
+                    return newTotalCostsPerCity;
+                });
 
-                if (Object.keys(dwellingBreakdown).length > 0) {
-                    const newData = Object.entries(dwellingBreakdown).map(([city, totalCost], index) => ({
-                        id: city,
-                        value: totalCost,
-                        color: getColor(index),
+                if (filteredData.length > 0) {
+                    const totalCostPerDwellingType = dwellingBreakdown.reduce((acc, city) => {
+                        Object.keys(city).forEach((dwellingType) => {
+                            if (!acc[dwellingType]) {
+                                acc[dwellingType] = 0;
+                            }
+                            acc[dwellingType] += city[dwellingType];
+                        });
+                        return acc;
+                    }, {});
+
+                    const totalCostAllDwellingTypes = Object.values(totalCostPerDwellingType).reduce((total, cost) => total + cost, 0);
+
+                    const averageCostPerAuthority = totalCostAllDwellingTypes / filteredData.length;
+
+                    setAverageCostPerAuthority(averageCostPerAuthority);
+                } else {
+                    setAverageCostPerAuthority(null);
+                }
+
+                if (dwellingBreakdown.length > 0) {
+                    const keys = ['detached', 'flat', 'semi-detached', 'terraced'];
+
+                    // For bar graph (updated to set the initial state for the bar graph)
+                    const barGraphData = keys.map((dwellingType, index) => ({
+                        id: dwellingType,
+                        value: dwellingBreakdown[0][dwellingType],
+                        color: getBarColors(index),
                     }));
 
-                    setFormattedData(newData);
+                    setGraphFormattedData(barGraphData);
+                    setFormattedData(barGraphData);
                 }
             } catch (error) {
                 console.error('Error fetching or parsing data:', error);
@@ -84,7 +113,6 @@ const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
         fetchData();
     }, [localAuthority]);
 
-    const sortedTableData = [...formattedData].sort((a, b) => b.value - a.value);
 
     if (loading) {
         return <p>Loading data...</p>;
@@ -107,24 +135,134 @@ const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
         <div>
             <div>
                 <div id="breakDownOfHeatDemandDwellings">
-                    <div style={{ width: '100vw', height: 400 }}>
-                        <ResponsivePie
-                            data={formattedData}
-                            margin={{ top: 40, right: 80, bottom: 40, left: 80 }}
-                            innerRadius={0.5}
-                            padAngle={0.7}
-                            cornerRadius={3}
-                            colors={{ scheme: 'category10' }}
-                            borderWidth={1}
-                            borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
-                            enableArcLinkLabels={false}
-                            enableRadialLabels={false}
-                            enableSlicesLabels={false}
-                            enableLabels={false}
-                            enableArcLabels={false}
-                            legends={[]}
-                        />
-                    </div>
+                    {currentView === 'pie' ? (
+                        <div style={{ width: '100vw', height: 400 }}>
+                            <ResponsivePie
+                                data={formattedData}
+                                margin={{ top: 40, right: 80, bottom: 40, left: 80 }}
+                                innerRadius={0.5}
+                                padAngle={0.7}
+                                cornerRadius={3}
+                                colors={{ scheme: 'category10' }}
+                                borderWidth={1}
+                                borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
+                                enableArcLinkLabels={false}
+                                enableRadialLabels={false}
+                                enableSlicesLabels={false}
+                                enableLabels={false}
+                                enableArcLabels={false}
+                                legends={[{
+                                    anchor: 'right',
+                                    direction: 'column',
+                                    justify: false,
+                                    translateX: 80,
+                                    translateY: 0,
+                                    itemsSpacing: 0,
+                                    itemWidth: 100,
+                                    itemHeight: 18,
+                                    itemTextColor: '#999',
+                                    itemDirection: 'left-to-right',
+                                    itemOpacity: 1,
+                                    symbolSize: 18,
+                                    symbolShape: 'circle',
+                                    effects: [
+                                        {
+                                            on: 'hover',
+                                            style: {
+                                                itemTextColor: '#000',
+                                            },
+                                        },
+                                    ],
+                                },
+                                ]}
+                                tooltip={({ datum }) => (
+                                    <div
+                                        style={{
+                                            background: '#fff',
+                                            padding: '5px',
+                                            border: '1px solid #ccc',
+                                        }}
+                                    >
+                                        <div style={{ color: datum.color }}>
+                                            {datum.id}: £{Number(datum.value).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                        </div>
+                                    </div>
+                                )}
+                            />
+                        </div>
+                    ) : (
+                        <div style={{ width: '100vw', height: 400 }}>
+                            <ResponsiveBar
+                                data={graphFormattedData}
+                                keys={['value']}
+                                indexBy="id"
+                                margin={{ top: 40, right: 80, bottom: 40, left: 80 }}
+                                padding={0.3}
+                                colors={(sector) => sector.data.color}
+                                borderWidth={1}
+                                borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
+                                axisTop={null}
+                                axisRight={null}
+                                axisBottom={{
+                                    tickSize: 5,
+                                    tickPadding: 5,
+                                    tickRotation: 0,
+                                    legend: 'Heating Technology',
+                                    legendPosition: 'middle',
+                                    legendOffset: 32,
+                                    format: (value) => `${value}`, // Format x-axis ticks
+                                }}
+                                axisLeft={{
+                                    tickSize: 5,
+                                    tickPadding: 5,
+                                    tickRotation: 0,
+                                    legend: 'Cost',
+                                    legendPosition: 'middle',
+                                    legendOffset: -40,
+                                    format: (value) => `£${(value / 1000).toFixed(0)}k`, // Format y-axis ticks
+                                }}
+                                labelSkipWidth={12}
+                                labelSkipHeight={12}
+                                labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+                                legends={[{
+                                    anchor: 'bottom',
+                                    direction: 'row',
+                                    justify: false,
+                                    translateX: 0,
+                                    translateY: 56,
+                                    itemsSpacing: 0,
+                                    itemWidth: 100,
+                                    itemHeight: 18,
+                                    itemTextColor: '#999',
+                                    itemDirection: 'left-to-right',
+                                    itemOpacity: 1,
+                                    symbolSize: 18,
+                                    symbolShape: 'circle',
+                                    effects: [
+                                        {
+                                            on: 'hover',
+                                            style: {
+                                                itemTextColor: '#000',
+                                            },
+                                        },
+                                    ],
+                                }]}
+                                tooltip={({ id, value }) => (
+                                    <div
+                                        style={{
+                                            background: '#fff',
+                                            padding: '5px',
+                                            border: '1px solid #ccc',
+                                        }}
+                                    >
+                                        <div style={{ color: getBarColors(formattedData.findIndex(d => d.id === id)) }}>
+                                            {id}: £{Number(value).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                        </div>
+                                    </div>
+                                )}
+                            />
+                        </div>
+                    )}
                     <div style={{ width: '100vw', display: 'flex', justifyContent: 'center', marginBottom: '1vh' }}>
                         <table style={{ border: '1px solid black' }}>
                             <thead>
@@ -135,11 +273,13 @@ const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
                             </tr>
                             </thead>
                             <tbody>
-                            {sortedTableData.map((data) => (
-                                <tr key={data.id}>
+                            {formattedData.map((data, index) => (
+                                <tr key={index}>
                                     <td style={{ backgroundColor: data.color, border: '1px solid black' }}></td>
                                     <td style={{ border: '1px solid black' }}>{data.id}</td>
-                                    <td style={{ border: '1px solid black' }}>£{data.value.toFixed(2)}</td>
+                                    <td style={{ border: '1px solid black' }}>
+                                        £{Number(data.value).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                    </td>
                                 </tr>
                             ))}
                             </tbody>
@@ -148,7 +288,12 @@ const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
                 </div>
             </div>
             <div>
-                {/* Button to generate PDF */}
+                <button
+                    onClick={() => setCurrentView(currentView === 'pie' ? 'bar' : 'pie')}
+                    style={{ margin: '1vh', backgroundColor: 'rgba(20, 72, 94, 0.99)', color: 'white' }}
+                >
+                    {currentView === 'pie' ? 'Change to Bar Graph' : 'Change to Pie Chart'}
+                </button>
                 <button onClick={handleGeneratePDF} style={{ margin: '1vh', backgroundColor: 'rgba(20, 72, 94, 0.99)', color: 'white' }}>
                     Generate PDF
                 </button>

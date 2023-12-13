@@ -12,7 +12,9 @@
   "license": "ISC",
   "dependencies": {
     "@auth/core": "^0.18.0",
+    "@nivo/bar": "^0.84.0",
     "@nivo/core": "^0.83.0",
+    "@nivo/funnel": "^0.84.0",
     "axios": "^1.6.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
