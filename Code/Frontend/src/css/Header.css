@@ -1,5 +1,7 @@
+/* Importing Raleway font from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
 
+/* Styling for the main header */
 .main-header {
     background-color: rgba(29, 102, 134, 0.99);
     color: white;
@@ -7,21 +9,24 @@
     text-align: center;
 }
 
+/* Styling for the title within the navbar */
 .navbar-title h1 {
     margin: 0;
     padding-bottom: 10px;
 }
 
+/* Styling for the navbar container */
 .navbar {
     background-color: rgba(29, 102, 134, 0.99);
     width: 100%!important;
-    height: 100%!important;  
+    height: 100%!important;
     display: flex;
     padding: 10px!important;
     justify-content: center;
     flex-wrap: wrap;
-} 
+}
 
+/* Styling for the navigation links */
 .nav-links {
     list-style: none;
     display: flex;
@@ -30,6 +35,7 @@
     margin: 0;
 }
 
+/* Styling for each navigation link item */
 .nav-links li {
     background-color: rgba(29, 102, 134, 0.99);
     padding: 10px 20px!important;
@@ -37,18 +43,20 @@
     transition: transform 0.3s;
 }
 
+/* Styling for the links within the navigation items */
 .header-link {
     color: white;
     font-weight: 500;
     text-decoration: none;
 }
 
-
+/* Styling for the main header font */
 .main-header {
     font-family: 'Raleway', sans-serif;
     font-weight: 500;
 }
 
+/* Styling for navigation links on hover or focus */
 .nav-links a:hover, .nav-links a:focus {
     color: white;
     text-shadow: 0 0 8px black;
@@ -56,6 +64,7 @@
     font-size: 1.2em;
 }
 
+/* Styling for the navbar title */
 .navbar-title {
     width: 100%;
     height: 36px;
@@ -68,6 +77,8 @@
     color: #ffffff;
     text-align: center;
 }
+
+/* Additional styling for the navbar container */
 .navbar {
     background-color: rgba(29, 102, 134, 0.99);
     width: 100%;
@@ -77,6 +88,7 @@
     justify-content: center;
 }
 
+/* Styling for the navigation links container */
 .nav-links {
     list-style: none;
     display: flex;
@@ -84,6 +96,7 @@
     padding: 0;
 }
 
+/* Styling for individual navigation links */
 .nav-links a {
     color: white;
     text-decoration: none;
@@ -96,6 +109,7 @@
     padding-right: 10px !important;
 }
 
+/* Styling for navigation links on hover */
 .nav-links li:hover {
     transform: scale(1);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);

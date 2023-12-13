@@ -1,3 +1,4 @@
+// Import necessary dependencies for testing
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
@@ -27,8 +28,11 @@ const testData = [
     },
 ];
 
+// Describe block for the BreakDownOfImprovementCostsDwelling component tests
 describe('BreakDownOfImprovementCostsDwellings', () => {
+    // Test case to check if the table is rendered when data is available
     it('renders table when data is available', () => {
+        // Render the BreakDownOfImprovementCostsDwelling component with test data
         render(<BreakDownOfImprovementCostsDwelling costData={testData} localAuthority="City of London"/>);
 
         // Check if the table is rendered by looking for table headers
@@ -40,22 +44,24 @@ describe('BreakDownOfImprovementCostsDwellings', () => {
         expect(tableRows).toHaveLength(5); // Assuming the table has a header row and four data rows for different dwelling types
     });
 
+    // Test case to check if the correct dwelling types are shown on the pie chart
     it('shows the correct dwelling types on pie chart', () => {
+        // Render the BreakDownOfImprovementCostsDwelling component with test data
         render(<BreakDownOfImprovementCostsDwelling costData={testData} localAuthority="City of London"/>);
 
-        //Check detached type is shown on pie chart
+        // Check if the detached type is shown on the pie chart
         const typeCell = screen.getByText('detached');
         expect(typeCell).toBeInTheDocument();
 
-        //Check semi-detached type is shown on pie chart
+        // Check if the semi-detached type is shown on the pie chart
         const typeCell2 = screen.getByText('semi-detached');
         expect(typeCell2).toBeInTheDocument();
 
-        //Check flat type is shown on pie chart
+        // Check if the flat type is shown on the pie chart
         const typeCell3 = screen.getByText('flat');
         expect(typeCell3).toBeInTheDocument();
 
-        //Check terraced type is shown on pie chart
+        // Check if the terraced type is shown on the pie chart
         const typeCell4 = screen.getByText('terraced');
         expect(typeCell4).toBeInTheDocument();
     });

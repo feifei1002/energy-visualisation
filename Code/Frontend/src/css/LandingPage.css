@@ -1,32 +1,29 @@
-
+/* Styling for the logo */
 .logo {
     height: 6em;
     padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
+    will-change: filter; /* Improve animation performance by specifying the property that will change */
+    transition: filter 300ms; /* Smooth transition for the filter property over 300 milliseconds */
 }
+
+/* Hover effect for the logo */
 .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
+    filter: drop-shadow(0 0 2em #646cffaa); /* Apply drop-shadow on hover */
 }
+
+/* Hover effect for the React logo */
 .logo.react:hover {
-    filter: drop-shadow(0 0 2em #61dafbaa);
+    filter: drop-shadow(0 0 2em #61dafbaa); /* Apply drop-shadow specifically for React logo on hover */
 }
 
-@keyframes logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
+/* Apply logo-spin animation if prefers-reduced-motion is not set to 'reduce' */
 @media (prefers-reduced-motion: no-preference) {
     a:nth-of-type(2) .logo {
-        animation: logo-spin infinite 20s linear;
+        animation: logo-spin infinite 20s linear; /* Apply the logo-spin animation infinitely over 20 seconds */
     }
 }
 
+/* Styling for the card */
 .card {
     padding: 2em;
     background-color: rgba(20, 72, 94, 0.99);
@@ -38,17 +35,19 @@
     margin: 0 auto;
 }
 
-.card p{
+/* Styling for paragraphs within the card */
+.card p {
     background-color: rgba(29, 102, 134, 0.99);
     color: #ffffff;
 }
 
-
+/* Styling for the "Read the Docs" link */
 .read-the-docs {
     color: #888;
     text-decoration: none;
 }
 
+/* Styling for the container */
 .container {
     display: flex;
     justify-content: center;
@@ -56,21 +55,25 @@
     background-color: rgba(29, 102, 134, 0.99);
 }
 
+/* Styling for the list */
 .list {
     margin: 0 10px;
     text-align: center;
 }
 
+/* Styling for unordered lists within the list */
 .list ul {
     list-style: none;
     padding: 0;
 }
 
+/* Styling for list items within the list */
 .list ul li {
     margin: 5px 0;
     color: #ffffff;
 }
 
+/* Styling for heading 2 within the list */
 .list h2 {
     color: #ffffff;
     font-size: 100%;

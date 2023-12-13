@@ -1,9 +1,10 @@
+// Import necessary dependencies for testing
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import BreakDownOfImprovementCostsHeatTechnology from "../../src/components/graphs/BreakDownOfImprovementCostsHeatTechnology";
 
-// Sample test data for the BreakDownOfImprovementCostsDwelling component
+// Sample test data for the BreakDownOfImprovementCostsHeatTechnology component
 const testData = [
     {
         "LSOA11CD": "E01000001",
@@ -27,35 +28,38 @@ const testData = [
     },
 ];
 
+// Test suite for the BreakDownOfImprovementCostsHeatTechnology component
 describe('BreakDownOfImprovementCostsHeatTechnology', () => {
+    // Test case: rendering the table when data is available
     it('renders table when data is available', () => {
         render(<BreakDownOfImprovementCostsHeatTechnology costData={testData} localAuthority="City of London"/>);
 
         // Check if the table is rendered by looking for table headers
         const tableHeaders = screen.getAllByRole('columnheader');
-        expect(tableHeaders).toHaveLength(3); // Assuming there are three columns: "Colour", "Dwelling Type" and "Heat Demand Percentage"
+        expect(tableHeaders).toHaveLength(3); // Assuming there are three columns: "Colour", "Dwelling Type", and "Heat Demand Percentage"
 
         // Check if individual table rows are rendered
         const tableRows = screen.getAllByRole('row');
         expect(tableRows).toHaveLength(5); // Assuming the table has a header row and four data rows for different dwelling types
     });
 
+    // Test case: showing the correct heat technology on the pie chart
     it('shows the correct heat technology on pie chart', () => {
         render(<BreakDownOfImprovementCostsHeatTechnology costData={testData} localAuthority="City of London"/>);
 
-        //Check detached type is shown on pie chart
+        // Check if detached type is shown on the pie chart
         const typeCell = screen.getByText('gas boiler');
         expect(typeCell).toBeInTheDocument();
 
-        //Check semi-detached type is shown on pie chart
+        // Check if semi-detached type is shown on the pie chart
         const typeCell2 = screen.getByText('oil boiler');
         expect(typeCell2).toBeInTheDocument();
 
-        //Check flat type is shown on pie chart
+        // Check if flat type is shown on the pie chart
         const typeCell3 = screen.getByText('resistance heating');
         expect(typeCell3).toBeInTheDocument();
 
-        //Check terraced type is shown on pie chart
+        // Check if terraced type is shown on the pie chart
         const typeCell4 = screen.getByText('biomass boiler');
         expect(typeCell4).toBeInTheDocument();
     });

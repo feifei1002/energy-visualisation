@@ -1,5 +1,6 @@
-/*/* Registration.css */
+/* Registration.css */
 
+/* Styling for the registration form group */
 .form-group-register {
     display: grid;
     grid-template-columns: 1fr;
@@ -7,17 +8,20 @@
     width: 700px;
 }
 
+/* Styling for the header of the registration form */
 .register-form h2 {
     text-align: center;
     color: #000000;
     margin-bottom: 20px;
 }
 
+/* Styling for the password toggle icon */
 .password-toggle {
     cursor: pointer;
     color: #15495f;
 }
 
+/* Styling for the labels in the registration form group */
 .form-group-register label {
     display: inline-block;
     text-align: center;
@@ -34,6 +38,7 @@
     vertical-align: top;
 }
 
+/* Styling for the input fields in the registration form group */
 .form-group-register input {
     width: 100%;
     padding: 10px;
@@ -45,6 +50,7 @@
     vertical-align: top;
 }
 
+/* Styling for the registration button */
 .btn.register-btn {
     display: block;
     width: 50%;
@@ -58,6 +64,7 @@
     box-sizing: border-box;
 }
 
+/* Styling for the registration button on hover */
 .btn.register-btn:hover {
     background-color: #0f3a4d;
 }
@@ -69,7 +76,7 @@
     }
 }
 
-
+/* Styling for the registration container */
 .registration-container {
     position: fixed;
     top: 0;
@@ -84,15 +91,18 @@
     transition: transform 0.3s ease-in-out;
 }
 
+/* Styling for hiding the registration container off-screen */
 .registration-container.hidden {
     transform: translateX(100%);
 }
 
+/* Styling for the title within the registration container */
 .registration-container p.title {
     font-size: 18px;
     font-weight: bold;
 }
 
+/* Styling for individual registration items within the container */
 .registration-item {
     margin-bottom: 15px;
     border: 1px solid #ddd;
@@ -100,16 +110,19 @@
     border-radius: 5px;
 }
 
+/* Styling for paragraphs within registration items */
 .registration-item p {
     margin: 0;
 }
 
+/* Styling for buttons within registration items */
 .registration-item button {
     margin-right: 10px;
     background-color: rgba(20, 72, 94, 0.99);
     color: #ffffff;
 }
 
+/* Styling for buttons within Register Request section */
 .Register-Request-Button button {
     margin-right: 10px;
     border: 3px solid rgba(20, 72, 94, 0.99);

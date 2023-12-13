@@ -1,12 +1,14 @@
+// Import necessary dependencies and styles
 // ... (other imports)
-
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { ResponsivePie } from '@nivo/pie';
 import { ResponsiveBar } from '@nivo/bar';
 import graphToPdf from '../../helperFunctions/graphToPdf';
 
+// Component for displaying the breakdown of improvement costs by heating technology
 const BreakDownOfImprovementCostsHeatTechnology = ({ costData, localAuthority }) => {
+    // State to manage component data
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -14,6 +16,7 @@ const BreakDownOfImprovementCostsHeatTechnology = ({ costData, localAuthority })
     const [averageCostPerCity, setAverageCostPerCity] = useState(null);
     const [currentView, setCurrentView] = useState('bar'); // Set default view to 'bar'
 
+    // Function to handle generating PDF from the graph
     const handleGeneratePDF = () => {
         try {
             graphToPdf(
@@ -27,6 +30,7 @@ const BreakDownOfImprovementCostsHeatTechnology = ({ costData, localAuthority })
         }
     };
 
+    // Function to get colors for sectors in the pie chart or bars in the bar graph
     const getSectorColors = (index) => {
         const schemeCategory10 = [
             '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
@@ -35,12 +39,15 @@ const BreakDownOfImprovementCostsHeatTechnology = ({ costData, localAuthority })
         return schemeCategory10[index % schemeCategory10.length];
     };
 
+    // Fetch and format data on component mount and when localAuthority changes
     useEffect(() => {
         const fetchData = async () => {
             try {
+                // Fetch data (replace with actual fetching logic)
                 const result = costData;
                 setData(result);
 
+                // Filter data based on the selected local authority
                 const selectedAuthorityData = result.filter(
                     (data) => data['Local Authority (2019)'] === localAuthority
                 );
@@ -49,6 +56,7 @@ const BreakDownOfImprovementCostsHeatTechnology = ({ costData, localAuthority })
                     ? result
                     : selectedAuthorityData;
 
+                // Calculate heating technology breakdown
                 const heatingTechBreakdown = ['gas boiler', 'oil boiler', 'resistance heating', 'biomass boiler'].reduce((acc, heatingTech, index) => {
                     const totalTechValue = filteredData.reduce((total, curr) => {
                         const keys = [
@@ -71,10 +79,12 @@ const BreakDownOfImprovementCostsHeatTechnology = ({ costData, localAuthority })
                     return acc;
                 }, []);
 
+                // Set the formatted data for rendering the graph
                 if (heatingTechBreakdown.length > 0) {
                     setFormattedData(heatingTechBreakdown);
                 }
 
+                // Calculate and set the total average cost per city
                 if (filteredData.length > 0) {
                     const totalAverageCostPerCity = heatingTechBreakdown.reduce((total, tech) => total + tech.value, 0);
                     setAverageCostPerCity(totalAverageCostPerCity);
@@ -92,12 +102,15 @@ const BreakDownOfImprovementCostsHeatTechnology = ({ costData, localAuthority })
         fetchData();
     }, [localAuthority]);
 
+    // Sort the table data by value in descending order
     const sortedTableData = [...formattedData].sort((a, b) => b.value - a.value);
 
+    // Display loading message while data is being fetched
     if (loading) {
         return <p>Loading data...</p>;
     }
 
+    // Display error message if an error occurs
     if (error) {
         console.error('Error:', error);
         return (
@@ -107,15 +120,18 @@ const BreakDownOfImprovementCostsHeatTechnology = ({ costData, localAuthority })
         );
     }
 
+    // Display message if no data is found
     if (!data.length || !formattedData.length) {
         return <p>No data found for the selected Local Authority.</p>;
     }
 
+    // Render the component with either pie chart or bar graph based on the current view
     return (
         <div>
             <div>
                 <div id="breakDownOfImprovementCostsHeatingTech">
                     {currentView === 'pie' ? (
+                        // Render pie chart
                         <div style={{ width: '100vw', height: 400 }}>
                             <ResponsivePie
                                 data={formattedData}
@@ -153,8 +169,8 @@ const BreakDownOfImprovementCostsHeatTechnology = ({ costData, localAuthority })
                                             },
                                         },
                                     ],
-                                },
-                                ]}
+                                }]}
+                                // Formats the data correctly you see when hovering over the bar graph
                                 tooltip={({ datum }) => (
                                     <div
                                         style={{
@@ -171,6 +187,7 @@ const BreakDownOfImprovementCostsHeatTechnology = ({ costData, localAuthority })
                             />
                         </div>
                     ) : (
+                        // Render bar graph
                         <div style={{ width: '100vw', height: 400 }}>
                             <ResponsiveBar
                                 data={formattedData}
@@ -227,9 +244,24 @@ const BreakDownOfImprovementCostsHeatTechnology = ({ costData, localAuthority })
                                         },
                                     ],
                                 }]}
+                                // Formats the data correctly you see when hovering over the bar graph
+                                tooltip={({ id, value }) => (
+                                    <div
+                                        style={{
+                                            background: '#fff',
+                                            padding: '5px',
+                                            border: '1px solid #ccc',
+                                        }}
+                                    >
+                                        <div style={{ color: getSectorColors(formattedData.findIndex(d => d.id === id)) }}>
+                                            {id}: £{Number(value).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                        </div>
+                                    </div>
+                                )}
                             />
                         </div>
                     )}
+                    {/* Display legend table */}
                     <div style={{ width: '100vw', display: 'flex', justifyContent: 'center', marginBottom: '1vh' }}>
                         <table style={{ border: '1px solid black' }}>
                             <thead>
@@ -240,6 +272,7 @@ const BreakDownOfImprovementCostsHeatTechnology = ({ costData, localAuthority })
                             </tr>
                             </thead>
                             <tbody>
+                            {/* Map through the sorted data for the legend */}
                             {sortedTableData.map((data, index) => (
                                 <tr key={index}>
                                     <td style={{ backgroundColor: data.color, border: '1px solid black' }}></td>
@@ -255,14 +288,13 @@ const BreakDownOfImprovementCostsHeatTechnology = ({ costData, localAuthority })
                 </div>
             </div>
             <div>
-                {/* Button to toggle between Pie Chart and Bar Graph */}
+                {/* Buttons to toggle between Pie Chart and Bar Graph and to generate PDF */}
                 <button
                     onClick={() => setCurrentView(currentView === 'pie' ? 'bar' : 'pie')}
                     style={{ margin: '1vh', backgroundColor: 'rgba(20, 72, 94, 0.99)', color: 'white' }}
                 >
                     {currentView === 'pie' ? 'Change to Bar Graph' : 'Change to Pie Chart'}
                 </button>
-                {/* Button to generate PDF */}
                 <button onClick={handleGeneratePDF} style={{ margin: '1vh', backgroundColor: 'rgba(20, 72, 94, 0.99)', color: 'white' }}>
                     Generate PDF
                 </button>
@@ -271,4 +303,5 @@ const BreakDownOfImprovementCostsHeatTechnology = ({ costData, localAuthority })
     );
 };
 
+// Export the component
 export default BreakDownOfImprovementCostsHeatTechnology;

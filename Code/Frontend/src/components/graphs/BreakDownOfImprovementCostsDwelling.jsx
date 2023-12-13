@@ -1,12 +1,14 @@
+// Import necessary dependencies and styles
 // ... (other imports)
-
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { ResponsivePie } from '@nivo/pie';
 import { ResponsiveBar } from '@nivo/bar';
 import graphToPdf from '../../helperFunctions/graphToPdf';
 
+// Component for displaying the breakdown of improvement costs by dwellings
 const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
+    // State to manage component data
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -15,6 +17,7 @@ const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
     const [averageCostPerAuthority, setAverageCostPerAuthority] = useState(null);
     const [currentView, setCurrentView] = useState('bar');
 
+    // Function to handle generating PDF from the graph
     const handleGeneratePDF = () => {
         try {
             graphToPdf(
@@ -28,6 +31,7 @@ const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
         }
     };
 
+    // Function to get colors for sectors in the bar graph
     const getBarColors = (index) => {
         const schemeCategory10 = [
             '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
@@ -36,12 +40,15 @@ const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
         return schemeCategory10[index % schemeCategory10.length];
     };
 
+    // Fetch and format data on component mount and when localAuthority changes
     useEffect(() => {
         const fetchData = async () => {
             try {
+                // Fetch data (replace with actual fetching logic)
                 const result = costData;
                 setData(result);
 
+                // Filter data based on the selected local authority
                 const selectedAuthorityData = result.filter(
                     (data) => data['Local Authority (2019)'] === localAuthority
                 );
@@ -50,6 +57,7 @@ const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
                     ? result
                     : selectedAuthorityData;
 
+                // Calculate dwelling breakdown
                 const dwellingBreakdown = filteredData.map((curr) => {
                     const newTotalCostsPerCity = {};
 
@@ -69,6 +77,7 @@ const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
                     return newTotalCostsPerCity;
                 });
 
+                // Calculate and set the average cost per authority
                 if (filteredData.length > 0) {
                     const totalCostPerDwellingType = dwellingBreakdown.reduce((acc, city) => {
                         Object.keys(city).forEach((dwellingType) => {
@@ -89,6 +98,7 @@ const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
                     setAverageCostPerAuthority(null);
                 }
 
+                // Format data for both pie chart and bar graph
                 if (dwellingBreakdown.length > 0) {
                     const keys = ['detached', 'flat', 'semi-detached', 'terraced'];
 
@@ -113,11 +123,12 @@ const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
         fetchData();
     }, [localAuthority]);
 
-
+    // Display loading message while data is being fetched
     if (loading) {
         return <p>Loading data...</p>;
     }
 
+    // Display error message if an error occurs
     if (error) {
         console.error('Error:', error);
         return (
@@ -127,15 +138,18 @@ const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
         );
     }
 
+    // Display message if no data is found
     if (!data.length || !formattedData.length) {
         return <p>No data found for the selected Local Authority.</p>;
     }
 
+    // Render the component with either pie chart or bar graph based on the current view
     return (
         <div>
             <div>
                 <div id="breakDownOfHeatDemandDwellings">
                     {currentView === 'pie' ? (
+                        // Render pie chart
                         <div style={{ width: '100vw', height: 400 }}>
                             <ResponsivePie
                                 data={formattedData}
@@ -191,6 +205,7 @@ const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
                             />
                         </div>
                     ) : (
+                        // Render bar graph
                         <div style={{ width: '100vw', height: 400 }}>
                             <ResponsiveBar
                                 data={graphFormattedData}
@@ -263,6 +278,7 @@ const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
                             />
                         </div>
                     )}
+                    {/* Render legend table */}
                     <div style={{ width: '100vw', display: 'flex', justifyContent: 'center', marginBottom: '1vh' }}>
                         <table style={{ border: '1px solid black' }}>
                             <thead>
@@ -273,6 +289,7 @@ const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
                             </tr>
                             </thead>
                             <tbody>
+                            {/* Map and render table rows */}
                             {formattedData.map((data, index) => (
                                 <tr key={index}>
                                     <td style={{ backgroundColor: data.color, border: '1px solid black' }}></td>
@@ -287,6 +304,7 @@ const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
                     </div>
                 </div>
             </div>
+            {/* Buttons to toggle between Pie Chart and Bar Graph and to generate PDF */}
             <div>
                 <button
                     onClick={() => setCurrentView(currentView === 'pie' ? 'bar' : 'pie')}
@@ -302,4 +320,5 @@ const BreakDownOfImprovementCostsDwelling = ({ costData, localAuthority }) => {
     );
 };
 
+// Export the component
 export default BreakDownOfImprovementCostsDwelling;
