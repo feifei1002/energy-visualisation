@@ -3,6 +3,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css'; // Import Leaflet CSS for map styling
 import Chart from 'chart.js/auto';
+import { Table, Button, Modal, Form} from 'react-bootstrap';
 
 // HeatEfficiencyAfterHeatMap component receives heatData and geoJsonData as props
 export default function HeatEfficiencyAfterHeatMap({ heatData, geoJsonData }) {
@@ -10,6 +11,17 @@ export default function HeatEfficiencyAfterHeatMap({ heatData, geoJsonData }) {
   const [selectedFeature, setSelectedFeature] = useState(null);
   const [myChart, setMyChart] = useState(null);
   const [chartInUse, setChartInUse] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  
+  const openModal = () => {
+    setShowModal(true); 
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
  
   // CSS classes for styling
   const mapContainerStyle = {
@@ -31,6 +43,17 @@ export default function HeatEfficiencyAfterHeatMap({ heatData, geoJsonData }) {
     position: 'absolute',
     top: '90%',
     left: '1%',
+    padding: '5px',
+    background: '#000',
+    zIndex: 3000,
+    cursor: 'pointer',
+    color: '#fff'
+  };
+
+  const buttonKeyStyle = {
+    position: 'absolute',
+    top: '5%',
+    left: '90%',
     padding: '5px',
     background: '#000',
     zIndex: 3000,
@@ -237,11 +260,20 @@ export default function HeatEfficiencyAfterHeatMap({ heatData, geoJsonData }) {
 
   // Render the map with GeoJSON and TileLayer components, along with chart elements
   return (
+    <>
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'right'}}>
       <h3 style={{textAlign: 'left'}}>
         Total heat demand after energy efficiency measures 2018 (kWh)
       </h3>
       <div style={mapContainerStyle}>
+       {!myChart && 
+        <button
+            style={buttonKeyStyle}
+            onClick={() => openModal()}
+        >
+            Open Key
+        </button>
+        }
         <MapContainer center={[55.3781, -3.4360]} maxZoom={12} minZoom={6} zoom={6} style={{ height: '100%', width: '100%' }} preferCanvas={true}>
           <GeoJSON
             data={geoJsonData.features} // GeoJSON data for the map
@@ -275,5 +307,25 @@ export default function HeatEfficiencyAfterHeatMap({ heatData, geoJsonData }) {
         )}
       </div>
     </div>
+    {/* Modal for showing map colour key*/}
+    <Modal show={showModal} onHide={closeModal} style={{zIndex: '10000'}}>
+          <Modal.Header closeButton>
+          <Modal.Title>Heat Map Key</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+          <div>
+              <h2>🟥 Very high heat demand</h2>
+              <h2>🟧 High heat demand</h2>
+              <h2>🟨 Moderate heat demand</h2>
+              <h2>🟩 Low heat demand</h2>
+          </div>
+          </Modal.Body>
+          <Modal.Footer>
+          <Button variant="secondary" onClick={closeModal}>
+              Close
+          </Button>
+          </Modal.Footer>
+    </Modal>
+   </>
   );
 }
