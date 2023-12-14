@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ResponsivePie } from '@nivo/pie';
+import { ResponsivePieCanvas } from '@nivo/pie';
 import  graphToPdf  from '../../helperFunctions/graphToPdf';
 import { toast } from 'react-toastify';
 
@@ -87,7 +87,7 @@ export default function BreakDownOfHeatDemandHeatTechnology ({ heatData, localAu
           <div id="breakDownOfHeatDemandHeatTechnology">
             <div>
               <div style={{ width: '100vw', height: 400 }}>
-                <ResponsivePie
+                <ResponsivePieCanvas
                   data-testid="pie-chart"
                   data={technologyData}
                   margin={{ top: 40, right: 80, bottom: 40, left: 80 }}

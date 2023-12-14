@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ResponsiveBar } from "@nivo/bar";
+import { ResponsiveBarCanvas } from "@nivo/bar";
 import  graphToPdf  from '../../helperFunctions/graphToPdf';
 import { toast } from 'react-toastify';
 
@@ -163,7 +163,7 @@ export default function BeforeAfterHeatDemandBar({data}) {
           <div>
             {/* Nivo ResponsiveBar component for displaying data visually */}
             <div style={{width: '100vw', height: 400 }} id='beforeAfterHeatDemandBar'>
-              <ResponsiveBar
+              <ResponsiveBarCanvas
               data={localAuthorities}
               keys={[
                 "Total heat demand before energy efficiency measures",

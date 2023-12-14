@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { ResponsivePieCanvas } from '@nivo/pie';
+import { ResponsiveBarCanvas } from '@nivo/bar'; // Import the bar chart component
 import  graphToPdf  from '../../helperFunctions/graphToPdf';
 import { toast } from 'react-toastify';
 
-export default function BreakDownOfHeatDemandDwellings ({ heatData, localAuthority }) {
+export default function BreakDownOfHeatDemandDwellingsBar ({ heatData, localAuthority }) {
   // States for managing loading, error, and dwelling data
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -90,22 +90,28 @@ export default function BreakDownOfHeatDemandDwellings ({ heatData, localAuthori
           <div>
             <div id="breakDownOfHeatDemandDwellings">
               <div style={{ width: '100vw', height: 400 }}>
-                <ResponsivePieCanvas
-                  data={dwellingData}
-                  margin={{ top: 40, right: 80, bottom: 40, left: 80 }}
-                  innerRadius={0.5}
-                  padAngle={0.7}
-                  cornerRadius={3}
-                  colors={{ scheme: 'category10' }}
-                  borderWidth={1}
-                  borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
-                  enableArcLinkLabels={false}
-                  enableRadialLabels={false}
-                  enableSlicesLabels={false} 
-                  enableLabels={false} 
-                  enableArcLabels={false}
-                  legends={[]} 
-                />
+                 {/* Use ResponsiveBar instead of ResponsivePie */}
+                 <ResponsiveBarCanvas
+                    data-testid="bar-chart"
+                    data={dwellingData}
+                    keys={['value']}
+                    indexBy="id"
+                    margin={{ top: 40, right: 80, bottom: 40, left: 80 }}
+                    padding={0.3}
+                    colors={(bar) => bar.data.color}
+                    borderWidth={1}
+                    borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
+                    enableGridX
+                    enableGridY
+                    labelSkipWidth={12}
+                    labelSkipHeight={12}
+                    labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+                    legends={[]}
+                    axisBottom={null}
+                    valueFormat={function (e) {
+                        return e + '%'
+                    }}
+                  />
               </div>
               <div style={{ width: '100vw', display:'flex', justifyContent: 'center', marginBottom: '1vh'}}>
                 <table style={{ border: "1px solid black" }}>
