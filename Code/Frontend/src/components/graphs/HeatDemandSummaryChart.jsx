@@ -30,7 +30,7 @@ const HeatDemandSummaryChart = ({ data }) => {
                     legendOffset: 32
                 }}
                 axisLeft={{
-                    tickSize: 0, // Remove the tick marks
+                    tickSize: 0,
                     tickPadding: -60,
                     tickRotation: 0,
                     legend: 'Heat Demand (GWh)',
