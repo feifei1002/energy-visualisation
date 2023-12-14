@@ -25,6 +25,14 @@ function Login() {
     }
     // end of referenced code
 
+    // allow the password typed to be shown or hidden
+    const [showPassword, setShowPassword] = useState(false);
+
+    // function to change password visibility
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(event);
@@ -117,7 +125,15 @@ function Login() {
                         </div>
                         <div className="inputRow">
                             <label>Password</label>
-                            <input type="password" name="password" data-testid="password-input" value={pass} onChange={handleChange} {...{ required: true }} />
+                            <input type={showPassword ? 'text' : 'password'} name="password" data-testid="password-input" value={pass} onChange={handleChange} {...{ required: true }} />
+
+                        </div>
+                        {/* toggle visibility of password */}
+                        <div className="inputRow">
+                            <span onClick={togglePasswordVisibility}
+                                  className="password-toggle">
+                            {showPassword ? 'Hide Password' : 'Show Password'}
+                            </span>
                         </div>
                         <div className="inputRow">
                             <input type="submit" value="Login" />
