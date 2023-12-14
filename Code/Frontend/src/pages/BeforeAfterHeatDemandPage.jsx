@@ -1,18 +1,16 @@
 // Import necessary hooks and React itself from the react package.
-import React, { useRef, useState, useEffect } from 'react';
-// Import various graph components that will be used to display data visualizations.
-import BeforeAfterHeatDemandBar from '../components/graphs/BeforeAfterHeatDemandBar';
-import TotalHeatEfficiency from '../components/graphs/TotalHeatEfficiency';
-import HeatEfficiencyBeforeHeatMap from '../components/graphs/HeatEfficiencyBeforeHeatMap';
-import HeatEfficiencyAfterHeatMap from '../components/graphs/HeatEfficiencyAfterHeatMap';
-import VisualisationsDropdownMenu from "../components/VisualisationsDropdownMenu";
-import TotalHeatDemandBeforeTable from "../components/tables/TotalHeatDemandBeforeTable"
-import TotalHeatDemandAfterTable from "../components/tables/TotalHeatDemandAfterTable"
+import React, { useRef, useState, useEffect,  lazy, Suspense } from 'react';
 import Header from "../Header";
 import LoadingGif from "../assets/LoadingGif.gif";
 import downloadCSV from "../helperFunctions/downloadCSV.js";
 import InfoToolTip from '../components/InfoToolTip.jsx';
-
+// Import various graph components that will be used to display data visualizations.
+const HeatEfficiencyBeforeHeatMap = lazy(() => import('../components/graphs/HeatEfficiencyBeforeHeatMap'));
+const HeatEfficiencyAfterHeatMap = lazy(() => import('../components/graphs/HeatEfficiencyAfterHeatMap'));
+const  BeforeAfterHeatDemandBar = lazy(() => import('../components/graphs/BeforeAfterHeatDemandBar'));
+const TotalHeatEfficiency = lazy(() => import('../components/graphs/TotalHeatEfficiency'));
+const TotalHeatDemandBeforeTable = lazy(() => import('../components/tables/TotalHeatDemandBeforeTable'));
+const TotalHeatDemandAfterTable = lazy(() => import('../components/tables/TotalHeatDemandAfterTable'));
 //analytics tracking
 import trackEvent from '../utils/analytics';
 
