@@ -257,6 +257,7 @@ export default function HeatEfficiencyAfterHeatMap({ heatData, geoJsonData }) {
         {selectedFeature && !myChart && (
             <button onClick={() => showBarChart()} 
             style={buttonStyle}
+            title="Click to show stacked bar chart for the selected region(LSOA) showing the heat demand by different heating technologies for this region."
             >
             Show Bar Chart For Region(LSOA)</button>
         )}

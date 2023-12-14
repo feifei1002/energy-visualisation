@@ -2,11 +2,14 @@ import React from 'react';
 import '../css/ContactUsForm.css';
 import { toast } from 'react-toastify';
 import { useEffect, useRef, useState } from "react";
+import { Table, Button, Modal, Form} from 'react-bootstrap';
 import axios from 'axios';
 import ReactDOM from "react-dom/client";
 
 // Contact us form for getting user feedback on submission
 export default function ContactUsForm() {
+
+    const [showModal, setShowModal] = useState(false);
 
     const [contactUsFormData, setContactUsFormData] = useState({
         fullName: '',
@@ -82,36 +85,52 @@ export default function ContactUsForm() {
     }, []);
 
 
+    //Open help pop-up
+    const openModal = () => {
+        setShowModal(true);
+    };
 
+    //Close help pop-up
+    const closeModal = () => {
+        setShowModal(false);
+    };
+    
     // Render a contact us form 
     return (
+        <>
         <div class="container my-5">
             <div class="row justify-content-center">
                 <div class="col-lg-9">
+                <div class="mb-3"><a className="toolTip" title="See more information about this form"  onClick={() => openModal()}>
+                   ℹ
+                </a></div>
                 <h1 class="mb-3 contactTitle">Contact Us</h1>
                 <form onSubmit={handleContactSubmit}>
                     <div class="row g-3">
                     <div class="col-md-6">
                         <label for="fullName" class="form-label">Full Name</label>
-                        <input type="text" class="form-control" id="fullName" name="fullName" required
+                        <textarea type="text" class="form-control" id="fullName" name="fullName" required
                           value={contactUsFormData.fullName}
                           onChange={handleInputChange}  
+                          draggable="true"
                         />
                         {errors.fullName && <div className="error-subject">{errors.fullName}</div>}
                     </div>
                     <div class="col-md-6">
                         <label for="email" class="form-label">Your Email</label>
-                        <input type="email" class="form-control" id="email" name="email" required
+                        <textarea type="email" class="form-control" id="email" name="email" required
                             value={contactUsFormData.email}
                             onChange={handleInputChange}  
+                            draggable="true"
                         />
                         {errors.email && <div className="error-subject">{errors.email}</div>}
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <label for="subject" class="form-label">Subject:</label>
-                        <input type="text" class="form-control" id="subject" name="subject"
+                        <textarea type="text" class="form-control" id="subject" name="subject"
                             value={contactUsFormData.subject}
                             onChange={handleInputChange}  
+                            draggable="true"
                         />
                         {errors.subject && <div className="error-subject">{errors.subject}</div>}
                     </div>
@@ -120,6 +139,7 @@ export default function ContactUsForm() {
                         <textarea class="form-control" id="message" name="message" rows="5" required
                             value={contactUsFormData.message}
                             onChange={handleInputChange}  
+                            draggable="true"
                         ></textarea>
                         {errors.message && <div className="error-message">{errors.message}</div>}
                     </div>
@@ -135,5 +155,24 @@ export default function ContactUsForm() {
                 </div>
             </div>
         </div>  
+        <Modal show={showModal} onHide={closeModal}>
+            <Modal.Header closeButton>
+            <Modal.Title>Contact Us Form Information</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+            <div>
+                <h5>Full Name: full name including surname.</h5>
+                <h5>Email: full email address.</h5>
+                <h5>Subject: title of the feedback issue you are contacting us about.</h5>
+                <h5>Message: describe the feedback issue you are contacting us about.</h5>
+            </div>
+            </Modal.Body>
+            <Modal.Footer>
+            <Button variant="secondary" onClick={closeModal}>
+                Close
+            </Button>
+            </Modal.Footer>
+        </Modal>
+        </>
     );
 }
