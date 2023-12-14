@@ -41,6 +41,7 @@ function Login() {
         try {
             const response = await axios.post('/api/login', inputs);
             localStorage.setItem('accessToken', response.data.token);
+            localStorage.setItem('userID', response.data.user._id);
             console.log(response)
             setInputs(response.data)
             const {user,  token} = response.data;

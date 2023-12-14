@@ -2,15 +2,22 @@ import React from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 
 const HeatDemandSummaryChart = ({ data }) => {
+
+    const transformedData = data.map(item => ({
+        ...item,
+        totalBefore: item.totalBefore / 1000000, //convert kWh to GWh
+        totalAfter: item.totalAfter / 1000000, //convert kWh to GWh
+    }));
+
     return (
         <div style={{ height: 400 }}>
             <h3>Total Heat Demand Before & After Measures</h3>
             <ResponsiveBar
-                data={data}
+                data={transformedData}
                 data-testid="bar-chart"
                 keys={['totalBefore', 'totalAfter']}
                 indexBy="region"
-                margin={{ top: 40, right: 50, bottom: 90, left: 120 }}
+                margin={{ top: 40, right: 50, bottom: 80, left: 120 }}
                 padding={0.3}
                 colors={{ scheme: 'blues' }}
                 borderColor={{ from: 'color', modifiers: [['darker', 16]] }}
@@ -23,10 +30,10 @@ const HeatDemandSummaryChart = ({ data }) => {
                     legendOffset: 32
                 }}
                 axisLeft={{
-                    tickSize: 0, // Remove the tick marks
+                    tickSize: 0,
                     tickPadding: -60,
                     tickRotation: 0,
-                    legend: 'Heat Demand (kWh)',
+                    legend: 'Heat Demand (GWh)',
                     legendPosition: 'middle',
                     legendOffset: -40
                 }}

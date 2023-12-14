@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ResponsiveLine } from '@nivo/line';
+import '../../../css/AdminAnalytics.css';
 
 export default function PageViewPerMonth() {
     const [rawData, setRawData] = useState([]);
@@ -88,13 +89,16 @@ export default function PageViewPerMonth() {
             </div>
             <div>
                 {Object.keys(selectedLines).map(lineId => (
-                    <div key={lineId}>
+                    <div className="checkbox-container" key={lineId} onClick={() => handleToggle(lineId)}>
                         <input
                             type="checkbox"
+                            id={`checkbox-${lineId}`}
                             checked={selectedLines[lineId]}
                             onChange={() => handleToggle(lineId)}
+                            style={{ display: 'none' }}
                         />
-                        {lineId}
+                        <label htmlFor={`checkbox-${lineId}`} className="checkbox-custom"></label>
+                        <label htmlFor={`checkbox-${lineId}`} className="checkbox-label">{lineId}</label>
                     </div>
                 ))}
             </div>

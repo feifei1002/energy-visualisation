@@ -1,7 +1,7 @@
 .chart-container {
-    background-color: #9db9c2;
+    background-color: #f5f5f5;
     border-radius: 10px;
-    padding: 20px;
+    padding: 10px;
     margin: 20px 0;
-    box-shadow: 0px 0px 10px #ccc;
+    box-shadow: 0 0 10px #ccc;
 }

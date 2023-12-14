@@ -1,23 +1,33 @@
-import PropTypes from "prop-types";
-
-import { Link } from "react-router-dom";
-import './css/Header.css';
 import React from 'react';
+import PropTypes from "prop-types";
+import { Link, useNavigate } from "react-router-dom";
+import './css/Header.css';
 
-function HeaderLink({ to, text }) {
+function HeaderLink({ to, text, onClick }) {
     return (
-        <Link to={to}>
+        <Link to={to} onClick={onClick}>
             {text}
         </Link>
     );
 }
 
 HeaderLink.propTypes = {
-    to: PropTypes.string.isRequired, // 'to' prop for React Router Link
+    to: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
+    onClick: PropTypes.func,
 };
 
 function Header() {
+    const isLoggedIn = localStorage.getItem('accessToken') !== null;
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('userID');
+        navigate('/'); //redirect to home page
+    };
+
+
     return (
         <header>
             <div className="navbar-title">
@@ -25,14 +35,19 @@ function Header() {
             </div>
             <nav className="navbar">
                 <ul className="nav-links">
-                    {/* Use the 'to' prop for navigation with React Router */}
                     <HeaderLink to="/" text="About" />
                     <HeaderLink to="/wiki" text="Wiki" />
                     <HeaderLink to="/visualisations/beforeafterheatdemand" text="Visualisations" />
-                    <HeaderLink to="/login" text="Login" />
+                    {isLoggedIn ? (
+                        <>
+                            <HeaderLink to="/profiledashboard" text="Profile"  />
+                            <HeaderLink to="/" text="Logout" onClick={handleLogout} />
+                        </>
+                    ) : (
+                        <HeaderLink to="/login" text="Login" />
+                    )}
                 </ul>
             </nav>
-            {/* Your Routes should typically be outside of the Header component, and not nested within */}
         </header>
     );
 }
