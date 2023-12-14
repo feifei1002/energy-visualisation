@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ResponsiveChoropleth } from '@nivo/geo';
 import axios from 'axios';
 import geoFeatures from '../../../data/countries';
+import '../../../css/AdminAnalytics.css';
 
 export default function DataViewMap() {
     const [selectedYear, setSelectedYear] = useState(2023);
@@ -76,19 +77,29 @@ export default function DataViewMap() {
 
     return (
         <div>
-            <select value={selectedYear} onChange={e => setSelectedYear(e.target.value)}>
-                <option value={2023}>2023</option>
-            </select>
-            <select value={selectedMonth} onChange={e => setSelectedMonth(e.target.value)}>
-                <option value="">Select a Month</option>
-                {monthNames.map((month, index) => (
-                    <option key={month} value={index + 1}>{month}</option>
-                ))}
-            </select>
-
             <div>
-                <select value={selectedPageUrl} onChange={e => setSelectedPageUrl(e.target.value)}>
-                    <option value="">Select a Page URL</option>
+                <select
+                    className="select-box"
+                    value={selectedYear}
+                    onChange={e => setSelectedYear(e.target.value)}>
+                    <option value={2023}>2023</option>
+                </select>
+
+                <select
+                    className="select-box"
+                    value={selectedMonth}
+                    onChange={e => setSelectedMonth(e.target.value)}>
+                    <option value="">Select a Month</option>
+                    {monthNames.map((month, index) => (
+                        <option key={month} value={index + 1}>{month}</option>
+                    ))}
+                </select>
+
+                <select
+                    className="select-box"
+                    value={selectedPageUrl}
+                    onChange={e => setSelectedPageUrl(e.target.value)}>
+                    <option value="">Every Page</option>
                     {pageUrls.map(url => (
                         <option key={url} value={url}>{url}</option>
                     ))}
