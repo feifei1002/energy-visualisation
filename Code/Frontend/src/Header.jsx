@@ -11,14 +11,10 @@ function HeaderLink({ to, text, onClick }) {
     );
 }
 
-HeaderLink.propTypes = {
-    to: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
-    onClick: PropTypes.func,
-};
 
 function Header() {
-    const isLoggedIn = localStorage.getItem('accessToken') !== null;
+    const isLoggedInUser = localStorage.getItem('accessToken') !== null && localStorage.getItem('role') != 'webadmin';
+    const isLoggedInAdmin = localStorage.getItem('accessToken') !== null && localStorage.getItem('role') == 'webadmin';
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -38,9 +34,14 @@ function Header() {
                     <HeaderLink to="/" text="About" />
                     <HeaderLink to="/wiki" text="Wiki" />
                     <HeaderLink to="/visualisations/beforeafterheatdemand" text="Visualisations" />
-                    {isLoggedIn ? (
+                    {isLoggedInUser ? (
                         <>
                             <HeaderLink to="/profiledashboard" text="Profile"  />
+                            <HeaderLink to="/" text="Logout" onClick={handleLogout} />
+                        </>
+                    ) : isLoggedInAdmin ? (
+                        <>
+                            <HeaderLink to="/webadmindashboard" text="Dashboard"  />
                             <HeaderLink to="/" text="Logout" onClick={handleLogout} />
                         </>
                     ) : (

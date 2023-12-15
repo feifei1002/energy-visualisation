@@ -77,6 +77,10 @@ function Login() {
                const webAdminResponse = await axios.post('/api/loginwebadmin', inputs);
 
                localStorage.setItem('accessToken', webAdminResponse.data.token);
+               localStorage.setItem('role', webAdminResponse.data.role);
+               localStorage.setItem('username', webAdminResponse.data.user);
+
+               console.log("Username" + webAdminResponse.data.user)
 
                // Extract the username and token from the web admin response if successful
                const { user, token } = webAdminResponse.data;
