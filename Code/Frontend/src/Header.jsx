@@ -20,6 +20,8 @@ function Header() {
     const handleLogout = () => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('userID');
+        localStorage.removeItem('role');
+        localStorage.removeItem('username');
         navigate('/'); //redirect to home page
     };
 
@@ -41,8 +43,7 @@ function Header() {
                         </>
                     ) : isLoggedInAdmin ? (
                         <>
-                            <HeaderLink to="/webadmindashboard" text="Dashboard"  />
-                            <HeaderLink to="/" text="Logout" onClick={handleLogout} />
+                           <HeaderLink to="/" text="Logout" onClick={handleLogout} />
                         </>
                     ) : (
                         <HeaderLink to="/login" text="Login" />

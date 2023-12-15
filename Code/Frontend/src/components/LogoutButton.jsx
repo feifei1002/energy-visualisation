@@ -11,6 +11,8 @@ export default function LogoutButton() {
         try{
             await axios.post('api/logout');
             localStorage.removeItem('accessToken');
+            localStorage.removeItem('role');
+            localStorage.removeItem('username');
             showNotification('Logout successful');
             navigate('/')
         }catch (error) {
