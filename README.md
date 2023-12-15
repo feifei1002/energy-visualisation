@@ -1,5 +1,15 @@
 ## How to build/start/run/compile the project:
 
+### Login User Credentials
+
+## As A Admin User
+Username: aliceadmin
+Password: alice@123
+
+## As A Web Admin User
+Username: webadmin
+Password: SuperCoolApp@123
+
 ### In the 'Frontend' folder, open a terminal, and run the following commands:
 
 'npm install' to install the required packages.
