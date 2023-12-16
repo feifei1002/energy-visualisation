@@ -2,12 +2,20 @@
 
 ### Login User Credentials
 
-## As A Admin User
+## As an Admin User
 Username: aliceadmin
+  
 Password: alice@123
 
-## As A Web Admin User
+or
+
+Username: bobadmin
+  
+Password: bob@456
+
+## As a Web Admin User
 Username: webadmin
+  
 Password: SuperCoolApp@123
 
 ### In the 'Frontend' folder, open a terminal, and run the following commands:
