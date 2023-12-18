@@ -3,6 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import axios from 'axios';
 import WebAdminUsersTable from '../../src/components/tables/WebAdminUsersTable';
+import WebAdminFeedbackTable from '../../src/components/tables/WebAdminFeedbackTable';
 
 // Mocking Axios to prevent actual HTTP requests during testing
 jest.mock('axios');
@@ -19,7 +20,7 @@ const columns = [
   },
 ];
 
-const data = [
+const userData = [
   {
     fullName: 'John Doe',
     username: 'john_doe',
@@ -36,13 +37,28 @@ const data = [
   },
 ];
 
+const feedbackData = [
+  {
+    fullName: 'John Doe',
+    email: 'john_doe@test.com',
+    subject: 'test1',
+    message: 'testMessage1',
+  },
+  {
+    fullName: 'Jane Doe',
+    email: 'jane_doe@test.com',
+    subject: 'test2',
+    message: 'testMessage2',
+  },
+];
+
 const authToken = 'fakeAuthToken';
 
 // Jest test suite for WebAdminUsersTable Component
 describe('WebAdminUsersTable Component', () => {
   // Test case: Renders table headers correctly
   it('renders table correctly', () => {
-    render(<WebAdminUsersTable columns={columns} data={data} authToken={authToken} />);
+    render(<WebAdminUsersTable columns={columns} data={userData} authToken={authToken} />);
 
     // Assertions for table headers
     expect(screen.getByText('User Name')).toBeInTheDocument();
@@ -51,7 +67,7 @@ describe('WebAdminUsersTable Component', () => {
 
   // Test case: Renders user details correctly
   it('renders users correctly', () => {
-    render(<WebAdminUsersTable columns={columns} data={data} authToken={authToken} />);
+    render(<WebAdminUsersTable columns={columns} data={userData} authToken={authToken} />);
 
     // Assertions for user details
     expect(screen.getByText('jane_doe')).toBeInTheDocument();
@@ -62,7 +78,7 @@ describe('WebAdminUsersTable Component', () => {
 
   // Test case: Shows reset password button next to each user
   it('shows reset password button next to a user', () => {
-    render(<WebAdminUsersTable columns={columns} data={data} authToken={authToken} />);
+    render(<WebAdminUsersTable columns={columns} data={userData} authToken={authToken} />);
 
     // Assertions for reset password buttons
     const resetPasswordButtons = screen.getAllByTestId('ResetPasswordButton');
@@ -81,5 +97,26 @@ describe('WebAdminUsersTable Component', () => {
     // Assertions for updated content
     expect(screen.getByText('new_user')).toBeInTheDocument();
     expect(screen.getByText('new.user@example.com')).toBeInTheDocument();
+  });
+});
+
+// Jest test suite for WebAdminFeedbackTable Component
+describe('WebAdminFeedbackTable Component', () => {
+  // Test case: Renders table headers correctly
+  it('renders table correctly', () => {
+    render(<WebAdminFeedbackTable columns={columns} data={feedbackData} authToken={authToken} />);
+
+    // Assertions for table headers
+    expect(screen.getByText('Email')).toBeInTheDocument();
+    expect(screen.getByText('User Name')).toBeInTheDocument();
+  });
+
+  // Test case: Renders user details correctly
+  it('renders details correctly', () => {
+    render(<WebAdminFeedbackTable columns={columns} data={feedbackData} authToken={authToken} />);
+
+    // Assertions for user details
+    expect(screen.getByText('jane_doe@test.com')).toBeInTheDocument();
+    expect(screen.getByText('john_doe@test.com')).toBeInTheDocument();
   });
 });
