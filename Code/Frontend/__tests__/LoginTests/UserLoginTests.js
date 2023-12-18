@@ -65,4 +65,20 @@ describe('component tests for the login page', () => {
         // tests that the inputted value is correct
         expect(passwordInput.value).toBe('password123')
     })
+
+    it('renders correctly', () => {
+        // renders the login page
+        render(
+            <MemoryRouter>
+                <Login/>
+            </MemoryRouter>);
+
+        // Check if the text content is rendered
+        expect(screen.getByText('Forgot password? contact webadmin@climatedata.com')).toBeInTheDocument();
+        expect(screen.getByText('Show Password')).toBeInTheDocument();
+        expect(screen.getByText('Register')).toBeInTheDocument();
+        expect(screen.getByText('User Name')).toBeInTheDocument();
+        expect(screen.getByText('Password')).toBeInTheDocument();
+        expect(screen.getByText('Show Password')).toBeInTheDocument();
+    })
 });
