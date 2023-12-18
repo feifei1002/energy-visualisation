@@ -15,7 +15,7 @@ const rateLimit = require('express-rate-limit');
 // Define the rate limit configuration to stop attempts after 20 for an hour
 const loginLimiter = rateLimit({
     windowMs: 60 * 60 * 1000, // 1 hour window
-    max: 20, // maximum of 20 requests per windowMs
+    max: 500, // maximum of 500 requests per windowMs
     message: 'Too many login attempts from this IP, please try again after an hour',
 });
 
