@@ -58,7 +58,7 @@ const RegistrationForm = () => {
                 email: '',
                 password: '',
             });
-            toast.success('User Registration Received!');
+            toast.success('User Registration Received! Please Wait For Web Admin To Approve.');
         } catch (error) {
             console.error('Axios Error:', error);
             toast.error(error.response.data.error || 'Error Registering user. Please try again.');
