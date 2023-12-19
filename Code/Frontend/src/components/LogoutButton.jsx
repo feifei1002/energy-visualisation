@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {NotificationContext} from "../contexts/NotificationContext.jsx";
 
 export default function LogoutButton() {
-    const { showNotification } = useContext(NotificationContext);
+    const { showNotification } = useContext(NotificationContext)  || {};
     let navigate = useNavigate();
 
     const handleLogout = async ( ) => {
