@@ -17,5 +17,6 @@ module.exports = {
       { allowConstantExport: true },
     ],
     'no-console': 'warn',
+    "reportUnusedDisableDirectives": "warn",
   },
 }
