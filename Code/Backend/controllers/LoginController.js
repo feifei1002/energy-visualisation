@@ -6,7 +6,6 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
 
 // post login for authentication
 const postLogin = async (req, res) => {

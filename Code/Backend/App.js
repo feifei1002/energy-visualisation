@@ -4,14 +4,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
-const cookieSession = require('cookie-session');
 
-
-// for login authentication
-const router = express.Router();
-// const bcrypt = require("bcryptjs");
-// const jwt = require(jsonwebtoken);
-const User = require("./models/User");
 
 // Define the root route for API
 // go to http://localhost:8082/ for backend

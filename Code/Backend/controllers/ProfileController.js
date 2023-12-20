@@ -1,11 +1,3 @@
-const User = require('../models/User');
-const bcrypt = require("bcrypt");
-const saltRounds = 10; //increasing this increases security to bruteforce but also time it takes to hash
-const jwt = require('jsonwebtoken');
-const {expressjwt} = require("express-jwt");
-const key = process.env.ACCESS_TOKEN;
-
-
 // Moved this logic to the api/profile file as that is where it works see the file
 
 // const getProfile = async (user, response) => {

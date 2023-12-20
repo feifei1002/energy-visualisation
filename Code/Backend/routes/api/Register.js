@@ -3,7 +3,6 @@ const router = express.Router();
 const PendingUser = require('../../models/PendingUser');
 const RegisterController = require('../../controllers/RegisterController');
 const User = require("../../models/User");
-const {expressjwt} = require("express-jwt");
 
 const {checkToken} = require("../../utils/tokenProcessor");
 
