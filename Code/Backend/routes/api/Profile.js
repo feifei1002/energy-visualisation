@@ -1,12 +1,10 @@
 //routes for profile dashboard
 const express = require('express');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
 const saltRounds = 10; //increasing this increases security to bruteforce but also time it takes to hash
 const User = require('../../models/User');
 //routes for client dashboard
 const ProfileController = require('../../controllers/ProfileController');
-const { expressjwt } = require("express-jwt")
 const bcrypt = require("bcrypt");
 
 const {checkToken} = require("../../utils/tokenProcessor");

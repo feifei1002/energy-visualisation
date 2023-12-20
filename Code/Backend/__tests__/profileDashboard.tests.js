@@ -1,12 +1,13 @@
 const request = require('supertest');
 const express = require('express');
 const userRoutes = require('../routes/api/Profile');
+const User = require('../models/User');
 
 const app = express();
 app.use(express.json());
 app.use('/api', userRoutes);
 
-jest.spyOn(console, 'log');
+jest.mock('../models/User');
 
 describe('User Profile Routes', () => {
     it('GET /profile/:userID should be unauthorized without token', async () => {

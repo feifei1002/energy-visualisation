@@ -1,5 +1,5 @@
 const fs = require('fs').promises;
-const { processHeatDemandData } = require('../utils/heatDemandProcessor');
+const { aggregateData } = require('../utils/heatDemandProcessor');
 
 const cacheFilePath = '../../cache/aggregatedHeatDemandData.cache';
 
@@ -53,13 +53,8 @@ describe('processHeatDemandData', () => {
             },
         ];
 
-        //mock the fs.readFile function to return the mock data
-        jest.spyOn(fs, 'readFile')
-            .mockResolvedValueOnce(JSON.stringify(mockAnnualHeatData))
-            .mockResolvedValueOnce(JSON.stringify(mockResidentialHeatData));
-
-        //call the function and await the result
-        const result = await processHeatDemandData();
+        //call the function used in processheatdemanddata and await the result
+        const result = await aggregateData(mockAnnualHeatData,mockResidentialHeatData);
 
         //assert that the result contains the expected fields
         expect(result).toEqual(expect.arrayContaining([

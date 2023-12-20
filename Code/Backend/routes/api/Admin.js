@@ -5,9 +5,6 @@ const AdminUser = require('../../models/AdminUser');
 const User = require('../../models/User');
 const ContactUs = require('../../models/ContactUs');
 const WebAdminController = require('../../controllers/WebAdminController');
-const bodyParser = require("body-parser");
-const { expressjwt } = require("express-jwt");
-const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
 const rateLimit = require('express-rate-limit');
 
