@@ -19,6 +19,7 @@ install_dependencies:
     - npm install
     - npm install dotenv
     - npm install --save-dev jest
+    - npm install --save-dev supertest
 
 test:
   stage: test
@@ -28,6 +29,7 @@ test:
     - npm install
     - npm install dotenv
     - npm install --save-dev jest
+    - npm install --save-dev supertest
     - npm install to-fast-properties
     - set NODE_OPTIONS=--max_old_space_size=4096
     - npm run test
