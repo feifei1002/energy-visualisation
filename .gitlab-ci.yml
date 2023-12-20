@@ -5,7 +5,9 @@ services:
 
 stages:
   - install
+  - lint
   - test
+  - deploy
 
 cache:
   paths:
@@ -18,14 +20,36 @@ install_dependencies:
     - cd /builds/c21054715/energy_visualization_team2/Code
     - npm install
 
-test:
+lint:
+  stage: lint
+  script:
+    - cd /builds/c21054715/energy_visualization_team2/Code
+    - npm run lint
+
+test_backend:
   stage: test
   script:
-    - apt-get update -qq && apt-get install -y libssl1.1
     - cd /builds/c21054715/energy_visualization_team2/Code/Backend
     - npm install
     - set NODE_OPTIONS=--max_old_space_size=4096
     - npm run test
+
+test_frontend:
+  stage: test
+  script:
     - cd /builds/c21054715/energy_visualization_team2/Code/Frontend
     - npm install
     - npm run test
+
+deploy_staging:
+  stage: deploy
+  script:
+    - echo "this is where we would deploy to a staging environment"
+
+deploy_production:
+  stage: deploy
+  only:
+    - master
+  script:
+    - echo "this is where we would deploy to a production environment"
+
