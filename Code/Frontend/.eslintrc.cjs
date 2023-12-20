@@ -18,5 +18,10 @@ module.exports = {
     ],
     'no-console': 'warn',
     "reportUnusedDisableDirectives": "warn",
+    "no-unused-vars": "warn",
+    "no-undef": "warn",
+    "react/prop-types": "warn",
+    "react/no-unknown-property": "warn",
+    "no-extra-semi": "warn",
   },
 }
