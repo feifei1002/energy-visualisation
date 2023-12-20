@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --max_old_space_size=4096",
     "start": "node app.js",
-    "app": "nodemon app.js"
+    "app": "nodemon app.js",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0"
   },
   "author": "",
   "license": "ISC",
@@ -54,6 +55,9 @@
     "@babel/preset-env": "^7.23.6",
     "@babel/preset-react": "^7.23.3",
     "babel-jest": "^29.7.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "nodemon": "^3.0.1",
     "supertest": "^6.3.3"
   },
