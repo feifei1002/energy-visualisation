@@ -12,7 +12,7 @@ export default function DataViewMap() {
     const [selectedPageUrl, setSelectedPageUrl] = useState('');
     const [pageUrls, setPageUrls] = useState([]);
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
+    const token = localStorage.getItem("accessToken");
     useEffect(() => {
         //make sure we get the right url to query data from
         let url = `http://localhost:8082/api/analytics/by-country?year=${selectedYear}`;
@@ -20,8 +20,11 @@ export default function DataViewMap() {
             url += `&month=${selectedMonth}`;
         }
         //fetching the analytics data
-        axios.get(url)
-            .then(response => {
+        axios.get(url, {
+            headers : {
+                Authorization: `Bearer ${token}`
+            }
+        }).then(response => {
                 const transformedData = response.data.map(item => {
                     return {
                         country: item._id.country,

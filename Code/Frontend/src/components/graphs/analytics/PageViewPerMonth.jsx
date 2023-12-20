@@ -6,6 +6,7 @@ export default function PageViewPerMonth() {
     const [rawData, setRawData] = useState([]);
     const [selectedLines, setSelectedLines] = useState({});
     const [data, setData] = useState([]);
+    const token = localStorage.getItem("accessToken");
 
     const transformDataForGraph = (rawData) => {
         const lineData = {};
@@ -27,7 +28,11 @@ export default function PageViewPerMonth() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch('http://localhost:8082/api/analytics/pageviews-per-month');
+            const response = await fetch('http://localhost:8082/api/analytics/pageviews-per-month', { 
+                headers: new Headers({
+                    'Authorization': `Bearer ${token}`
+                }), 
+            });
             const result = await response.json();
             setRawData(result);
             setSelectedLines(result.reduce((acc, item) => {
