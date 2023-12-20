@@ -1,6 +1,5 @@
 // The key for the jwt token to prevent unauthorized access
-//defining it as a fallback seems to be the only solution to fix expressjwt must define secret error in some tests
-const secretKey = process.env.ACCESS_TOKEN || "teamaccesstokensecret";
+const secretKey = process.env.ACCESS_TOKEN;
 const {expressjwt} = require("express-jwt");
 
 
