@@ -5,7 +5,7 @@ const {expressjwt} = require("express-jwt");
 
 
 // Middleware to check JWT token of user for accessing protected routes
-export const checkToken = expressjwt({
+const checkToken = expressjwt({
     secret: secretKey,
     algorithms: ['HS256'],
     getToken: function (req) {
@@ -17,3 +17,4 @@ export const checkToken = expressjwt({
         return null;
     },
 });
+module.exports = { checkToken };

@@ -1,5 +1,6 @@
 const ContactUs = require('../models/ContactUs');
 
+
 const postContactUs = async (req, res) => {
     try {
         // Validate the request body against the schema
