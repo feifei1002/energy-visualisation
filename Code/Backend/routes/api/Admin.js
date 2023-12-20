@@ -19,25 +19,11 @@ const loginLimiter = rateLimit({
     message: 'Too many login attempts from this IP, please try again after an hour',
 });
 
-
-// The key for the jwt token to prevent unauthorized access
-const secretKey = process.env.ACCESS_TOKEN;
 // The number of salts rounds to hash the new password on reset
 const saltRounds = 10;
 
-// Middleware to check JWT token of user for accessing protected routes
-const checkToken = expressjwt({
-    secret: secretKey,
-    algorithms: ['HS256'],
-    getToken: function (req) {
-        if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-            return req.headers.authorization.split(' ')[1];
-        } else if (req.query && req.query.token) {
-            return req.query.token;
-        }
-        return null;
-    },
-});
+const {checkToken} = require("../../utils/tokenProcessor");
+
 
 // Fetch all web admin user details, protected using JWT token
 router.get('/webadmin', checkToken, async (req, res) => {

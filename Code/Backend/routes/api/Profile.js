@@ -4,23 +4,16 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const saltRounds = 10; //increasing this increases security to bruteforce but also time it takes to hash
 const User = require('../../models/User');
-const key = process.env.ACCESS_TOKEN;
 //routes for client dashboard
 const ProfileController = require('../../controllers/ProfileController');
 const { expressjwt } = require("express-jwt")
 const bcrypt = require("bcrypt");
 
-const verifyToken = expressjwt({
-    secret: key,
-    algorithms: ['HS256'],
-    getToken: (request) => {
-        const token = request.headers.authorization?.split(' ')[1] || null;
-        return token;
-    },
-});
+const {checkToken} = require("../../utils/tokenProcessor");
+
 
 //get profile
-router.get('/profile/:userID', verifyToken, async (req, res) => {
+router.get('/profile/:userID', checkToken, async (req, res) => {
     try {
         //console.log("Request returned: " + req.params)
         let userId = req.params.userID;
@@ -40,7 +33,7 @@ router.get('/profile/:userID', verifyToken, async (req, res) => {
 //update profile
 // router.put('/profile', verifyToken, ProfileController.updateProfile);
 
-router.put('/profile/:userID', verifyToken, async(req, res) => {
+router.put('/profile/:userID', checkToken, async(req, res) => {
     try {
         //console.log("Request returned: " + req.params)
         let userId = req.params.userID;

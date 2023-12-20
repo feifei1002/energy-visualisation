@@ -4,9 +4,10 @@ const AnalyticLog = require('../../models/Analytics');
 const {expressjwt} = require("express-jwt");
 const { convertLatLongToCountry } = require('../../utils/analyticsProcessor');
 
+const {checkToken} = require("../../utils/tokenProcessor");
 
 //POST route to create a new analytic log entry
-router.post('/analyticlog/', async (req, res) => {
+router.post('/analyticlog/',checkToken, async (req, res) => {
     try {
         const { event, location, pageUrl, additionalDetails } = req.body;
 
@@ -41,7 +42,7 @@ router.post('/analyticlog/', async (req, res) => {
 });
 
 
-router.get('/analytics/pageviews-per-month', async (req, res) => {
+router.get('/analytics/pageviews-per-month',checkToken, async (req, res) => {
     try {
         const data = await AnalyticLog.aggregate([
             {
@@ -72,7 +73,7 @@ router.get('/analytics/pageviews-per-month', async (req, res) => {
 
 
 //endpoint to get analytics data by country and year
-router.get('/analytics/by-country', async (req, res) => {
+router.get('/analytics/by-country',checkToken, async (req, res) => {
     const year = parseInt(req.query.year);
     const month = parseInt(req.query.month); // Get the month from the query, if provided
 
