@@ -1,7 +1,6 @@
 // Import the required modules
 const express = require('express');
-const request = require('supertest'); 
-
+const request = require('supertest');
 // Initialize an express application
 const app = express();
 

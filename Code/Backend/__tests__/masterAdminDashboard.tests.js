@@ -1,6 +1,6 @@
 const request = require('supertest');
 const express = require('express');
-const router = require('../routes/api/Admin'); 
+const router = require('../routes/api/Admin');
 
 const app = express();
 app.use(express.json());

@@ -1,63 +1,26 @@
-/* ILL FIX THIS TEST LATER, IDK IM MOCKING THE DATABASE WRONG OR SMTH
-
-const UserController = require('../controllers/ProfileController');
+const request = require('supertest');
+const express = require('express');
+const userRoutes = require('../routes/api/Profile');
 const User = require('../models/User');
-const mongoose = require('mongoose');
-const { MongoMemoryServer } = require('mongodb-memory-server');
 
-//mock user model
+const app = express();
+app.use(express.json());
+app.use('/api', userRoutes);
+
 jest.mock('../models/User');
 
-describe('User Profile', () => {
-    let mongoServer;
-
-    beforeAll(async () => {
-        mongoServer = await MongoMemoryServer.create();
-        const uri = mongoServer.getUri();
-        await mongoose.connect(uri);
+describe('User Profile Routes', () => {
+    it('GET /profile/:userID should be unauthorized without token', async () => {
+        const response = await request(app).get('/api/profile/6547a45b34f0a29c8b36978f');
+        expect(response.status).toBe(401);
     });
 
-    afterAll(async () => {
-        await mongoose.disconnect();
-        await mongoServer.stop();
+    it('GET /profile/:userID should be unauthorized with an invalid token', async () => {
+        const invalidToken = 'invalid_token';
+        const response = await request(app)
+            .get('/api/profile/6547a45b34f0a29c8b36978f')
+            .set('Authorization', `Bearer ${invalidToken}`);
+        expect(response.status).toBe(401);
     });
 
-    it('should fetch the correct user details', async () => {
-        //GIVEN
-        const request = { user: { id: '6547a45b34f0a29c8b36978f' } };
-        const response = {
-            json: jest.fn(),
-            status: jest.fn(() => response),
-        };
-
-        //mock findbyID method in user model
-        User.findById.mockResolvedValue({
-            _id: '6547a45b34f0a29c8b36978f',
-            fullName: 'Bob',
-            username: 'bobadmin',
-            password: 'bob@456', //this should be hashed and will be in future
-            email: 'bob@def.com',
-        });
-
-        //WHEN
-        await UserController.getProfile(request, response);
-
-        //THEN
-        expect(response.json).toHaveBeenCalledWith({
-            _id: '6547a45b34f0a29c8b36978f',
-            fullName: 'Bob',
-            username: 'bobadmin',
-            email: 'bob@def.com',
-            //we do not return hashed password (can stil lbe cracked with hashcat for example)
-        });
-
-        //make sure password isnt included in response for security
-        expect(response.json.mock.calls[0][0].password).toBeUndefined();
-    });
-}); */
-//dummy test so pipeline doesnt fail because of this being empty
-describe('Dummy Test Suite', () => {
-    test('Dummy test should always pass', () => {
-        expect(true).toBe(true);
-    });
 });

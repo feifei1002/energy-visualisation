@@ -1,16 +1,10 @@
 //Define librairies we are using in the backend
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
-const cookieSession = require('cookie-session');
-require('dotenv').config();
 
-// for login authentication
-const router = express.Router();
-// const bcrypt = require("bcryptjs");
-// const jwt = require(jsonwebtoken);
-const User = require("./models/User");
 
 // Define the root route for API
 // go to http://localhost:8082/ for backend
@@ -73,6 +67,18 @@ app.use('/api',webAdminRouter);
 app.use('/api', contactUsRouter);
 app.use('/api',loginRouter);
 app.use('/api', analyticsRouter);
+
+//From StackOverFlow: https://stackoverflow.com/questions/41888346/jwt-unauthorizederror-no-authorization-token-was-found-get-request-with-cookie
+//ACCESSED: 20/12/2023
+app.use(function (err, req, res, next) {
+  if (err.name === 'UnauthorizedError') {
+    return res.status(403).send({
+      success: false,
+      message: 'No token provided.'
+    });
+  }
+});
+//END FROM STACKOVERFLOW
 
 //Start the server
 app.listen(port, () => console.log(`Server running on port ${port}`));

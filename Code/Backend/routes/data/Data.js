@@ -12,6 +12,7 @@ const cacheTTL = 24 * 60 * 60;
 // Import the path library to work with file system paths
 const path = require('path');
 const {processHeatDemandData} = require("../../utils/heatDemandProcessor");
+let {data} = require("express-session/session/cookie");
 
 // Create caches for different types of CSV data with a standard TTL
 const annualHeatCache = new NodeCache({ stdTTL: cacheTTL });
@@ -34,8 +35,6 @@ const csvPaths = {
 // Path to GeoJSON data for geographical shapes (based on LSOA, its at city level)
 const geojsonPath = path.join(rootPath, 'Data', 'lsoa.geojson')
 
-//Path to GeoJSON data for country geographical shapes (based on country name, at country level)
-const geojsonCountryPath = path.join(rootPath, 'Data', 'countries.geojson')
 
 // Define a directory path for cached files using the root path
 const cacheDirPath = path.join(rootPath, 'cache');
