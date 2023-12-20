@@ -20,7 +20,7 @@ async function processHeatDemandData() {
         //read then process the json files
         const annualHeatData = JSON.parse(await fs.readFile(annualHeatDemandPath, 'utf8'));
         const residentialHeatData = JSON.parse(await fs.readFile(residentialHeatDemandPath, 'utf8'));
-        const aggregatedData = aggregateData(annualHeatData, residentialHeatData);
+        const aggregatedData = await aggregateData(annualHeatData, residentialHeatData);
 
         //cache the processed data for future calls
         await fs.writeFile(cacheFilePath, JSON.stringify(aggregatedData), 'utf8');
@@ -41,7 +41,7 @@ function determineRegionFromLSOA(LSOA11CD) {
     }
 }
 
-function aggregateData(annualHeatData, residentialHeatData) {
+async function aggregateData(annualHeatData, residentialHeatData) {
     //aggregate and process the data
     const aggregatedData = {
         England: { totalBefore: 0, totalAfter: 0, area: 0, averagePerSqKmBefore: 0, averagePerSqKmAfter: 0 },
@@ -103,4 +103,4 @@ async function getCachedData(filePath) {
 }
 
 //export the function used in heatDemand.js
-module.exports = { processHeatDemandData };
+module.exports = { processHeatDemandData, aggregateData };

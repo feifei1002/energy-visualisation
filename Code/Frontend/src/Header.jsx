@@ -1,23 +1,31 @@
-import PropTypes from "prop-types";
-
-import { Link } from "react-router-dom";
-import './css/Header.css';
 import React from 'react';
+import PropTypes from "prop-types";
+import { Link, useNavigate } from "react-router-dom";
+import './css/Header.css';
 
-function HeaderLink({ to, text }) {
+function HeaderLink({ to, text, onClick }) {
     return (
-        <Link to={to}>
+        <Link to={to} onClick={onClick}>
             {text}
         </Link>
     );
 }
 
-HeaderLink.propTypes = {
-    to: PropTypes.string.isRequired, // 'to' prop for React Router Link
-    text: PropTypes.string.isRequired,
-};
 
 function Header() {
+    const isLoggedInUser = localStorage.getItem('accessToken') !== null && localStorage.getItem('role') != 'webadmin';
+    const isLoggedInAdmin = localStorage.getItem('accessToken') !== null && localStorage.getItem('role') == 'webadmin';
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('userID');
+        localStorage.removeItem('role');
+        localStorage.removeItem('username');
+        navigate('/'); //redirect to home page
+    };
+
+
     return (
         <header>
             <div className="navbar-title">
@@ -25,14 +33,23 @@ function Header() {
             </div>
             <nav className="navbar">
                 <ul className="nav-links">
-                    {/* Use the 'to' prop for navigation with React Router */}
                     <HeaderLink to="/" text="About" />
                     <HeaderLink to="/wiki" text="Wiki" />
                     <HeaderLink to="/visualisations/beforeafterheatdemand" text="Visualisations" />
-                    <HeaderLink to="/login" text="Login" />
+                    {isLoggedInUser ? (
+                        <>
+                            <HeaderLink to="/profiledashboard" text="Profile"  />
+                            <HeaderLink to="/" text="Logout" onClick={handleLogout} />
+                        </>
+                    ) : isLoggedInAdmin ? (
+                        <>
+                           <HeaderLink to="/" text="Logout" onClick={handleLogout} />
+                        </>
+                    ) : (
+                        <HeaderLink to="/login" text="Login" />
+                    )}
                 </ul>
             </nav>
-            {/* Your Routes should typically be outside of the Header component, and not nested within */}
         </header>
     );
 }

@@ -7,6 +7,7 @@ import LandingPage from './pages/LandingPage'
 import VisualisationPage from './VisualisationPage'
 import GasBoilersPage from './pages/GasBoilersPage.jsx'
 import Login from './pages/Login.jsx';
+import ImprovementCostsPage from "./pages/ImprovementCostsPage";
 import ProfileDashboardPage from "./ProfileDashboardPage.jsx";
 import ResistanceHeatersPage from "./pages/ResistanceHeatersPage.jsx";
 import BreakDownOfHeatDemandPage from "./pages/BreakDownOfHeatDemandPage.jsx";
@@ -16,6 +17,7 @@ import WikiLandingPage from "./pages/Wiki/WikiLandingPage"
 import { NotificationProvider } from './contexts/NotificationContext';
 import SummaryOfHeatDemandPage from "./pages/SummaryHeatDemandPage.jsx";
 import NotFound from '../src/pages/NotFound';
+import AdminAnalytics from "./pages/AdminAnalytics.jsx";
 
 export default function App() {
   return (
@@ -28,10 +30,12 @@ export default function App() {
                 <Route path="/visualisations" element={<VisualisationPage />} />
                 <Route path="/visualisations/halfhourlyresistanceheaters" element={<ResistanceHeatersPage />}  />
                 <Route path="/visualisations/summaryheatdemand" element={<SummaryOfHeatDemandPage />}  />
+                <Route path="/visualisations/energyimprovementcosts" element={<ImprovementCostsPage />}  />
                 <Route path="/profiledashboard" element={<ProfileDashboardPage />} />
                 <Route path="/webadmindashboard" element={<WebAdminDashboard />} />
+                <Route path="/webadmindashboard/analytics" element={<AdminAnalytics />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/visualisations/halfhourlygasboilers" element={<GasBoilersPage />} />
+                <Route path="/visualisations/hourlygasboilers" element={<GasBoilersPage />} />
                 <Route path="/register" element={<RegistrationPage />} />
                 <Route path="/wiki" element={<WikiLandingPage/>} />
                 <Route path="*" element={<NotFound />} />

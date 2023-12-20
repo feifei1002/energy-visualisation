@@ -24,7 +24,6 @@ const ProfileDashboardPage = () => {
                 <Header />
                 <h1 id="profile-header-text">My Profile</h1>
             </header>
-            <LogoutButton></LogoutButton>
             <main className="profile-content">
                 <ProfileOverview />
             </main>

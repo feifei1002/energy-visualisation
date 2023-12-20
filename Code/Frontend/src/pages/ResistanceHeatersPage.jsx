@@ -4,7 +4,29 @@ import ResistanceHeatersProducedAndConsumed from "../components/graphs/Resistanc
 import ElectricityDemandForHeatPumps from "../components/graphs/ElectricityDemandForHeatPumps.jsx";
 import {useEffect, useState} from "react";
 import LoadingGif from "../assets/LoadingGif.gif";
+
+//analytics tracking
+import trackEvent from '../utils/analytics';
+
+import InfoToolTip from '../components/InfoToolTip.jsx';
+
 export default function ResistanceHeatersPage() {
+
+    //analytics tracking
+    const [userLocation, setUserLocation] = useState(null);
+
+    navigator.geolocation.getCurrentPosition((position) => {
+        const location = `${position.coords.latitude}, ${position.coords.longitude}`;
+        setUserLocation(location); // This will update the state
+    });
+    //log user viewing page, need to add the dataname and download csv log when download function is added.
+    const pageUrl = window.location.href;
+    if (userLocation !== null){
+        trackEvent('DataView', null, pageUrl, userLocation);
+    }
+
+
+
     const [heatData, setHeatData] = useState(null);
 
     //fetch all the data from the CSV
@@ -35,6 +57,9 @@ export default function ResistanceHeatersPage() {
             <>
                 <Header></Header>
                 <VisualisationsDropdownMenu></VisualisationsDropdownMenu><br></br>
+                <div>
+                 <InfoToolTip dataset={"Hourly heat production and gas consumption profiles"} />
+                </div>
                 <h3>Hourly heat production and electricity consumption profiles for Resistance heaters</h3>
                 <ResistanceHeatersProducedAndConsumed data={heatData}></ResistanceHeatersProducedAndConsumed><br></br>
                 <br></br>

@@ -2,12 +2,23 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Chart from 'chart.js/auto';
+import { Table, Button, Modal, Form} from 'react-bootstrap';
 
 export default function HeatEfficiencyBeforeHeatMap({ heatData, geoJsonData }) {
   // State hooks
   const [selectedFeature, setSelectedFeature] = useState(null);
   const [myChart, setMyChart] = useState(null);
   const [chartInUse, setChartInUse] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  
+  const openModal = () => {
+    setShowModal(true); 
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   
   // CSS classes for styling
@@ -35,6 +46,17 @@ export default function HeatEfficiencyBeforeHeatMap({ heatData, geoJsonData }) {
     zIndex: 3000,
     cursor: 'pointer',
     color: '#fff',
+  };
+
+  const buttonKeyStyle = {
+    position: 'absolute',
+    top: '5%',
+    left: '90%',
+    padding: '5px',
+    background: '#000',
+    zIndex: 3000,
+    cursor: 'pointer',
+    color: '#fff'
   };
 
   // Memoize heatData for efficient mapping
@@ -219,9 +241,18 @@ export default function HeatEfficiencyBeforeHeatMap({ heatData, geoJsonData }) {
 
   // Render the map and chart components
   return (
+    <>
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'left' }}>
       <h3 style={{ textAlign: 'left' }}>Total heat demand before energy efficiency measures 2018 (kWh)</h3>
       <div style={mapContainerStyle}>
+       {!myChart && 
+        <button
+            style={buttonKeyStyle}
+            onClick={() => openModal()}
+        >
+            Open Key
+        </button>
+        }
         <MapContainer center={[55.3781, -3.4360]} maxZoom={12} minZoom={6} zoom={6} style={{ height: '100%', width: '100%' }} preferCanvas={true}>
           <GeoJSON data={geoJsonData.features} style={style} onEachFeature={onEachFeature} />
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
@@ -233,6 +264,7 @@ export default function HeatEfficiencyBeforeHeatMap({ heatData, geoJsonData }) {
           <button
             onClick={() => showBarChart()} 
             style={buttonStyle}
+            title="Click to show stacked bar chart for the selected region(LSOA) showing the heat demand by different heating technologies for this region."
           >
             Show Bar Chart For Region(LSOA)
           </button>
@@ -251,5 +283,25 @@ export default function HeatEfficiencyBeforeHeatMap({ heatData, geoJsonData }) {
         )}
       </div>
     </div>
+    {/* Modal for showing map colour key*/}
+    <Modal show={showModal} onHide={closeModal} style={{zIndex: '10000'}}>
+            <Modal.Header closeButton>
+            <Modal.Title>Heat Map Key</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+            <div>
+                <h2>🟥 Very high heat demand</h2>
+                <h2>🟧 High heat demand</h2>
+                <h2>🟨 Moderate heat demand</h2>
+                <h2>🟩 Low heat demand</h2>
+            </div>
+            </Modal.Body>
+            <Modal.Footer>
+            <Button variant="secondary" onClick={closeModal}>
+                Close
+            </Button>
+            </Modal.Footer>
+      </Modal>
+    </>
   );
 }

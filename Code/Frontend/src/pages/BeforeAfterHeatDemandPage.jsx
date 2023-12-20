@@ -1,16 +1,20 @@
 // Import necessary hooks and React itself from the react package.
-import React, { useRef, useState, useEffect } from 'react';
-// Import various graph components that will be used to display data visualizations.
-import BeforeAfterHeatDemandBar from '../components/graphs/BeforeAfterHeatDemandBar';
-import TotalHeatEfficiency from '../components/graphs/TotalHeatEfficiency';
-import HeatEfficiencyBeforeHeatMap from '../components/graphs/HeatEfficiencyBeforeHeatMap';
-import HeatEfficiencyAfterHeatMap from '../components/graphs/HeatEfficiencyAfterHeatMap';
+import React, { useRef, useState, useEffect,  lazy, Suspense } from 'react';
 import VisualisationsDropdownMenu from "../components/VisualisationsDropdownMenu";
-import TotalHeatDemandBeforeTable from "../components/tables/TotalHeatDemandBeforeTable"
-import TotalHeatDemandAfterTable from "../components/tables/TotalHeatDemandAfterTable"
 import Header from "../Header";
 import LoadingGif from "../assets/LoadingGif.gif";
 import downloadCSV from "../helperFunctions/downloadCSV.js";
+import InfoToolTip from '../components/InfoToolTip.jsx';
+const HeatEfficiencyBeforeHeatMap = lazy(() => import('../components/graphs/HeatEfficiencyBeforeHeatMap'));
+const HeatEfficiencyAfterHeatMap = lazy(() => import('../components/graphs/HeatEfficiencyAfterHeatMap'));
+const  BeforeAfterHeatDemandBar = lazy(() => import('../components/graphs/BeforeAfterHeatDemandBar'));
+const TotalHeatEfficiency = lazy(() => import('../components/graphs/TotalHeatEfficiency'));
+const TotalHeatDemandBeforeTable = lazy(() => import('../components/tables/TotalHeatDemandBeforeTable'));
+const TotalHeatDemandAfterTable = lazy(() => import('../components/tables/TotalHeatDemandAfterTable'));
+//analytics tracking
+import trackEvent from '../utils/analytics';
+
+
 
 // The main component function that will be exported and used to display the page.
 export default function BeforeAfterHeatDemandPage() {
@@ -23,9 +27,24 @@ export default function BeforeAfterHeatDemandPage() {
   const [geoJsonData, setGeoJsonData] = useState(null);
   const [error, setError] = useState(null);
 
+  //analytics tracking
+  const [userLocation, setUserLocation] = useState(null);
+
+  navigator.geolocation.getCurrentPosition((position) => {
+    const location = `${position.coords.latitude}, ${position.coords.longitude}`;
+    setUserLocation(location); // This will update the state
+  });
+  //log user viewing page
+  const pageUrl = window.location.href;
+  if (userLocation !== null) {
+    trackEvent('DataView', null, pageUrl, userLocation, {CSVName: 'Annual_heat_demand_LSOA_EnglandWales.csv'});
+  }
    //handle the download CSV file when the download button is clicked
    const handleDownloadCSV = () => {
     downloadCSV(heatData, "Annual_heat_demand_LSOA_EnglandWales.csv");
+
+    //log the action
+     trackEvent('CSVDownload', null, pageUrl, userLocation, {CSVName: 'Annual_heat_demand_LSOA_EnglandWales.csv'});
   }
 
   // useEffect hook to remove padding and margin from the body when the component mounts.
@@ -130,6 +149,9 @@ export default function BeforeAfterHeatDemandPage() {
       <>
         <Header />
         <VisualisationsDropdownMenu></VisualisationsDropdownMenu>
+        <div>
+         <InfoToolTip dataset={"Before and after heat demand"} />
+        </div>
         <div>
           <button style={{ background: "#206887", borderColor: "#206887", color: "white", padding: "10px", marginTop: '1vh' }} onClick={handleDownloadCSV}>Download CSV</button>
         </div>

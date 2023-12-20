@@ -11,8 +11,24 @@ import '../css/LandingPage.css';
 import 'react-toastify/dist/ReactToastify.css';
 import ContactUsForm from '../components/ContactUsForm';
 
+//analytics tracking
+import trackEvent from '../utils/analytics';
+import {useState} from "react";
 
 export default function LandingPage() {
+
+    //analytics tracking
+    const [userLocation, setUserLocation] = useState(null);
+
+    navigator.geolocation.getCurrentPosition((position) => {
+        const location = `${position.coords.latitude}, ${position.coords.longitude}`;
+        setUserLocation(location); // This will update the state
+    });
+    //log user viewing page
+    const pageUrl = window.location.href;
+    if (userLocation !== null) {
+        trackEvent('PageView', null, pageUrl, userLocation);
+    }
     const logos = [
         { src: CardiffUniLogo, alt: 'Cardiff University Logo', href: 'https://www.cardiff.ac.uk/' },
         { src: UkriLogo, alt: 'Ukri Logo', href: 'https://www.ukri.org/' },

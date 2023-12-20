@@ -5,7 +5,9 @@ services:
 
 stages:
   - install
+  - lint
   - test
+  - deploy
 
 cache:
   paths:
@@ -17,24 +19,38 @@ install_dependencies:
     - apt-get update -qq && apt-get install -y libssl1.1
     - cd /builds/c21054715/energy_visualization_team2/Code
     - npm install
-    - npm install dotenv
-    - npm install --save-dev jest
 
-test:
+lint:
+  stage: lint
+  script:
+    - cd /builds/c21054715/energy_visualization_team2/Code
+    - npm install lint
+    - npm run lint
+
+test_backend:
   stage: test
   script:
-    - apt-get update -qq && apt-get install -y libssl1.1
     - cd /builds/c21054715/energy_visualization_team2/Code/Backend
     - npm install
-    - npm install dotenv
-    - npm install --save-dev jest
-    - npm install to-fast-properties
     - set NODE_OPTIONS=--max_old_space_size=4096
     - npm run test
+
+test_frontend:
+  stage: test
+  script:
     - cd /builds/c21054715/energy_visualization_team2/Code/Frontend
     - npm install
-    - npm install dotenv
-    - npm install --save-dev jest
-    - npm install identity-obj-proxy --save-dev
-    - npm install to-fast-properties
     - npm run test
+
+deploy_staging:
+  stage: deploy
+  script:
+    - echo "this is where we would deploy to a staging environment"
+
+deploy_production:
+  stage: deploy
+  only:
+    - master
+  script:
+    - echo "this is where we would deploy to a production environment"
+

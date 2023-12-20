@@ -7,12 +7,12 @@ const HeatDemandSummaryChartAverage = ({ data }) => {
             <h3>Average Heat Demand Before & After Measures</h3>
             <ResponsiveBar
                 data={data}
-                keys={['averagePerSqKmBefore', 'averagePerSqKmAfter']} // Updated keys
+                keys={['averagePerSqKmBefore', 'averagePerSqKmAfter']}
                 indexBy="region"
-                margin={{ top: 40, right: 50, bottom: 50, left: 120 }}
+                margin={{ top: 40, right: 50, bottom: 80, left: 120 }}
                 padding={0.3}
                 colors={{ scheme: 'blues' }}
-                borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+                borderColor={{ from: 'color', modifiers: [['darker', 16]] }}
                 axisBottom={{
                     tickSize: 5,
                     tickPadding: 5,

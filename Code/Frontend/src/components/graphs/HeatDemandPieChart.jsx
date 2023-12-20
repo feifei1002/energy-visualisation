@@ -5,14 +5,15 @@ const HeatDemandPieChart = ({ data }) => {
     const beforeData = data.map(region => ({
         id: region.region,
         label: region.region,
-        value: region.totalBefore
+        value: region.totalBefore / 1000000 //convert kWh to GWh
     }));
 
     const afterData = data.map(region => ({
         id: region.region,
         label: region.region,
-        value: region.totalAfter
+        value: region.totalAfter / 1000000 //convert kWh to GWh
     }));
+
 
     return (
         <div style={{ display: 'flex', height: 400 }}>
@@ -26,23 +27,23 @@ const HeatDemandPieChart = ({ data }) => {
                     cornerRadius={3}
                     colors={{ scheme: 'blues' }}
                     borderWidth={1}
-                    borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
+                    borderColor={{ from: 'color', modifiers: [['darker', 1]] }}
                     radialLabelsSkipAngle={10}
-                    radialLabelsTextColor="#333333"
+                    radialLabelsTextColor="#FFFFFF"
                     radialLabelsLinkColor={{ from: 'color' }}
                     sliceLabelsSkipAngle={10}
-                    sliceLabelsTextColor="#333333"
+                    sliceLabelsTextColor="#FFFFFF"
                     enableRadialLabels={false} // Disable radial labels
                     enableSliceLabels={false} // Disable slice labels
                     tooltip={({ datum }) => (
                         <div style={{
                             background: 'steelblue',
                             padding: '5px',
-                            border: '1px solid #ccc',
+                            border: '1px solid #000000',
                             borderRadius: '4px',
                             color: datum.color
                         }}>
-                            {datum.id}: {datum.value.toLocaleString()} kWh
+                            {datum.id}: {datum.value.toFixed(2)} GWh
                         </div>
                     )}
                 />
@@ -69,11 +70,11 @@ const HeatDemandPieChart = ({ data }) => {
                         <div style={{
                             background: 'steelblue',
                             padding: '5px',
-                            border: '1px solid #ccc',
+                            border: '1px solid #000000',
                             borderRadius: '4px',
                             color: datum.color
                         }}>
-                            {datum.id}: {datum.value.toLocaleString()} kWh
+                            {datum.id}: {datum.value.toFixed(2)} GWh
                         </div>
                     )}
                 />

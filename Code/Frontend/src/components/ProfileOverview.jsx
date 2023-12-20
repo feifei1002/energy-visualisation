@@ -4,7 +4,6 @@ import { useState, useEffect, useContext } from 'react';
 import '../css/ProfileOverview.css';
 import { NotificationContext } from '../contexts/NotificationContext';
 import {useLocation} from "react-router-dom";
-import {access} from "@babel/core/lib/config/validation/option-assertions.js";
 
 const ProfileOverview = () => {
     const { showNotification } = useContext(NotificationContext);
@@ -17,9 +16,8 @@ const ProfileOverview = () => {
     });
     const [file, setFile] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
-    const { state } = useLocation();
-    const userID = state ? state.userID : null;
-    const token = state ? state.token : null;
+    const token = localStorage.getItem('accessToken');
+    const userID = localStorage.getItem('userID');
 
 
     useEffect(() => {

@@ -3,23 +3,8 @@ const router = express.Router();
 const PendingUser = require('../../models/PendingUser');
 const RegisterController = require('../../controllers/RegisterController');
 const User = require("../../models/User");
-const {expressjwt} = require("express-jwt");
 
-// The key for the jwt token to prevent unauthorized access
-const secretKey = process.env.ACCESS_TOKEN;
-
-const checkToken = expressjwt({
-    secret: secretKey,
-    algorithms: ['HS256'],
-    getToken: function (req) {
-        if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-            return req.headers.authorization.split(' ')[1];
-        } else if (req.query && req.query.token) {
-            return req.query.token;
-        }
-        return null;
-    },
-});
+const {checkToken} = require("../../utils/tokenProcessor");
 
 router.get('/register', (req, res) => {
     res.send('Server is running. /api/register endpoint is accessible.');

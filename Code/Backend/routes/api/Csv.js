@@ -2,20 +2,10 @@
 const express = require('express');
 const multer = require('multer');
 const router = express.Router();
-const key = process.env.ACCESS_TOKEN;
 const fileSystem = require('fs');
 const path = require('path');
-const { expressjwt } = require("express-jwt");
 
-//Verify token before accessing protected routes
-const verifyToken = expressjwt({
-    secret: key,
-    algorithms: ['HS256'],
-    getToken: (request) => {
-        const token = request.headers.authorization?.split(' ')[1] || null;
-        return token;
-    },
-});
+const {checkToken} = require("../../utils/tokenProcessor");
 
 const csvStorage = multer.diskStorage({
     destination: function(request, file, callback) {
@@ -35,7 +25,6 @@ const csvStorage = multer.diskStorage({
                 if (error) throw error;
             });
         }
-        // TODO: do some auth stuff later on here on user permissions/session
 
         //save the new file with the original name
         callback(null, originalName);
@@ -45,7 +34,7 @@ const csvStorage = multer.diskStorage({
 const upload = multer({ storage: csvStorage });
 
 //POST request for saving the csv file, protected using jwt token
-router.post('/upload-csv', verifyToken, upload.single('file'), (request, response) => {
+router.post('/upload-csv', checkToken, upload.single('file'), (request, response) => {
     if (!request.file) {
         return response.status(400).send('No file uploaded.');
     }
@@ -55,6 +44,10 @@ router.post('/upload-csv', verifyToken, upload.single('file'), (request, respons
 
     //tell the user that the file has been saved successfully
     response.send('File has been uploaded and saved successfully.');
+
+    //Log that a user downloaded file
+    const pageUrl = window.location.href; // Current page URL
+    trackEvent('ButtonClick', userId, pageUrl, userLocation, { buttonName: 'MyButton' });
 });
 
 module.exports = router;

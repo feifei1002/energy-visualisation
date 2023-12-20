@@ -3,13 +3,16 @@ const request = require("supertest");
 const mongoose = require("mongoose");
 const router = require('../routes/api/Login');
 const app = express();
-// Get MongoDB password from environment variables
-const password = process.env.MONGODB_PASSWORD;
-// Construct the MongoDB URI
-const uri = `mongodb+srv://milliganec:${password}@climatedata.fh5ht06.mongodb.net/ClimateData?retryWrites=true&w=majority`;
+
 
 app.use(express.json());
 app.use('/api', router);
+
+// Get MongoDB password from environment variables
+const password = process.env.MONGODB_PASSWORD;
+
+// Construct the MongoDB URI
+const uri = `mongodb+srv://milliganec:${password}@climatedata.fh5ht06.mongodb.net/ClimateData?retryWrites=true&w=majority`;
 
 jest.spyOn(console, 'log');
 

@@ -7,7 +7,7 @@ import '../css/WebAdminDashboard.css';
 import WebAdminUsersTable from '../components/tables/WebAdminUsersTable';
 import WebAdminFeedbackTable from '../components/tables/WebAdminFeedbackTable'
 import LogoutButton from '../components/LogoutButton.jsx'
-import { Table, Button  } from 'react-bootstrap';
+import { Table, Button, NavItem  } from 'react-bootstrap';
 import RegisterRequest from "../components/RegisterRequest.jsx";
 
 
@@ -19,9 +19,8 @@ import RegisterRequest from "../components/RegisterRequest.jsx";
  */
 export default function WebAdminDashboard() {
     // Extract user data from the location state
-    const { state } = useLocation();
-    const username = state ? state.user : null;
-    const token = state ? state.token : null;
+    const username = localStorage.getItem('username');
+    const token = localStorage.getItem('accessToken');
     const [webAdminDetails, setWebAdminDetails] = useState(null);
     const [allUserDetails, setAllUserDetails] = useState(null);
     const [allFeedback, setAllFeedback] = useState(null);
@@ -139,9 +138,12 @@ export default function WebAdminDashboard() {
             fetchWebAdminDetails();
             fetchAllUserDetails();
             fetchAllFeedback();
-        } else {
+            console.log("The token is: " + token)
+            console.log("The username is: " + username)
+        } else if(!token) {
             // Else navigate back to the login page for login.
-            navigate('/login');
+            navigate("/login")
+            console.log("Taken back to login page")
         }
 
     }, []);
@@ -173,10 +175,15 @@ export default function WebAdminDashboard() {
                                     {webAdminDetails.fullName}
                                 </h3>
                         </div>
+
                         <RegisterRequest fetchAllUserDetails={fetchAllUserDetails} />
+
+                        <a href="/webadmindashboard/analytics" className="admin-container-profile-group button-link">View Analytics</a>
+
                         <div className="admin-container-profile-group logoutGroup">
                             <LogoutButton />
                         </div>
+
                     </div>
                 )}
                 {allUserDetails && (

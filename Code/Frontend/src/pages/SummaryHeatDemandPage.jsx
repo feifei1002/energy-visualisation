@@ -7,10 +7,29 @@ import Switch from 'react-switch';
 import HeatDemandPieChartAverage from "../components/graphs/HeatDemandPieChartAverage.jsx";
 import HeatDemandSummaryChartAverage from "../components/graphs/HeatDemandSummaryChartAverage.jsx";
 import '../css/Visualisations.css';
+import InfoToolTip from '../components/InfoToolTip.jsx';
+
+//analytics tracking
+import trackEvent from '../utils/analytics';
 
 export default function SummaryOfHeatDemandPage() {
+
+    //analytics tracking
+    const [userLocation, setUserLocation] = useState(null);
+
+    navigator.geolocation.getCurrentPosition((position) => {
+        const location = `${position.coords.latitude}, ${position.coords.longitude}`;
+        setUserLocation(location); // This will update the state
+    });
+    //log user viewing page, data gotten through cache not csv so cant name csvname so we name dataname
+    const pageUrl = window.location.href;
+    if (userLocation !== null){
+        trackEvent('DataView', null, pageUrl, userLocation, {DataName: 'aggregatedHeatDemandData.cache' });
+    }
+
+
+
     const [heatDemandData, setHeatDemandData] = useState(null);
-    const [geoJsonData, setGeoJsonData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showPieChart, setShowPieChart] = useState(true); // State to toggle between pie and bar charts
 
@@ -18,15 +37,12 @@ export default function SummaryOfHeatDemandPage() {
         async function fetchData() {
             try {
                 const heatDemandResponse = await fetch('http://localhost:8082/data/summary');
-                const geoJsonResponse = await fetch('http://localhost:8082/data/geojson');
 
-                if (!heatDemandResponse.ok || !geoJsonResponse.ok) throw new Error('Data fetch failed');
+                if (!heatDemandResponse.ok) throw new Error('Data fetch failed');
 
                 const heatData = await heatDemandResponse.json();
-                const geoData = await geoJsonResponse.json();
 
                 setHeatDemandData(heatData);
-                setGeoJsonData(geoData);
             } catch (error) {
                 console.error("Error fetching data:", error);
             } finally {
@@ -53,6 +69,9 @@ export default function SummaryOfHeatDemandPage() {
         <div>
             <Header />
             <VisualisationsDropdownMenu></VisualisationsDropdownMenu>
+            <div>
+                 <InfoToolTip dataset={"Summary of heat demand across England, Wales and Scotland"} />
+            </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '20px' }}>
                 <span style={{ marginRight: '10px' }}>Bar Chart</span>
                 <Switch

@@ -35,8 +35,8 @@ const postWebAdminLogin = async (req, res) => {
 
         // If the password is correct, generate and send an access token
         if (comparison) {
-            const accessToken = jwt.sign({ username: data.username }, process.env.ACCESS_TOKEN, { expiresIn: '30m' });
-            res.json({ user: data.username, token: accessToken });
+            const accessToken = jwt.sign({ username: data.username, role: "webadmin"}, process.env.ACCESS_TOKEN, { expiresIn: '30m' });
+            res.json({ user: data.username, role: "webadmin", token: accessToken });
         } else {
             // If the password is incorrect, return an error response
             console.error('Username or password does not match any in the system');

@@ -7,16 +7,41 @@ import LocalAuthorityDropDownMenu from "../components/LocalAuthorityDropDownMenu
 import BreakDownOfHeatDemandHeatTechnology from '../components/graphs/BreakDownOfHeatDemandHeatTechnology';
 import BreakDownOfHeatDemandDwellings from '../components/graphs/BreakDownOfHeatDemandDwellings';
 import BreakDownOfHeatDemandRurality from '../components/graphs/BreakDownOfHeatDemandRurality';
+import BreakDownOfHeatDemandHeatTechnologyBar from '../components/graphs/BreakDownOfHeatDemandHeatTechnologyBar';
+import BreakDownOfHeatDemandDwellingsBar from '../components/graphs/BreakDownOfHeatDemandDwellingsBar';
+import BreakDownOfHeatDemandRuralityBar from '../components/graphs/BreakDownOfHeatDemandRuralityBar';
 import Header from "../Header";
 import LoadingGif from "../assets/LoadingGif.gif";
 import { FaArrowDown } from 'react-icons/fa';
 import downloadCSV from "../helperFunctions/downloadCSV.js";
+import InfoToolTip from '../components/InfoToolTip.jsx';
+import Switch from 'react-switch';
+
+//analytics tracking
+import trackEvent from '../utils/analytics';
 
 // The main component function that will be exported and used to display the page.
 export default function BreakDownOfHeatDemandPage() {
+
+  //analytics tracking
+  const [userLocation, setUserLocation] = useState(null);
+
+  const [showPieChart, setShowPieChart] = useState(true); // State to toggle between pie and bar charts
+
+  navigator.geolocation.getCurrentPosition((position) => {
+    const location = `${position.coords.latitude}, ${position.coords.longitude}`;
+    setUserLocation(location); // This will update the state
+  });
+  //log user viewing page
+  const pageUrl = window.location.href;
+  if (userLocation !== null) {
+    trackEvent('DataView', null, pageUrl, userLocation, {CSVName: 'Annual_heat_demand_LSOA_EnglandWales.csv'});
+  }
   //handle the download CSV file when the download button is clicked
   const handleDownloadCSV = () => {
     downloadCSV(heatData, "Annual_heat_demand_LSOA_EnglandWales.csv");
+    //log the action
+    trackEvent('CSVDownload', null, pageUrl, userLocation, {CSVName: 'Annual_heat_demand_LSOA_EnglandWales.csv'});
   }
   // useRef hook to persist the loading state without triggering re-renders.
   const loadingRef = useRef(false);
@@ -128,6 +153,12 @@ export default function BreakDownOfHeatDemandPage() {
     }
   };
 
+
+  //Toggle for switching between 
+  const toggleChartType = () => {
+    setShowPieChart(!showPieChart);
+  };
+
   // Styling for this page
   const pageStyle = {
     display: 'flex',
@@ -203,6 +234,21 @@ export default function BreakDownOfHeatDemandPage() {
         <Header />
         <VisualisationsDropdownMenu></VisualisationsDropdownMenu>
         <div>
+         <InfoToolTip dataset={"Breakdown of heat demand"} />
+         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '20px' }}>
+                <span style={{ marginRight: '10px' }}>Bar Chart</span>
+                <Switch
+                    onChange={toggleChartType}
+                    checked={showPieChart}
+                    onColor="#007BFF"
+                    offColor="#333"
+                    checkedIcon={false}
+                    uncheckedIcon={false}
+                />
+                <span style={{ marginLeft: '10px' }}>Pie Chart</span>
+            </div>
+        </div>
+        <div>
           <button style={{ background: "#206887", borderColor: "#206887", color: "white", padding: "10px", marginTop: '1vh' }} onClick={handleDownloadCSV}>Download CSV</button>
         </div>
         <div style={pageStyle}>
@@ -216,7 +262,8 @@ export default function BreakDownOfHeatDemandPage() {
           </div>
         </div>
         <div style={pageStyle}>
-          <div>
+          {showPieChart ? (
+            <div>
             <div style={pieStyle}>
               <div style={arrowDivStyle}>
                 <FaArrowDown id="chart1" style={arrowStyle} onClick={() => scrollDown(2)} />
@@ -250,7 +297,44 @@ export default function BreakDownOfHeatDemandPage() {
                 localAuthority={selectedAuthority === 'All' ? null : selectedAuthority} // Pass selectedAuthority as localAuthority prop
               />
             </div>
-          </div>
+            </div>
+          ): (
+            <div>
+            <div style={pieStyle}>
+              <div style={arrowDivStyle}>
+                <FaArrowDown id="chart1" style={arrowStyle} onClick={() => scrollDown(2)} />
+                <h6>Next</h6>
+              </div>
+              <h5>Most common type of boilers used in {selectedAuthority} by percent</h5>
+              <BreakDownOfHeatDemandHeatTechnologyBar
+                heatData={heatData} // Pass necessary props to the child component
+                localAuthority={selectedAuthority === 'All' ? null : selectedAuthority}// Pass selectedAuthority as localAuthority prop
+              />
+            </div>
+            <div style={pieStyle}>
+              <div style={arrowDivStyle}>
+                <FaArrowDown id="chart2" style={arrowStyle} onClick={() => scrollDown(3)} />
+                <h6>Next</h6>
+              </div>
+              <h5>Breakdown of heat demand by dwellings for {selectedAuthority} by percent</h5>
+              <BreakDownOfHeatDemandDwellingsBar
+                heatData={heatData} // Pass necessary props to the child component
+                localAuthority={selectedAuthority === 'All' ? null : selectedAuthority} // Pass selectedAuthority as localAuthority prop
+              />
+            </div>
+            <div style={pieStyle}>
+              <div style={arrowDivStyle}>
+                <FaArrowDown id="chart3" style={arrowStyle} onClick={() => scrollDown(3)} />
+                <h6>Next</h6>
+              </div>
+              <h5>Breakdown of heat demand by rurality for {selectedAuthority} by percent</h5>
+              <BreakDownOfHeatDemandRuralityBar
+                heatData={heatData} // Pass necessary props to the child component
+                localAuthority={selectedAuthority === 'All' ? null : selectedAuthority} // Pass selectedAuthority as localAuthority prop
+              />
+            </div>
+            </div>
+          )}
         </div>
       </>
     );
