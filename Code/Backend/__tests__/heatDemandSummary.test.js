@@ -1,26 +1,7 @@
-const fs = require('fs').promises;
 const { aggregateData } = require('../utils/heatDemandProcessor');
 
-const cacheFilePath = '../../cache/aggregatedHeatDemandData.cache';
-
-async function deleteCacheFile() {
-    try {
-        await fs.unlink(cacheFilePath);
-    } catch (error) {
-        if (error.code !== 'ENOENT') {
-            throw error;
-        }
-    }
-}
-
 describe('processHeatDemandData', () => {
-    beforeEach(async () => {
-        await deleteCacheFile();
-    });
 
-    afterEach(async () => {
-        await deleteCacheFile();
-    });
 
     it('should return the processed data with the correct fields', async () => {
         const mockAnnualHeatData = [
