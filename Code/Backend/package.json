@@ -7,7 +7,7 @@
     "test": "jest --max_old_space_size=4096",
     "start": "node app.js",
     "app": "nodemon app.js",
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives"
+    "lint": "eslint . --ext js,jsx"
   },
   "author": "",
   "license": "ISC",

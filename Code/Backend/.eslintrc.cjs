@@ -14,7 +14,6 @@ module.exports = {
   },
   rules: {
     'no-console': 'warn',
-    "reportUnusedDisableDirectives": "warn",
     "no-unused-vars": "warn",
     "no-undef": "warn",
   },
