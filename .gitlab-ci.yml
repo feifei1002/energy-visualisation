@@ -5,6 +5,7 @@ services:
 
 stages:
   - install
+  - build
   - lint
   - test
   - deploy
@@ -23,6 +24,13 @@ install_dependencies:
     - npm install
     - cd /builds/c21054715/energy_visualization_team2/Code/Frontend
     - npm install
+
+build:
+  stage: build
+  script:
+    - cd /builds/c21054715/energy_visualization_team2/Code/Frontend
+    - npm install
+    - npm run build
 
 lint_frontend:
   stage: lint
@@ -44,14 +52,14 @@ test_backend:
     - cd /builds/c21054715/energy_visualization_team2/Code/Backend
     - npm install
     - set NODE_OPTIONS=--max_old_space_size=4096
-    - npm run test
+    - npm run test-ci
 
 test_frontend:
   stage: test
   script:
     - cd /builds/c21054715/energy_visualization_team2/Code/Frontend
     - npm install
-    - npm run test
+    - npm run test-ci
 
 deploy_staging:
   stage: deploy
