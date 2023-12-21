@@ -7,7 +7,8 @@
     "test": "jest --max_old_space_size=4096",
     "start": "node app.js",
     "app": "nodemon app.js",
-    "lint": "eslint . --ext js,jsx"
+    "lint": "eslint . --ext js,jsx",
+    "test-ci": "jest --max_old_space_size=4096 --watchAll=false --ci --coverage"
   },
   "author": "",
   "license": "ISC",
